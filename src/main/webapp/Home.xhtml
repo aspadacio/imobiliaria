@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/LayoutPadrao.xhtml">
+	
+	<ui:define name="titulo">Dashboard</ui:define>
+	
+	<ui:define name="corpo">
+	
+		<f:event listener="#{graficoPedidosCriadosBean.preRender}" type="preRenderView"/>
+		
+		<p:lineChart value="#{graficoPedidosCriadosBean.chartModel}" title="Pedidos criados"
+			style="height: 400px" animate="true" minY="0" legendPosition="e"/>
+			
+	</ui:define>
+	
+</ui:composition>

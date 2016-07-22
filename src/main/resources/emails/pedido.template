@@ -1,0 +1,34 @@
+<html>
+	<body>
+		<table>
+			<tr>
+				<td style="width: 100px">Número:</td>
+				<td>$pedido.id</td>
+			</tr>
+			<tr>
+				<td>Cliente:</td>
+				<td>$pedido.cliente.nome</td>
+			</tr>
+			<tr>
+				<td>Valor total:</td>
+				<td>$pedido.valorTotal</td>
+			</tr>
+		</table>
+		
+		<br/>
+		<table border="1" cellspacing="0" cellpadding="3">
+			<tr>
+				<th>Produto</th>
+				<th>Valor unitário</th>
+				<th>Quantidade</th>
+				<th>Valor total</th>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+	</body>
+</html>

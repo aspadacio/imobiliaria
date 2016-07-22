@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>Login</title>
+		
+		<h:outputStylesheet library="css" name="sistema.css"/>
+	</h:head>
+	
+	<f:event listener="#{loginBean.preRender}" type="preRenderView"/>
+	
+	<h:body>
+	
+		<div id="login-dialog">
+			<h1>Login</h1>
+			
+			<p:messages id="messages" autoUpdate="true" closable="true"/>
+			
+			<h:form id="frm" prependId="false">
+				<h:panelGrid columns="2" styleClass="grid-login">
+					<p:outputLabel value="E-mail" />
+					<p:inputText size="30" id="j_username" value="#{loginBean.email}"/>
+					
+					<p:outputLabel value="Senha" />
+					<p:password size="30" id="j_password"/>
+					
+					<h:panelGroup />
+					<p:commandButton value="login" action="#{loginBean.login}" ajax="false"/>
+				</h:panelGrid>
+			</h:form>
+		</div>
+	</h:body>
+	
+</html>

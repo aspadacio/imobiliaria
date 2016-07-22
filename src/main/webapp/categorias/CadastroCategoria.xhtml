@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui"
+	template="/WEB-INF/template/LayoutPadrao.xhtml">
+	
+	<ui:define name="titulo">#{cadastroCategoriaBean.editando ? 'Edição de categoria' : 'Novo categoria'}</ui:define>
+	
+	<ui:define name="corpo">
+		
+		<f:metadata>
+			<o:viewParam name="categoria" converter="categoriaConverter" value="#{cadastroCategoriaBean.categoria}"/>
+		</f:metadata>
+	
+		<h:form>
+			<h1>#{cadastroCategoriaBean.editando ? 'Edição de categoria' : 'Novo categoria'}</h1>
+			
+			<p:messages id="mensagens" closable="true"/>
+			
+			<p:toolbar style="margin-top: 10px">
+				<p:toolbarGroup>
+					<p:commandButton value="Novo" id="botaoNovo" action="#{cadastroCategoriaBean.novoCadastro}" update="@form" immediate="true"/>
+					<p:commandButton value="Salvar" id="botaoSalvar" action="#{cadastroCategoriaBean.salvar}" update="mensagens @form"/>
+				</p:toolbarGroup>
+				
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Pesquisa" id="botaoNovaPesquisa" action="#{pesquisaCategoriasBean.novaPesquisa}" update="@form" immediate="true"/>
+				</p:toolbarGroup>
+			</p:toolbar>
+			
+			<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+				<p:outputLabel value="Descrição" for="descricao"/>
+				<p:inputText id="descricao" size="50" maxlength="100"
+					value="#{cadastroCategoriaBean.categoria.descricao}"/>
+				
+				<p:outputLabel value="Categoria Pai" for="categoria"/>
+				<p:selectOneMenu id="categoria" value="#{cadastroCategoriaBean.categoria.categoriaPai}" converter="categoriaConverter">
+					<f:selectItem itemLabel="Selecione a categoria"/>
+					<f:selectItems value="#{cadastroProdutoBean.categoriasRaizes}" var="categoria"
+					  itemValue="#{categoria}" itemLabel="#{categoria.descricao}"/>
+					<p:ajax listener="#{cadastroProdutoBean.carregarSubcategorias}" update="subCategoria"/>
+				</p:selectOneMenu>
+				
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+	
+</ui:composition>
