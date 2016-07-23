@@ -2,15 +2,10 @@ package br.com.rangosolucoes.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,7 +17,6 @@ public class TbGrupo implements java.io.Serializable {
 	private Long idGrupo;
 	private String nome;
 	private String descricao;
-	private List<TbUsuarioGrupo> tbUsuarioGrupos = new ArrayList<>();
 
 	public TbGrupo() {
 	}
@@ -54,15 +48,6 @@ public class TbGrupo implements java.io.Serializable {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbGrupo")
-	public List<TbUsuarioGrupo> getTbUsuarioGrupos() {
-		return this.tbUsuarioGrupos;
-	}
-
-	public void setTbUsuarioGrupos(List<TbUsuarioGrupo> tbUsuarioGrupos) {
-		this.tbUsuarioGrupos = tbUsuarioGrupos;
 	}
 
 	@Override

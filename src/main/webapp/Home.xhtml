@@ -9,11 +9,6 @@
 	
 	<ui:define name="corpo">
 	
-		<f:event listener="#{graficoPedidosCriadosBean.preRender}" type="preRenderView"/>
-		
-		<p:lineChart value="#{graficoPedidosCriadosBean.chartModel}" title="Pedidos criados"
-			style="height: 400px" animate="true" minY="0" legendPosition="e"/>
-			
 	</ui:define>
 	
 </ui:composition>

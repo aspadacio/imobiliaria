@@ -8,7 +8,7 @@
 	
 	<h:head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-		<title><ui:insert name="titulo">Sistema de Pedidos de Venda</ui:insert></title>
+		<title><ui:insert name="titulo">Gerenciamento de Alugueis</ui:insert></title>
 		<h:outputScript library="js" name="jquery.maskMoney.js"/>
 		<h:outputStylesheet library="css" name="sistema.css"/>
 	</h:head>
@@ -27,7 +27,7 @@
 		<header>
 			<div style="float: left">
 				<h:link outcome="/Home">
-					<h:graphicImage library="images" name="logo.png"/>
+					<h:graphicImage library="images" name="imobiliária.jpg"/>
 				</h:link>
 			</div>
 			
@@ -39,19 +39,18 @@
 				
 				<h:form style="display: inline-block">
 					<p:menubar styleClass="menu-sistema">
-						<p:submenu label="Cadastros">
-							<p:menuitem value="Clientes"/>
-							<p:menuitem value="Usuários"/>
+						<p:submenu label="Cadastrar">
+							<p:menuitem value="Locadores"/>
+							<p:menuitem value="Locatários"/>
 							<p:separator/>
-							<p:menuitem value="Categorias" outcome="/categorias/PesquisaCategorias"/>
-							<p:menuitem value="Produtos" outcome="/produtos/PesquisaProdutos"/>
+							<p:menuitem value="Imóveis" outcome="/categorias/PesquisaCategorias"/>
+							<p:menuitem value="Imobiliária" outcome="/produtos/PesquisaProdutos"/>
 						</p:submenu>
-						<p:submenu label="Pedidos">
-							<p:menuitem value="Novo" outcome="/pedidos/CadastroPedido"/>
-							<p:menuitem value="Pesquisa" outcome="/pedidos/PesquisaPedidos"/>
+						<p:submenu label="Gerar / Consultar Contratos">
+							<p:menuitem value="A desenvolver"/>
 						</p:submenu>
 						<p:submenu label="Relatórios">
-							<p:menuitem value="Pedidos emitidos" outcome="/relatorios/RelatorioPedidosEmitidos"/>
+							<p:menuitem value="A desenvolver"/>
 						</p:submenu>
 						<p:menuitem value="Sair" url="/j_spring_security_logout"/>
 					</p:menubar>
@@ -67,8 +66,7 @@
 		<p:separator style="margin-top: 20px"/>
 		
 		<footer>
-			Cursos Online de Sistemas Comerciais Java EE com CDI, JPA e PrimeFaces - 
-			<a href="http://bit.ly/Y8saFl" target="_blank">www.algaworks.com</a>
+			Rango Soluções Comerciais - www.rangosolucoes.com.br
 		</footer>
 		
 		<script>

@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -23,7 +22,7 @@ public class TbUsuario implements java.io.Serializable {
 	private String nome;
 	private String email;
 	private String senha;
-	private List<TbUsuarioGrupo> tbUsuarioGrupos = new ArrayList<>();
+	private List<TbGrupo> tbGrupos = new ArrayList<>();
 
 	public TbUsuario() {
 	}
@@ -66,13 +65,14 @@ public class TbUsuario implements java.io.Serializable {
 		this.senha = senha;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbUsuario")
-	public List<TbUsuarioGrupo> getTbUsuarioGrupos() {
-		return this.tbUsuarioGrupos;
+	//@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbUsuario")
+	@OneToMany
+	public List<TbGrupo> getTbGrupos() {
+		return this.tbGrupos;
 	}
 
-	public void setTbUsuarioGrupos(List<TbUsuarioGrupo> tbUsuarioGrupos) {
-		this.tbUsuarioGrupos = tbUsuarioGrupos;
+	public void setTbGrupos(List<TbGrupo> tbGrupos) {
+		this.tbGrupos = tbGrupos;
 	}
 
 	@Override

@@ -15,9 +15,9 @@ public class Seguranca {
 		String nome = null;
 		
 		UsuarioSistema usuarioLogado = getUsuarioLogado();
-		/*if(usuarioLogado != null){
+		if(usuarioLogado != null){
 			nome = usuarioLogado.getUsuario().getNome();
-		}*/
+		}
 		return nome;
 	}
 

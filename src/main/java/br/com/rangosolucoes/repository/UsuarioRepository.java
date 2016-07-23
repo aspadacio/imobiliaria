@@ -1,29 +1,36 @@
 package br.com.rangosolucoes.repository;
 
 import java.io.Serializable;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+
+import br.com.rangosolucoes.model.TbUsuario;
 
 public class UsuarioRepository implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-/*	@Inject
+	@Inject
 	private EntityManager manager;
 	
-	public Usuario porId(Long id){
-		return this.manager.find(Usuario.class, id);
+	public TbUsuario porId(Long id){
+		return this.manager.find(TbUsuario.class, id);
 	}
 	
-	public List<Usuario> vendedores(){
-		// filtrar apenas vendedores por um grupo especifico
-		return this.manager.createQuery("from Usuario", Usuario.class)
+	public List<TbUsuario> usuarios(){
+		// filtrar apenas por usuarios de um grupo especifico
+		return this.manager.createQuery("from TbUsuario", TbUsuario.class)
 				.getResultList();
 	}
 
-	public Usuario porEmail(String email) {
-		Usuario usuario = null;
+	public TbUsuario porEmail(String email) {
+		TbUsuario usuario = null;
 		
 		try {
-			usuario = this.manager.createQuery("from Usuario where lower(email) = :email", Usuario.class)
+			usuario = this.manager.createQuery("from TbUsuario where lower(email) = :email", TbUsuario.class)
 					.setParameter("email", email.toLowerCase())
 					.getSingleResult();
 		} catch (NoResultException e) {
@@ -31,6 +38,6 @@ public class UsuarioRepository implements Serializable{
 		}
 		
 		return usuario;
-	}*/
+	}
 
 }

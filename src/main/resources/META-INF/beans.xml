@@ -5,7 +5,7 @@
         bean-discovery-mode="all">
         
         <interceptors>
-        	<class>com.algaworks.pedidovenda.util.jpa.TransactionInterceptor</class>
+        	<class>br.com.rangosolucoes.util.jpa.TransactionInterceptor</class>
         </interceptors>
         
 </beans>
