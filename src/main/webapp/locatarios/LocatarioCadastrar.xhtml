@@ -24,32 +24,35 @@
 		
 			<!-- Grid com campos para adicionar novo locatário -->
 			<h:form id="addLocatario" prependId="false">
-			   <p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+			   <h:panelGrid columns="2" style="margin-bottom: 10px">
 			      <p:outputLabel value="Nome: "/>
 			      <p:inputText size="60" id="nome" value="#{locatarioCadastrarBean.nome}"/>
 			      <p:outputLabel value="e-mail: " />
 			      <p:inputText size="40" id="email" type="email" value="#{locatarioCadastrarBean.email}"/>
-			   </p:panelGrid>
+			   </h:panelGrid>
+			   
 			   <h:panelGroup>
 			      <!-- Add telefones -->
 			      <p:panel header="Telefone(s)" style="margin-bottom:20px">
-			         <h:panelGrid columns="6" cellpadding="5">
-			            <h:outputLabel value="DDD: " />
-			            <p:inputMask size="1" value="#{locatarioCadastrarBean.phone.nuTelefoneDdd}" mask="(99)" />
+			         <h:panelGrid columns="8" cellspacing="6">
+			            <h:outputLabel value="DDD:" />
+			            <p:inputMask value="#{locatarioCadastrarBean.nuTelefoneDdd}" mask="(99)" />
 			            <h:outputLabel value="Número: " />
-			            <p:inputMask size="10" value="#{locatarioCadastrarBean.phone.nuTelefone}" mask="99999-9999" style="text-align: center"/>
+			            <p:inputMask size="10" value="#{locatarioCadastrarBean.nuTelefone}" mask="99999-9999" style="text-align: center"/>
 			            <!-- Tipo de telefone -->
 			            <h:outputLabel value="Tipo: " />
-			            <h:selectOneMenu value="#{locatarioCadastrarBean.phone.tpTelefone}">
+			            <h:selectOneMenu value="#{locatarioCadastrarBean.tpTelefone}">
 			               <f:selectItem itemValue="a" itemLabel="Celular"/>
 			               <f:selectItem itemValue="b" itemLabel="Fixo"/>
 			               <f:selectItem itemValue="c" itemLabel="Fax"/>
 			            </h:selectOneMenu>
-			            <p:commandButton id="telBtAdd" value="Adicionar" update="panelPhones" action="#{locatarioCadastrarBean.addTelefone}" ></p:commandButton>
+			            <p:commandButton action="#{locatarioCadastrarBean.addTelefone}" value="Adicionar" update="panelPhones" 
+			            	style="background-color: #fff; margin-left: 10px"/>
 			         </h:panelGrid>
 			      </p:panel>
+			      
 			      <!-- Exibir Telefones já adicionados -->
-			      <p:outputPanel id="panelPhones">
+			      <p:outputPanel id="panelPhones" style="margin-bottom: 10px">
 			         <p:dataTable value="#{locatarioCadastrarBean.phones}" var="phone" id="tbPhones">
 			            <p:column headerText="DDD">
 			               <h:outputText value="#{phone.nuTelefoneDdd}" />
@@ -76,65 +79,67 @@
 			      </p:outputPanel>
 			      <!--END-Add telefones -->
 			   </h:panelGroup>
-			   <h:selectOneRadio value="#{locatarioCadastrarBean.isPessoaFisica}" style="margin-left: 20px">
+			   
+			   <h:selectOneRadio value="#{locatarioCadastrarBean.isPessoaFisica}" style="margin-bottom: 10px">
 			      <f:selectItem itemValue="true" itemLabel="Pessoa Física" />
 			      <f:selectItem itemValue="false" itemLabel="Pessoa Jurídica" />
 			      <f:ajax render="@form"></f:ajax>
 			   </h:selectOneRadio>
-			   <h:panelGrid columns="2" styleClass="inserir-locatario-grid-2">
+			   
+			   <h:panelGroup>
 			      <!-- Pessoa Física -->
-			      <h:panelGroup id="pFisicaForm" rendered="#{locatarioCadastrarBean.isPessoaFisica eq true}">
-			         <p:outputLabel value="CPF"/>
-			         <p:inputMask value="#{locatarioCadastrarBean.cpf}" mask="999.999.999-99" />
-			      </h:panelGroup>
+			      <h:panelGrid columns="2" id="pFisicaForm" rendered="#{locatarioCadastrarBean.isPessoaFisica eq true}">
+			      	<p:outputLabel value="CPF:"/>
+			       	<p:inputMask value="#{locatarioCadastrarBean.cpf}" mask="999.999.999-99" />
+			      </h:panelGrid>
 			      <!-- Pessoa Jurídica -->
-			      <h:panelGroup id="pJuridicaForm" rendered="#{locatarioCadastrarBean.isPessoaFisica eq false}">
-			         <p:outputLabel value="CNPJ"/>
-			         <p:inputMask value="#{locatarioCadastrarBean.cnpj}" mask="99.999.999/9999-99" />
-			         <p:outputLabel value="Inscrição Estadual"/>
-			         <p:inputMask value="#{locatarioCadastrarBean.inscEstadual}" mask="99.999.99-9"/>
-			         <p:outputLabel value="Razão Social"/>
-			         <p:inputText size="60" id="nmFantasia" value="#{locatarioCadastrarBean.nmFantasia}"/>
-			      </h:panelGroup>
-			   </h:panelGrid>
+			      <h:panelGrid columns="6" id="pJuridicaForm" rendered="#{locatarioCadastrarBean.isPessoaFisica eq false}">
+			         <p:outputLabel value="CNPJ:"/>
+			         <p:inputMask value="#{locatarioCadastrarBean.cnpj}" mask="99.999.999/9999-99" style="margin-right: 10px"/>
+			         <p:outputLabel value="Inscrição Estadual:"/>
+			         <p:inputMask value="#{locatarioCadastrarBean.inscEstadual}" mask="99.999.99-9" style="margin-right: 10px"/>
+			         <p:outputLabel value="Razão Social:"/>
+			         <p:inputText size="60" id="nmFantasia" value="#{locatarioCadastrarBean.nmFantasia}" style="margin-right: 10px"/>
+			      </h:panelGrid>
+			   </h:panelGroup>
 			   <!-- Endereços -->
-			   <p:tabView id="tabViewEndereco" styleClass="inserir-locatario-tabView">
+			   <p:tabView id="tabViewEndereco" style="margin-top: 10px">
 			      <p:tab id="endereco" title="Endereço">
 			         <h:panelGrid columns="4" styleClass="">
-			            <p:outputLabel value="CEP"/>
+			            <p:outputLabel value="CEP:"/>
 			            <p:inputMask value="#{locatarioCadastrarBean.endCep}" mask="99999-999" />
-			            <p:outputLabel value="Endereço"/>
+			            <p:outputLabel value="Endereço:"/>
 			            <p:inputText size="60" value="#{locatarioCadastrarBean.endRua}" />
-			            <p:outputLabel value="Número"/>
+			            <p:outputLabel value="Número:"/>
 			            <p:inputMask value="#{locatarioCadastrarBean.endNr}" mask="99999" />
-			            <p:outputLabel value="Bairro"/>
+			            <p:outputLabel value="Bairro:"/>
 			            <p:inputText value="#{locatarioCadastrarBean.endBairro}" />
-			            <p:outputLabel value="Complemento"/>
-			            <p:inputText value="#{locatarioCadastrarBean.endComplemento}" />
-			            <p:outputLabel value="Município"/>
+			            <p:outputLabel value="Município:"/>
 			            <p:inputMask value="#{locatarioCadastrarBean.endMunicipio}"/>
-			            <p:outputLabel value="UF"/>
+			            <p:outputLabel value="UF:"/>
 			            <p:inputMask value="#{locatarioCadastrarBean.endUf}"/>
+			            <p:outputLabel value="Complemento:"/>
+			            <p:inputText size="60" value="#{locatarioCadastrarBean.endComplemento}" />
 			         </h:panelGrid>
 			      </p:tab>
 			      <p:tab id="enderecoCob" title="Endereço Cobrança">
 			         <h:panelGrid columns="4" styleClass="">
-			            <p:outputLabel value="CEP"/>
+			            <p:outputLabel value="CEP:"/>
 			            <p:inputMask value="#{locatarioCadastrarBean.endCbCep}" mask="99999-999" />
-			            <p:outputLabel value="Endereço"/>
+			            <p:outputLabel value="Endereço:"/>
 			            <p:inputText size="60" value="#{locatarioCadastrarBean.endCbRua}" />
-			            <p:outputLabel value="Número"/>
+			            <p:outputLabel value="Número:"/>
 			            <p:inputMask value="#{locatarioCadastrarBean.endCbNr}" mask="99999"/>
-			            <p:outputLabel value="Bairro"/>
+			            <p:outputLabel value="Bairro:"/>
 			            <p:inputText value="#{locatarioCadastrarBean.endCbBairro}" />
-			            <p:outputLabel value="Complemento"/>
-			            <p:inputText value="#{locatarioCadastrarBean.endCbComplemento}" />
-			            <p:outputLabel value="Município"/>
+			            <p:outputLabel value="Município:"/>
 			            <p:inputText value="#{locatarioCadastrarBean.endCbMunicipio}" />
-			            <p:outputLabel value="UF"/>
+			            <p:outputLabel value="UF:"/>
 			            <p:inputText value="#{locatarioCadastrarBean.endCbUf}" />
-			            <p:outputLabel value="Telefone"/>
-			            <p:inputText value="#{locatarioCadastrarBean.endCbTel}" />
+			            <p:outputLabel value="Complemento:"/>
+			            <p:inputText size="60" value="#{locatarioCadastrarBean.endCbComplemento}" />
+			            <p:outputLabel value="Telefone:"/>
+			            <p:inputMask value="#{locatarioCadastrarBean.endCbTel}" mask="(99) 99999-9999" />
 			         </h:panelGrid>
 			      </p:tab>
 			   </p:tabView>

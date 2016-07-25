@@ -171,6 +171,14 @@
 			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		<!-- Lomblok - evita os clichês do Java ver http://jnb.ociweb.com/jnb/jnbJan2010.html -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.10</version>
+			<scope>provided</scope>
+		</dependency>
 
 	</dependencies>
 
