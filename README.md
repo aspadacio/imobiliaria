@@ -10,4 +10,5 @@ INSERT INTO imobiliaria.tb_usuario VALUES ( null, user_name, user_mail@something
 
 SELECT * FROM imobiliaria.tb_usuario_grupo;
 INSERT INTO imobiliaria.tb_usuario_grupo VALUES ( 01, 01);
-INSERT INTO imobiliaria.tb_usuario_grupotb_pessoa_juridicatb_pessoa_fisicatb_pessoa_fisica VALUES ( 01, 02);
+INSERT INTO imobiliaria.tb_usuario_grupo VALUES ( 01, 01);
+INSERT INTO imobiliaria.tb_usuario_grupo VALUES ( 01, 02);
