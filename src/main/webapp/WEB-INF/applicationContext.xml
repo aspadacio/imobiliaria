@@ -32,7 +32,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	<http auto-config="false" use-expressions="true">
 		<custom-filter ref="exceptionTranslationFilter" before="FILTER_SECURITY_INTERCEPTOR"/>
 	
-		<intercept-url pattern="/Home.xhtml" access="isAuthenticated()"/>
+		<!-- <intercept-url pattern="/Home.xhtml" access="isAuthenticated()"/>
 		<intercept-url pattern="/AcessoNegado.xhtml" access="isAuthenticated()"/>
 		<intercept-url pattern="/imoveis/**" access="hasAnyRole('Administrador')"/>
 		<intercept-url pattern="/imobiliaria/**" access="hasAnyRole('Administrador')"/>
@@ -40,7 +40,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<intercept-url pattern="/locatarios/**" access="hasAnyRole('Administrador')"/>
 		<intercept-url pattern="/locadores/**" access="hasAnyRole('Administrador')"/>
 		<intercept-url pattern="/relatorios/**" access="hasAnyRole('Administrador')"/>
-		<intercept-url pattern="/**" access="denyAll"/>
+		<intercept-url pattern="/**" access="denyAll"/> -->
 		
 		<form-login login-page="/Login.xhtml" default-target-url="/"
 			always-use-default-target="true" authentication-failure-url="/Login.xhtml?invalid=true"/>
