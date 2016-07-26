@@ -34,7 +34,7 @@ public class TbUsuarioGrupo implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "USUARIO_ID", insertable = false, updatable = false)
 	public TbUsuario getTbUsuario() {
 		return this.tbUsuario;
@@ -44,7 +44,7 @@ public class TbUsuarioGrupo implements java.io.Serializable {
 		this.tbUsuario = tbUsuario;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "GRUPO_ID", insertable = false, updatable = false)
 	public TbGrupo getTbGrupo() {
 		return this.tbGrupo;

@@ -2,14 +2,10 @@ package br.com.rangosolucoes.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,7 +18,6 @@ public class TbUsuario implements java.io.Serializable {
 	private String nome;
 	private String email;
 	private String senha;
-	private List<TbGrupo> tbGrupos = new ArrayList<>();
 
 	public TbUsuario() {
 	}
@@ -63,16 +58,6 @@ public class TbUsuario implements java.io.Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-
-	//@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbUsuario")
-	@OneToMany
-	public List<TbGrupo> getTbGrupos() {
-		return this.tbGrupos;
-	}
-
-	public void setTbGrupos(List<TbGrupo> tbGrupos) {
-		this.tbGrupos = tbGrupos;
 	}
 
 	@Override

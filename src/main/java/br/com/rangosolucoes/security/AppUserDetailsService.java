@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import br.com.rangosolucoes.model.TbGrupo;
 import br.com.rangosolucoes.model.TbUsuario;
+import br.com.rangosolucoes.model.TbUsuarioGrupo;
 //import br.com.rangosolucoes.model.Grupo;
 //import br.com.rangosolucoes.model.Usuario;
 import br.com.rangosolucoes.repository.UsuarioRepository;
@@ -27,17 +27,19 @@ public class AppUserDetailsService implements UserDetailsService{
 		UsuarioSistema usuarioSistema = null;
 		
 		if(usuario != null){
-			usuarioSistema =  new UsuarioSistema(usuario, getGrupos(usuario));
+			usuarioSistema =  new UsuarioSistema(usuario, getGrupos(usuario, usuarioRepository));
 		}
 		
 		return usuarioSistema;
 	}
 
-	private Collection<? extends GrantedAuthority> getGrupos(TbUsuario usuario) {
+	private Collection<? extends GrantedAuthority> getGrupos(TbUsuario usuario, UsuarioRepository repository) {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		
-		for(TbGrupo grupo : usuario.getTbGrupos()){
-			authorities.add(new SimpleGrantedAuthority(grupo.getNome().toUpperCase()));
+		List<TbUsuarioGrupo> listaUsuariosGrupos = repository.gruposDoUsuario(usuario);
+		
+		for(TbUsuarioGrupo usuarioGrupo : listaUsuariosGrupos){
+			authorities.add(new SimpleGrantedAuthority(usuarioGrupo.getTbGrupo().getNome().toUpperCase()));
 		}
 		
 		return authorities;

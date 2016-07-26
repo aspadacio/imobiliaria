@@ -1,0 +1,140 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui"
+	template="/WEB-INF/template/LayoutPadrao.xhtml">
+	
+	<ui:define name="titulo">#{cadastroImobiliariasBean.editando ? 'Edição de imobiliária' : 'Nova imobiliária'}</ui:define>
+	
+	<ui:define name="corpo">
+		
+		<f:metadata>
+			<o:viewParam name="imobiliaria" converter="pessoaJuridicaConverter" value="#{cadastroImobiliariasBean.pessoaJuridica}"/>
+		</f:metadata>
+	
+		<h:form>
+			<h1>#{cadastroImobiliariasBean.editando ? 'Edição de imobiliária' : 'Nova imobiliária'}</h1>
+			
+			<p:messages id="mensagens" closable="true"/>
+			
+			<p:toolbar style="margin-top: 10px">
+				<p:toolbarGroup>
+					<p:commandButton value="Novo" id="botaoNovo" action="#{cadastroImobiliariasBean.novoCadastro}" update="@form" immediate="true"/>
+					<p:commandButton value="Salvar" id="botaoSalvar" action="#{cadastroImobiliariasBean.salvar}" update="mensagens @form"/>
+				</p:toolbarGroup>
+				
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Pesquisa" id="botaoNovaPesquisa" action="#{pesquisaImobiliariasBean.novaPesquisa}" update="@form" immediate="true"/>
+				</p:toolbarGroup>
+			</p:toolbar>
+			
+			<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+				<p:outputLabel value="Razão Social" for="razaosocial"/>
+				<p:inputText id="razaosocial" size="80" maxlength="200"
+					value="#{cadastroImobiliariasBean.pessoaJuridica.noRazaoSocial}"/>
+					
+				<p:outputLabel value="Nome Fantasia" for="nomefantasia"/>
+				<p:inputText id="nomefantasia" size="80" maxlength="200"
+					value="#{cadastroImobiliariasBean.pessoaJuridica.noFantasia}"/>
+					
+			</p:panelGrid>
+			
+			<p:panelGrid columns="4" id="painel2" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+				<p:outputLabel value="CNPJ" for="cnpj"/>
+				<p:inputMask id="cnpj" size="20" mask="99.999.999/9999-99" value="#{cadastroImobiliariasBean.pessoaJuridica.nuCnpj}"/>
+				
+				<p:outputLabel value="E-Mail" for="email"/>
+				<p:inputText id="email" size="40" maxlength="200"
+					value="#{cadastroImobiliariasBean.pessoaJuridica.noFantasia}"/>
+			</p:panelGrid>
+			
+			<br/>
+			
+			<h:panelGroup>
+			      <!-- Add telefones -->
+			      <p:panel header="Telefone(s)" style="margin-bottom:20px">
+			         <h:panelGrid columns="8" cellspacing="6">
+			            <h:outputLabel value="DDD:" />
+			            <p:inputMask value="#{cadastroImobiliariasBean.pessoaTelefone.nuTelefoneDdd}" mask="(99)" />
+			            <h:outputLabel value="Número: " />
+			            <p:inputMask size="10" value="#{cadastroImobiliariasBean.pessoaTelefone.nuTelefone}" mask="99999-9999" style="text-align: center"/>
+			            <!-- Tipo de telefone -->
+			            <h:outputLabel value="Tipo: " />
+			            <h:selectOneMenu value="#{cadastroImobiliariasBean.pessoaTelefone.tpTelefone}">
+			               <f:selectItem itemValue="c" itemLabel="Celular"/>
+			               <f:selectItem itemValue="f" itemLabel="Fixo"/>
+			               <f:selectItem itemValue="x" itemLabel="Fax"/>
+			            </h:selectOneMenu>
+			            <p:commandButton action="#{cadastroImobiliariasBean.adicinaTelefone}" value="Adicionar" update="panelPhones" 
+			            	style="background-color: #fff; margin-left: 10px"/>
+			         </h:panelGrid>
+			      </p:panel>
+			      
+			      <!-- Exibir Telefones já adicionados -->
+			      <p:outputPanel id="panelPhones" style="margin-bottom: 10px">
+			         <p:dataTable value="#{cadastroImobiliariasBean.telefones}" var="telefone" id="tbPhones">
+			            <p:column headerText="DDD">
+			               <h:outputText value="#{telefone.nuTelefoneDdd}" />
+			            </p:column>
+			            <p:column headerText="Número">
+			               <f:facet name="header">
+			                  <h:outputText value="Número" />
+			               </f:facet>
+			               <h:outputText value="#{telefone.nuTelefone}" />
+			            </p:column>
+			            <p:column headerText="Tipo">
+			               <f:facet name="header">
+			                  <h:outputText value="Tipo" />
+			               </f:facet>
+			               <h:outputText value="#{telefone.tpTelefone}" />
+			            </p:column>
+			            <p:column headerText="Ação">
+			               <p:commandLink value="Remover">
+			                  <p:collector value="#{telefone}" removeFrom="#{cadastroImobiliariasBean.telefones}"/>
+			                  <f:ajax render="panelPhones" />
+			               </p:commandLink>
+			            </p:column>
+			         </p:dataTable>
+			      </p:outputPanel>
+			      <!--END-Add telefones -->
+			   </h:panelGroup>
+				
+				<h:panelGroup>
+					<p:panel header="Endereço" style="margin-bottom:20px">
+						<p:panelGrid columns="2" id="painel3" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+							<p:outputLabel value="CEP" for="cep"/>
+							<p:inputMask id="cep" size="10" maxlength="200" mask="99.999-999"
+								value="#{cadastroImobiliariasBean.pessoaJuridica.noFantasia}"/>
+								
+							<p:outputLabel value="UF" for="uf"/>
+							<p:inputText id="uf" size="5" maxlength="2"
+								value="#{cadastroImobiliariasBean.pessoaJuridica.noFantasia}"/>
+							
+							<p:outputLabel value="Endereço" for="endereco"/>
+							<p:inputText id="endereco" size="100" maxlength="200"
+								value="#{cadastroImobiliariasBean.pessoaJuridica.noFantasia}"/>
+							
+							<p:outputLabel value="Número" for="numero"/>
+							<p:inputText id="numero" size="5" maxlength="5"
+								value="#{cadastroImobiliariasBean.pessoaJuridica.noFantasia}"/>
+							
+							<p:outputLabel value="Complemento" for="complemento"/>
+							<p:inputText id="complemento" size="80" maxlength="200"
+								value="#{cadastroImobiliariasBean.pessoaJuridica.noFantasia}"/>
+							
+							<p:outputLabel value="Bairro" for="bairro"/>
+							<p:inputText id="bairro" size="80" maxlength="200"
+								value="#{cadastroImobiliariasBean.pessoaJuridica.noFantasia}"/>
+								
+							<p:outputLabel value="Município" for="municipio"/>
+							<p:inputText id="municipio" size="80" maxlength="200"
+								value="#{cadastroImobiliariasBean.pessoaJuridica.noFantasia}"/>
+						</p:panelGrid>
+					</p:panel>
+				</h:panelGroup>
+		</h:form>
+	</ui:define>
+	
+</ui:composition>

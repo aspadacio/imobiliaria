@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 import br.com.rangosolucoes.model.TbUsuario;
+import br.com.rangosolucoes.model.TbUsuarioGrupo;
 
 public class UsuarioRepository implements Serializable{
 
@@ -42,6 +43,12 @@ public class UsuarioRepository implements Serializable{
 		}
 		
 		return usuario;
+	}
+	
+	public List<TbUsuarioGrupo> gruposDoUsuario(TbUsuario usuario){
+		return this.manager.createQuery("from TbUsuarioGrupo where tbUsuario.idUsuario = :id", TbUsuarioGrupo.class)
+				.setParameter("id", usuario.getIdUsuario())
+				.getResultList();
 	}
 
 }

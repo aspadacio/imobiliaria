@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/LayoutPadrao.xhtml">
+	
+	<ui:define name="titulo">Pesquisa de Imobiliárias</ui:define>
+	
+	<ui:define name="corpo">
+		<h:form id="frmPesquisa">
+			<h1>Pesquisa de Imobiliárias</h1>
+			
+			<p:messages autoUpdate="true" closable="true"/>
+			
+			<p:toolbar style="margin-top: 10px">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" action="#{pesquisaImobiliariasBean.pesquisar}" update="@form"/>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Novo" id="botaoNovo" action="#{cadastroImobiliariasBean.novoCadastro}" update="@form"/>
+				</p:toolbarGroup>
+			</p:toolbar>
+			
+			<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+				<p:outputLabel value="Razão Social" for="razaosocial"/>
+				<p:inputText id="razaosocial" size="60" value="#{pesquisaImobiliariasBean.filtroPessoaJuridica.noRazaoSocial}"/>
+				
+				<p:outputLabel value="CNPJ" for="cnpj"/>
+				<p:inputText id="cnpj" size="60" value="#{pesquisaImobiliariasBean.filtroPessoaJuridica.nuCnpj}"/>
+			</p:panelGrid>
+		
+			<p:dataTable id="imobiliariasTable" value="#{pesquisaImobiliariasBean.pessoasJuridicas}" var="imobiliaria" style="margin-top: 20px"
+				emptyMessage="Nenhuma imobiliária encontrada." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+				
+				<p:column headerText="CNPJ">
+					<h:outputText value="#{imobiliaria.nuCnpj}" />
+				</p:column>
+				
+				<p:column headerText="Razão Social" style="width: 350px">
+					<h:outputText value="#{imobiliaria.noRazaoSocial}" />
+				</p:column>
+				
+				<p:column headerText="Nome Fantasia" style="width: 350px">
+					<h:outputText value="#{imobiliaria.noFantasia}" />
+				</p:column>
+				
+				<p:column headerText="Inscrição Estadual" style="width: 350px">
+					<h:outputText value="#{imobiliaria.nuInscricaoEstadual}" />
+				</p:column>
+				
+				<p:column headerText="Ações" style="text-align: center; width: 100px">
+					<p:button icon="ui-icon-pencil" title="Editar" outcome="/imobiliaria/CadastroImobiliaria">
+						<f:param name="imobiliaria" value="#{imobiliaria.id}"/>
+					</p:button>
+					<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show();"
+						process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog">
+						<f:setPropertyActionListener target="#{pesquisaImobiliariasBean.pessoaJuridicaSelecionada}" 
+							value="#{imobiliaria}"/>
+					</p:commandButton>
+				</p:column>
+				
+			</p:dataTable>
+			
+			<p:confirmDialog header="Exclusão de categoria" 
+				message="Tem certeza que deseja excluir a Imobiliária #{pesquisaImobiliariasBean.pessoaJuridicaSelecionada.noRazaoSocial}?"
+				widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
+				<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;"/>
+				<p:commandButton value="Sim" oncomplete="confirmacaoExclusao.hide();"
+					action="#{pesquisaImobiliariasBean.excluir}" process="@this" update=":frmPesquisa:imobiliariasTable"/>
+			</p:confirmDialog>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
