@@ -21,7 +21,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <beans:bean  id="authenticationEntryPoint" class="br.com.rangosolucoes.security.JsfLoginUrlAuthenticationEntryPoint">
         <beans:property name="loginFormUrl" value="/Login.xhtml"/>
         <beans:property name="redirectStrategy" ref="jsfRedirectStrategy" />
-    </beans:bean >
+    </beans:bean>
 
     <beans:bean id="jsfRedirectStrategy" class="br.com.rangosolucoes.security.JsfRedirectStrategy"/>
 	
