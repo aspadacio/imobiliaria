@@ -16,7 +16,7 @@ public class LocatarioService implements Serializable {
 	private LocatarioRepository locatarioRepository;
 	
 	@Transacional
-	public void salvar(TbPessoa pessoa){
-		locatarioRepository.salvar(pessoa);
+	public void salvarPessoa(TbPessoa pessoa, Boolean isPessoaFisica){
+		locatarioRepository.salvarPessoa(pessoa, isPessoaFisica);
 	}
 }

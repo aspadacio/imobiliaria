@@ -28,7 +28,12 @@
 			      <p:outputLabel value="Nome: "/>
 			      <p:inputText size="60" id="nome" value="#{locatarioCadastrarBean.nome}"/>
 			      <p:outputLabel value="e-mail: " />
-			      <p:inputText size="40" id="email" type="email" value="#{locatarioCadastrarBean.email}"/>
+			      <p:inputText required="true" label="email" size="40"
+	            	requiredMessage="Entre com seu endereço de email."
+	            	validatorMessage="Formato do email inválido"
+	            	value="#{locatarioCadastrarBean.email}">
+	            	<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+	            </p:inputText>
 			   </h:panelGrid>
 			   
 			   <h:panelGroup>
@@ -42,9 +47,9 @@
 			            <!-- Tipo de telefone -->
 			            <h:outputLabel value="Tipo: " />
 			            <h:selectOneMenu value="#{locatarioCadastrarBean.tpTelefone}">
-			               <f:selectItem itemValue="a" itemLabel="Celular"/>
-			               <f:selectItem itemValue="b" itemLabel="Fixo"/>
-			               <f:selectItem itemValue="c" itemLabel="Fax"/>
+			               <f:selectItem itemValue="C" itemLabel="Celular"/>
+			               <f:selectItem itemValue="P" itemLabel="Principal"/>
+			               <f:selectItem itemValue="F" itemLabel="Fax"/>
 			            </h:selectOneMenu>
 			            <p:commandButton action="#{locatarioCadastrarBean.addTelefone}" value="Adicionar" update="panelPhones" 
 			            	style="background-color: #fff; margin-left: 10px"/>
@@ -83,17 +88,17 @@
 			   <h:selectOneRadio value="#{locatarioCadastrarBean.isPessoaFisica}" style="margin-bottom: 10px">
 			      <f:selectItem itemValue="true" itemLabel="Pessoa Física" />
 			      <f:selectItem itemValue="false" itemLabel="Pessoa Jurídica" />
-			      <f:ajax render="@form"></f:ajax>
+			      <f:ajax render="pessoaFisJuridData" />
 			   </h:selectOneRadio>
 			   
-			   <h:panelGroup>
+			   <h:panelGroup id="pessoaFisJuridData">
 			      <!-- Pessoa Física -->
-			      <h:panelGrid columns="2" id="pFisicaForm" rendered="#{locatarioCadastrarBean.isPessoaFisica eq true}">
+			      <h:panelGrid columns="2" rendered="#{locatarioCadastrarBean.isPessoaFisica eq true}">
 			      	<p:outputLabel value="CPF:"/>
 			       	<p:inputMask value="#{locatarioCadastrarBean.cpf}" mask="999.999.999-99" />
 			      </h:panelGrid>
 			      <!-- Pessoa Jurídica -->
-			      <h:panelGrid columns="6" id="pJuridicaForm" rendered="#{locatarioCadastrarBean.isPessoaFisica eq false}">
+			      <h:panelGrid columns="6" rendered="#{locatarioCadastrarBean.isPessoaFisica eq false}">
 			         <p:outputLabel value="CNPJ:"/>
 			         <p:inputMask value="#{locatarioCadastrarBean.cnpj}" mask="99.999.999/9999-99" style="margin-right: 10px"/>
 			         <p:outputLabel value="Inscrição Estadual:"/>
@@ -102,6 +107,7 @@
 			         <p:inputText size="60" id="nmFantasia" value="#{locatarioCadastrarBean.nmFantasia}" style="margin-right: 10px"/>
 			      </h:panelGrid>
 			   </h:panelGroup>
+			   
 			   <!-- Endereços -->
 			   <p:tabView id="tabViewEndereco" style="margin-top: 10px">
 			      <p:tab id="endereco" title="Endereço">
@@ -123,7 +129,7 @@
 			         </h:panelGrid>
 			      </p:tab>
 			      <p:tab id="enderecoCob" title="Endereço Cobrança">
-			         <h:panelGrid columns="4" styleClass="">
+			         <h:panelGrid columns="4" id="enderecoCobData">
 			            <p:outputLabel value="CEP:"/>
 			            <p:inputMask value="#{locatarioCadastrarBean.endCbCep}" mask="99999-999" />
 			            <p:outputLabel value="Endereço:"/>
@@ -140,6 +146,9 @@
 			            <p:inputText size="60" value="#{locatarioCadastrarBean.endCbComplemento}" />
 			            <p:outputLabel value="Telefone:"/>
 			            <p:inputMask value="#{locatarioCadastrarBean.endCbTel}" mask="(99) 99999-9999" />
+			            <p:outputLabel />
+			            <p:commandButton action="#{locatarioCadastrarBean.copyEndereco2EnderecoCob}" value="Usar mesmos dados de Endereço" 
+			            	update="enderecoCobData" style="background-color: #fff; margin-left: 5px; margin-top: 15px"/>
 			         </h:panelGrid>
 			      </p:tab>
 			   </p:tabView>
