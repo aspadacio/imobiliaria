@@ -8,7 +8,7 @@
 	<ui:define name="titulo">Pesquisa de Locatário</ui:define>
 	
 	<ui:define name="corpo">
-		<h:form id="masterForm">
+		<h:form id="masterForm" prependId="false">
 			<h1>Pesquisa de Locatário</h1>
 			
 			<p:messages autoUpdate="true" closable="true"/>
@@ -16,40 +16,54 @@
 			<!-- Barra com opções de ações pelo usuário  -->
 			<p:toolbar style="margin-top: 10px">
 				<p:toolbarGroup>
-					<p:commandButton value="Novo" id="botaoNovo" action="#{locatarioPesquisarBean.cadastrar}" update="@form"/>
+					<p:commandButton value="Novo" action="#{locatarioPesquisarBean.cadastrar}" update="@form"/>
+				</p:toolbarGroup>
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" action="#{locatarioPesquisarBean.pesquisar}" update="locatarioTable"/>
 				</p:toolbarGroup>
 			</p:toolbar>
 			
 			<!-- Grid com os filtros para pesquisa -->
 			<p:panelGrid columns="10" id="filtros" style="margin-top: 20px">
 				<p:outputLabel value="Nome:"/>
-				<p:inputText size="25" value="#{locatarioPesquisarBean.locatarioFilter.nome}"/>
+				<p:inputText size="25" value="#{locatarioPesquisarBean.locatarioFilter.nome}" placeholder="Digite o nome a ser pesquisado"/>
 				<p:outputLabel value="CPF:"/>
-				<h:selectOneMenu value="#{locatarioPesquisarBean.locatarioFilter.cpf}">
-					<f:selectItems itemValue="#{locatarioPesquisarBean.cpfs}"/>
+				<h:selectOneMenu value="#{locatarioPesquisarBean.locatarioFilter.cpf}" style="width: 120px">
+					<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+					<f:selectItems value="#{locatarioPesquisarBean.cpfs}" var="thiscpf" itemLabel="#{thiscpf}"/>
 				</h:selectOneMenu>
 				<p:outputLabel value="CNPJ:"/>
-				<h:selectOneMenu value="#{locatarioPesquisarBean.locatarioFilter.cnpj}">
-					<f:selectItems itemValue="#{locatarioPesquisarBean.cnpjs}"/>
+				<h:selectOneMenu value="#{locatarioPesquisarBean.locatarioFilter.cnpj}" style="width: 130px">
+				<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+					<f:selectItems value="#{locatarioPesquisarBean.cnpjs}" var="thiscnpj" itemLabel="#{thiscnpj}"/>
 				</h:selectOneMenu>
 				<p:outputLabel value="Município:"/>
-				<h:selectOneMenu value="#{locatarioPesquisarBean.locatarioFilter.municipio}">
-					<f:selectItems itemValue="#{locatarioPesquisarBean.municipios}"/>
+				<h:selectOneMenu value="#{locatarioPesquisarBean.locatarioFilter.municipio}" style="width: 160px">
+				<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+					<f:selectItems value="#{locatarioPesquisarBean.municipios}" var="thismunicipio" itemLabel="#{thismunicipio}"/>
 				</h:selectOneMenu>
 				<p:outputLabel value="UF:"/>
 				<h:selectOneMenu value="#{locatarioPesquisarBean.locatarioFilter.uf}">
-					<f:selectItems itemValue="#{locatarioPesquisarBean.ufs}"/>
+				<f:selectItem itemLabel="..." noSelectionOption="true"/>
+					<f:selectItems value="#{locatarioPesquisarBean.ufs}" var="thisuf" itemLabel="#{thisuf}"/>
 				</h:selectOneMenu>
 			</p:panelGrid>
 		
 			<!-- Conteúdo a ser apresentado quando pesquisado -->
-			<p:dataTable id="locatarioTable"  style="margin-top: 20px"
+			<p:dataTable id="locatarioTable" value="#{locatarioPesquisarBean.locatarios}" var="locatario" style="margin-top: 20px"
 				emptyMessage="Nenhum locatário encontrado." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
 				
 				<p:column headerText="Nome">
+					<h:outputText value="#{locatario.tbPessoaFisica.noPessoaFisica}"  />
 				</p:column>
 				
-				<p:column headerText="Município" style="width: 350px">
+				<p:column headerText="" style="width: 350px">
+				</p:column>
+				
+				<p:column headerText="" style="width: 350px">
+				</p:column>
+				
+				<p:column headerText="" style="width: 350px">
 				</p:column>
 				
 				<p:column headerText="Ações" style="text-align: center; width: 100px">
