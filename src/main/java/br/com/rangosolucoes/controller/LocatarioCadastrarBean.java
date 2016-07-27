@@ -35,8 +35,8 @@ public class LocatarioCadastrarBean implements Serializable{
 	@Inject
 	LocatarioService locatarioService;
 	
-	@Getter @Setter @NonNull private String nome;
-	@Getter @Setter @NonNull private String email;
+	@Getter @Setter private String nome;
+	@Getter @Setter private String email;
 	@Getter @Setter private String nmFantasia;
 	@Getter @Setter private String cnpj;
 	@Getter @Setter private String cpf;

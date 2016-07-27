@@ -16,7 +16,7 @@
 			<!-- Barra com opções de ações pelo usuário  -->
 			<p:toolbar style="margin-top: 10px">
 				<p:toolbarGroup>
-					<p:commandButton value="Pesquisar" action="#{locatarioCadastrarBean.pesquisar}" update="@form"/>
+					<p:commandButton value="Pesquisar" action="#{locatarioCadastrarBean.pesquisar}" ajax="false"/>
 				</p:toolbarGroup>
 			</p:toolbar>
 			
@@ -28,12 +28,7 @@
 			      <p:outputLabel value="Nome: "/>
 			      <p:inputText size="60" id="nome" value="#{locatarioCadastrarBean.nome}"/>
 			      <p:outputLabel value="e-mail: " />
-			      <p:inputText required="true" label="email" size="40"
-	            	requiredMessage="Entre com seu endereço de email."
-	            	validatorMessage="Formato do email inválido"
-	            	value="#{locatarioCadastrarBean.email}">
-	            	<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-	            </p:inputText>
+			      <p:inputText size="40" value="#{locatarioCadastrarBean.email}"/>
 			   </h:panelGrid>
 			   
 			   <h:panelGroup>
