@@ -34,7 +34,7 @@
 			   <h:panelGroup>
 			      <!-- Add telefones -->
 			      <p:panel header="Telefone(s)" style="margin-bottom:20px">
-			         <h:panelGrid columns="8" cellspacing="6">
+			         <h:panelGrid columns="8" cellspacing="6" id="insertPhone">
 			            <h:outputLabel value="DDD:" />
 			            <p:inputMask value="#{locatarioCadastrarBean.nuTelefoneDdd}" mask="(99)" />
 			            <h:outputLabel value="Número: " />
@@ -46,7 +46,7 @@
 			               <f:selectItem itemValue="P" itemLabel="Principal"/>
 			               <f:selectItem itemValue="F" itemLabel="Fax"/>
 			            </h:selectOneMenu>
-			            <p:commandButton action="#{locatarioCadastrarBean.addTelefone}" value="Adicionar" update="panelPhones" 
+			            <p:commandButton action="#{locatarioCadastrarBean.addTelefone}" value="Adicionar" update="panelPhones insertPhone" 
 			            	style="background-color: #fff; margin-left: 10px"/>
 			         </h:panelGrid>
 			      </p:panel>

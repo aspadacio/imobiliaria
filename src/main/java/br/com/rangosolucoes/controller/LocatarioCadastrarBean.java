@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,8 +26,8 @@ import br.com.rangosolucoes.model.TbPessoaTelefone;
 import br.com.rangosolucoes.service.LocatarioService;
 import br.com.rangosolucoes.util.jsf.FacesUtil;
 
-@Named
-@SessionScoped
+@Named("locatarioCadastrarBean")
+@ConversationScoped
 public class LocatarioCadastrarBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -41,10 +41,11 @@ public class LocatarioCadastrarBean implements Serializable{
 	@Getter @Setter private String cnpj;
 	@Getter @Setter private String cpf;
 	@Getter @Setter private String inscEstadual;
-	@Getter @Setter private Boolean isPessoaFisica;
 	@Getter @Setter private String nuTelefoneDdd;
 	@Getter @Setter private String nuTelefone;
 	@Getter @Setter private String tpTelefone;
+	@Getter @Setter private Boolean isPessoaFisica; //"True" = Pessoa Física; "False" = Pessoa Jurídica
+	@Getter @Setter private Boolean isSameAddress; //Referente 'Endereço' e 'Endereço Cobrança'. "True" = Mesmo Endereço, "False" = Endereços Diferentes.
 	
 	@Getter @Setter private TbPessoa pessoa;
 	@Getter @Setter private TbLocatario locatario;
@@ -54,6 +55,8 @@ public class LocatarioCadastrarBean implements Serializable{
 	@Getter @Setter @NonNull private List<TbLocatario> locatarios; //@nota: não faz sentido ter uma List de Locatarios dentro de TbPessoa.
 	@Getter @Setter @NonNull private List<TbPessoaTelefone> phones;
 	@Getter @Setter @NonNull private List<TbEnderecoPessoa> enderecos;
+	@Getter @Setter @NonNull private List<TbMunicipio> municipios;
+	@Getter @Setter @NonNull private List<TbBairro> bairros;
 	
 	//Endereco
 	@Getter @Setter @NonNull private String endRua;
@@ -76,12 +79,19 @@ public class LocatarioCadastrarBean implements Serializable{
 	
 	@PostConstruct
 	private void init(){
+		initClean();
+	}
+	
+	//Método responsável por limpar/inicializar os atributos locais.
+	private void initClean() {
 		pessoa = new TbPessoa();
 		locatario = new TbLocatario();
 		locatPesFisica = new TbPessoaFisica();
 		locatPesJuridica = new TbPessoaJuridica();
 		locatarios = new ArrayList<TbLocatario>();
 		enderecos = new ArrayList<TbEnderecoPessoa>();
+		municipios = new ArrayList<TbMunicipio>();
+		bairros = new ArrayList<TbBairro>();
 		phones = new ArrayList<TbPessoaTelefone>();
 		phone = new TbPessoaTelefone();
 		
@@ -89,6 +99,7 @@ public class LocatarioCadastrarBean implements Serializable{
 		nuTelefoneDdd = "";
 		nuTelefone = "";
 		tpTelefone = "";
+		isSameAddress = false;
 	}
 	
 	/**
@@ -97,10 +108,12 @@ public class LocatarioCadastrarBean implements Serializable{
 	 * @throws IOException 
 	 * */
 	public void pesquisar() throws IOException{
+		initClean();
 		FacesContext.getCurrentInstance().getExternalContext().redirect("LocatarioListar.xhtml"); //change context
 		return; //to the method's invoking stops
+		//return "/imobiliaria/LocatarioListar?faces-redirect=true";
 	}
-	
+
 	/**
 	 * Método responsável por adicionar um {@link TbPessoaTelefone}
 	 * no locatário que está sendo cadastrado.
@@ -137,6 +150,8 @@ public class LocatarioCadastrarBean implements Serializable{
 		endCbMunicipio = endMunicipio;
 		endCbUf = endUf;
 		endCbComplemento = endComplemento;
+		
+		isSameAddress = true; //Identifica que o "Endereço" é semelhante ao "Endereço Cobrança"
 	}
 	
 	/**
@@ -145,7 +160,7 @@ public class LocatarioCadastrarBean implements Serializable{
 	 * */
 	public void cadastrar(){
 		//Chamar service para cadastrar Pessoa com os dados da tela LocatarioCadastrar
-		locatarioService.salvarPessoa(pessoa, isPessoaFisica);
+		locatarioService.salvarPessoa(pessoa, phones, enderecos, municipios, bairros, isPessoaFisica, isSameAddress);
 	}
 	
 	/**
@@ -178,6 +193,7 @@ public class LocatarioCadastrarBean implements Serializable{
 				return;
 			}
 		}
+		
 		//--Preparando os objetos para inserção
 		//Pessoa
 		if(isPessoaFisica){
@@ -185,14 +201,16 @@ public class LocatarioCadastrarBean implements Serializable{
 			locatPesFisica.setNoPessoaFisica(nome);
 			pessoa.setTbPessoaFisica(locatPesFisica);
 		}else{
-			locatPesJuridica.setNuCnpj(cnpj);
+			locatPesJuridica.setNuCnpj(cnpj.replace(".", "").replace("-", "").replace("/", ""));
+			locatPesJuridica.setNuInscricaoEstadual(inscEstadual.replace(".", "").replace("-", ""));
 			locatPesJuridica.setNoRazaoSocial(nmFantasia);
-			locatPesJuridica.setNuInscricaoEstadual(inscEstadual);
+			locatPesJuridica.setNoFantasia(nmFantasia);
 			locatPesJuridica.setNoContato(nmFantasia); //Nome Contato. Setar a nmFantasia por hora.
 			pessoa.setTbPessoaJuridica(locatPesJuridica);
 		}
+		
+		//--Preparando os endereços para colocar no objeto Pesso
 		//Endereço
-		List<TbEnderecoPessoa> enderecos = new ArrayList<TbEnderecoPessoa>();
 		TbEnderecoPessoa endereco = new TbEnderecoPessoa();
 		TbMunicipio municipio = new TbMunicipio();
 		TbBairro bairro = new TbBairro();
@@ -203,11 +221,16 @@ public class LocatarioCadastrarBean implements Serializable{
 		bairro.setNoBairro(endBairro);
 		
 		endereco.setNuCep(Integer.parseInt(endCep.replace("-", "")));
+		endereco.setDsEndereco(""); //vazio, por hora
 		endereco.setNuEndereco(Integer.parseInt(endNr));
+		endereco.setDsComplemento(endComplemento);
+		endereco.setTpEndereco('D'); //Indefinido, por hora
 		endereco.setTbMunicipio(municipio);
 		endereco.setTbBairro(bairro);
 		
 		enderecos.add(endereco);
+		municipios.add(municipio);
+		bairros.add(bairro);
 		
 		//Endereço Cobrança
 		endereco = new TbEnderecoPessoa();
@@ -220,11 +243,17 @@ public class LocatarioCadastrarBean implements Serializable{
 		bairro.setNoBairro(endCbBairro);
 		
 		endereco.setNuCep(Integer.parseInt(endCbCep.replace("-", "")));
+		endereco.setDsEndereco(""); //vazio, por hora
 		endereco.setNuEndereco(Integer.parseInt(endCbNr));
+		endereco.setDsComplemento(endCbComplemento);
+		endereco.setTpEndereco('C'); //Indefinido, por hora
 		endereco.setTbMunicipio(municipio);
 		endereco.setTbBairro(bairro);
 		
 		enderecos.add(endereco);
+		municipios.add(municipio);
+		bairros.add(bairro);
+		//--END-Preparando os endereços para colocar no objeto Pesso
 		
 		//Locatario
 		locatario.setDtCadastro(new Date());
