@@ -8,7 +8,7 @@
 	<ui:define name="titulo">Pesquisa de Locatário</ui:define>
 	
 	<ui:define name="corpo">
-		<h:form id="frmPesquisa">
+		<h:form id="masterForm">
 			<h1>Pesquisa de Locatário</h1>
 			
 			<p:messages autoUpdate="true" closable="true"/>
@@ -16,29 +16,40 @@
 			<!-- Barra com opções de ações pelo usuário  -->
 			<p:toolbar style="margin-top: 10px">
 				<p:toolbarGroup>
-					<p:commandButton value="Pesquisar" action="#{locatarioPesquisarBean.pesquisar}" update="@form"/>
-				</p:toolbarGroup>
-				<p:toolbarGroup align="right">
 					<p:commandButton value="Novo" id="botaoNovo" action="#{locatarioPesquisarBean.cadastrar}" update="@form"/>
 				</p:toolbarGroup>
 			</p:toolbar>
 			
 			<!-- Grid com os filtros para pesquisa -->
-			<p:panelGrid columns="2" id="filtros" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
-				<p:outputLabel value="Nome" for="nome"/>
-				<p:inputText id="nome" size="60" value="#{locatarioPesquisarBean.nome}"/>
+			<p:panelGrid columns="10" id="filtros" style="margin-top: 20px">
+				<p:outputLabel value="Nome:"/>
+				<p:inputText size="25" value="#{locatarioPesquisarBean.locatarioFilter.nome}"/>
+				<p:outputLabel value="CPF:"/>
+				<h:selectOneMenu value="#{locatarioPesquisarBean.locatarioFilter.cpf}">
+					<f:selectItems itemValue="#{locatarioPesquisarBean.cpfs}"/>
+				</h:selectOneMenu>
+				<p:outputLabel value="CNPJ:"/>
+				<h:selectOneMenu value="#{locatarioPesquisarBean.locatarioFilter.cnpj}">
+					<f:selectItems itemValue="#{locatarioPesquisarBean.cnpjs}"/>
+				</h:selectOneMenu>
+				<p:outputLabel value="Município:"/>
+				<h:selectOneMenu value="#{locatarioPesquisarBean.locatarioFilter.municipio}">
+					<f:selectItems itemValue="#{locatarioPesquisarBean.municipios}"/>
+				</h:selectOneMenu>
+				<p:outputLabel value="UF:"/>
+				<h:selectOneMenu value="#{locatarioPesquisarBean.locatarioFilter.uf}">
+					<f:selectItems itemValue="#{locatarioPesquisarBean.ufs}"/>
+				</h:selectOneMenu>
 			</p:panelGrid>
 		
 			<!-- Conteúdo a ser apresentado quando pesquisado -->
-			<p:dataTable id="locatarioTable" value="#{locatarioPesquisarBean.locatarios}" var="locatarios" style="margin-top: 20px"
+			<p:dataTable id="locatarioTable"  style="margin-top: 20px"
 				emptyMessage="Nenhum locatário encontrado." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
 				
 				<p:column headerText="Nome">
-					<h:outputText value="#{locatarios.nome}" />
 				</p:column>
 				
 				<p:column headerText="Município" style="width: 350px">
-					<h:outputText value="#{locatarios.municipio}" />
 				</p:column>
 				
 				<p:column headerText="Ações" style="text-align: center; width: 100px">
