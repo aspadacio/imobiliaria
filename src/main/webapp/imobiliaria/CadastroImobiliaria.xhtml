@@ -112,7 +112,7 @@
 							<p:outputLabel value="UF" for="uf"/>
 							<p:selectOneMenu id="uf" value="#{cadastroImobiliariasBean.sgUF}">
 				               <f:selectItem itemLabel="Selecione"/>
-				               <f:selectItems value="#{cadastroImobiliariasBean.estados}" var="estado" itemLabel="#{estado.sigla}" itemValue="#{estado}"/>
+				               <f:selectItems value="#{cadastroImobiliariasBean.estados}" var="estado" itemLabel="#{estado.sigla}" itemValue="#{estado.sigla}"/>
 				            </p:selectOneMenu>
 							
 							<p:outputLabel value="Endereço" for="endereco"/>

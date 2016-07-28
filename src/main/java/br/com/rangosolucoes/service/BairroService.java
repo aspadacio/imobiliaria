@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import br.com.rangosolucoes.model.TbBairro;
 import br.com.rangosolucoes.repository.BairroRepository;
+import br.com.rangosolucoes.util.jpa.Transacional;
 
 public class BairroService implements Serializable{
 
@@ -14,6 +15,7 @@ public class BairroService implements Serializable{
 	@Inject
 	private BairroRepository bairroRepository;
 	
+	@Transacional
 	public TbBairro salvar(TbBairro bairro){
 		TbBairro bairroExistente = bairroRepository.porNomeDoBairro(bairro.getNoBairro());
 		

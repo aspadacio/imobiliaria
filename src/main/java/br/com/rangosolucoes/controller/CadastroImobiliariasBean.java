@@ -80,6 +80,8 @@ public class CadastroImobiliariasBean implements Serializable {
 	public String salvar() {
 		if(camposPreenchidos()){
 			pessoaJuridica.setNoContato("a definir");
+			String cnpjTemp = pessoaJuridica.getNuCnpj().replace(".", "").replace("/", "").replace("-", "");
+			pessoaJuridica.setNuCnpj(cnpjTemp);
 			pessoaJuridica = imobiliariaService.salvar(pessoaJuridica);
 			
 			pessoa = populaPessoa(pessoaJuridica);
@@ -129,9 +131,12 @@ public class CadastroImobiliariasBean implements Serializable {
 		bairro = new TbBairro();
 		telefones = new ArrayList<>();
 		
+		nuCep = "";
+		sgUF = "";
 		nuTelefoneDdd = "";
 		nuTelefone = "";
 		tpTelefone = "";
+		
 	}
 	
 	public void adicinaTelefoneNaLista(){
