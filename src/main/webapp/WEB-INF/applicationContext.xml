@@ -32,6 +32,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	<http auto-config="false" use-expressions="true">
 		<custom-filter ref="exceptionTranslationFilter" before="FILTER_SECURITY_INTERCEPTOR"/>
 	
+		<intercept-url pattern="/Home.xhtml" access="isAuthenticated()"/>
+		<intercept-url pattern="/AcessoNegado.xhtml" access="isAuthenticated()"/>
 		<intercept-url pattern="/imoveis/**" access="hasAnyRole('ADMINISTRADOR')"/>
 		<intercept-url pattern="/imobiliaria/**" access="hasAnyRole('ADMINISTRADOR')"/>
 		<intercept-url pattern="/contratos/**" access="hasAnyRole('CONSULTA', 'ADMINISTRADOR')"/>
