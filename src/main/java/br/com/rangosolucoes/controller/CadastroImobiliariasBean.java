@@ -55,6 +55,7 @@ public class CadastroImobiliariasBean implements Serializable {
 	private TbMunicipio municipio;
 	private TbBairro bairro;
 	
+	private String nuCep;
 	private String nuTelefoneDdd;
 	private String nuTelefone;
 	private String tpTelefone;
@@ -75,37 +76,41 @@ public class CadastroImobiliariasBean implements Serializable {
 	}
 
 	public String salvar() {
-		
-		pessoaJuridica.setNoContato("a definir");
-		pessoaJuridica = imobiliariaService.salvar(pessoaJuridica);
-		
-		pessoa = populaPessoa(pessoaJuridica);
-		pessoa = pessoaService.salvar(pessoa);
-		
-		if(telefones.size() > 0){
-			for(TbPessoaTelefone pessoaTelefone : telefones){
-				pessoaTelefone.setTbPessoa(pessoa);
-				this.pessoaTelefone = pessoaTelefoneService.salvar(pessoaTelefone);
+		if(camposPreenchidos()){
+			pessoaJuridica.setNoContato("a definir");
+			pessoaJuridica = imobiliariaService.salvar(pessoaJuridica);
+			
+			pessoa = populaPessoa(pessoaJuridica);
+			pessoa = pessoaService.salvar(pessoa);
+			
+			if(telefones.size() > 0){
+				for(TbPessoaTelefone pessoaTelefone : telefones){
+					pessoaTelefone.setTbPessoa(pessoa);
+					this.pessoaTelefone = pessoaTelefoneService.salvar(pessoaTelefone);
+				}
+			}else{
+				FacesUtil.addErrorMessage("É necessário informar ao menos um telefone para contato na imobiliária.");
 			}
+			
+			municipio = municipioService.salvar(municipio);
+			
+			bairro.setTbMunicipio(municipio);
+			bairro = bairroService.salvar(bairro);
+			
+			enderecoPessoa.setNuCep(Integer.valueOf(this.nuCep.replace(".", "").replace("-", "")));
+			enderecoPessoa.setTbPessoa(pessoa);
+			enderecoPessoa.setTbMunicipio(municipio);
+			enderecoPessoa.setTbBairro(bairro);
+			enderecoPessoa = enderecoPessoaService.salvar(enderecoPessoa);
+			
+			limpar();
+			FacesUtil.addInfoMessage("Imobiliária cadastrada com sucesso!");
+			return "/imobiliaria/CadastroImobiliaria?faces-redirect=true";
 		}else{
-			FacesUtil.addErrorMessage("É necessário informar ao menos um telefone para contato na imobiliária.");
+			return "";
 		}
-		
-		municipio = municipioService.salvar(municipio);
-		
-		bairro.setTbMunicipio(municipio);
-		bairro = bairroService.salvar(bairro);
-		
-		enderecoPessoa.setTbPessoa(pessoa);
-		enderecoPessoa.setTbMunicipio(municipio);
-		enderecoPessoa.setTbBairro(bairro);
-		enderecoPessoa = enderecoPessoaService.salvar(enderecoPessoa);
-		
-		limpar();
-		FacesUtil.addInfoMessage("Imobiliária cadastrada com sucesso!");
-		return "/imobiliaria/CadastroImobiliaria?faces-redirect=true";
 	}
-
+	
 	private TbPessoa populaPessoa(TbPessoaJuridica pessoaJuridica) {
 		pessoa.setTbPessoaJuridica(pessoaJuridica);
 		pessoa.setDtUltimaAlteracao(new Date());
@@ -120,13 +125,17 @@ public class CadastroImobiliariasBean implements Serializable {
 		municipio = new TbMunicipio();
 		bairro = new TbBairro();
 		telefones = new ArrayList<>();
+		
+		nuTelefoneDdd = "";
+		nuTelefone = "";
+		tpTelefone = "";
 	}
 	
 	public void adicinaTelefoneNaLista(){
 		if(nuTelefone != "" && nuTelefone != null && nuTelefoneDdd != "" && nuTelefoneDdd != null &&
 				tpTelefone != "" && tpTelefone != null){
 			pessoaTelefone.setNuTelefoneDdd(nuTelefoneDdd);
-			pessoaTelefone.setNuTelefone(Integer.valueOf(nuTelefone));
+			pessoaTelefone.setNuTelefone(Integer.valueOf(nuTelefone.replace("-", "")));
 			pessoaTelefone.setTpTelefone(tpTelefone.charAt(0));
 			telefones.add(pessoaTelefone);
 			
@@ -137,6 +146,67 @@ public class CadastroImobiliariasBean implements Serializable {
 		}else{
 			FacesUtil.addErrorMessage("É necessário informar todos os dados do telefone.");
 		}
+	}
+	
+	public boolean camposPreenchidos(){
+		boolean preenchido = true;
+		
+		if(pessoaJuridica.getNoRazaoSocial() == null || pessoaJuridica.getNoRazaoSocial() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Razão Social é obrigatório.");
+		}
+		
+		if(pessoaJuridica.getNoFantasia() == null || pessoaJuridica.getNoFantasia() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Nome Fantasia é obrigatório.");
+		}
+		
+		if(pessoaJuridica.getNuInscricaoEstadual() == null || pessoaJuridica.getNuInscricaoEstadual() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Incrição Estadual é obrigatório.");
+		}
+		
+		if(pessoaJuridica.getNuCnpj() == null || pessoaJuridica.getNuCnpj() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo CNPJ é obrigatório.");
+		}
+		
+		if(pessoa.getDsEmail() == null || pessoa.getDsEmail() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo E-Mail é obrigatório.");
+		}
+		
+		if(this.nuCep == null || this.nuCep == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo CEP é obrigatório.");
+		}
+		
+		if(municipio.getSgUf() == null || municipio.getSgUf() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo UF é obrigatório.");
+		}
+		
+		if(enderecoPessoa.getDsEndereco() == null || enderecoPessoa.getDsEndereco() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Endereço é obrigatório.");
+		}
+		
+		if(enderecoPessoa.getNuEndereco() == null){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Número é obrigatório.");
+		}
+		
+		if(bairro.getNoBairro() == null || bairro.getNoBairro() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Bairro é obrigatório.");
+		}
+		
+		if(municipio.getNoMunicipio() == null || municipio.getNoMunicipio() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Município é obrigatório.");
+		}
+		
+		return preenchido;
 	}
 
 	public TbPessoaJuridica getPessoaJuridica() {
@@ -225,6 +295,14 @@ public class CadastroImobiliariasBean implements Serializable {
 
 	public void setTpTelefone(String tpTelefone) {
 		this.tpTelefone = tpTelefone;
+	}
+
+	public String getNuCep() {
+		return nuCep;
+	}
+
+	public void setNuCep(String nuCep) {
+		this.nuCep = nuCep;
 	}
 
 }

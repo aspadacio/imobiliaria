@@ -32,27 +32,22 @@
 			
 			<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
 				<p:outputLabel value="Razão Social" for="razaosocial"/>
-				<p:inputText id="razaosocial" size="80" maxlength="200" required="true"
-					requiredMessage="Campo Razão Social obrigatório." value="#{cadastroImobiliariasBean.pessoaJuridica.noRazaoSocial}"/>
+				<p:inputText id="razaosocial" size="80" maxlength="200" value="#{cadastroImobiliariasBean.pessoaJuridica.noRazaoSocial}"/>
 					
 				<p:outputLabel value="Nome Fantasia" for="nomefantasia"/>
-				<p:inputText id="nomefantasia" size="80" maxlength="200" required="true"
-					requiredMessage="Campo Nome Fantasia obrigatório." value="#{cadastroImobiliariasBean.pessoaJuridica.noFantasia}"/>
+				<p:inputText id="nomefantasia" size="80" maxlength="200" value="#{cadastroImobiliariasBean.pessoaJuridica.noFantasia}"/>
 					
 				<p:outputLabel value="Inc. Estadual" for="inscestadual"/>
-				<p:inputText id="inscestadual" size="20" maxlength="13" required="true"
-					requiredMessage="Campo Incrição Estadual obrigatório." value="#{cadastroImobiliariasBean.pessoaJuridica.nuInscricaoEstadual}"/>
+				<p:inputText id="inscestadual" size="20" maxlength="13" value="#{cadastroImobiliariasBean.pessoaJuridica.nuInscricaoEstadual}"/>
 					
 			</p:panelGrid>
 			
 			<p:panelGrid columns="4" id="painel2" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
 				<p:outputLabel value="CNPJ" for="cnpj"/>
-				<p:inputMask id="cnpj" size="20" mask="99.999.999/9999-99" required="true" 
-					requiredMessage="Campo CNPJ obrigatório." value="#{cadastroImobiliariasBean.pessoaJuridica.nuCnpj}"/>
+				<p:inputMask id="cnpj" size="20" mask="99.999.999/9999-99" value="#{cadastroImobiliariasBean.pessoaJuridica.nuCnpj}"/>
 				
 				<p:outputLabel value="E-Mail" for="email"/>
-				<p:inputText id="email" size="40" maxlength="200" required="true"
-					requiredMessage="Campo E-Mail obrigatório." value="#{cadastroImobiliariasBean.pessoa.dsEmail}"/>
+				<p:inputText id="email" size="40" maxlength="200" value="#{cadastroImobiliariasBean.pessoa.dsEmail}"/>
 			</p:panelGrid>
 			
 			<br/>
@@ -60,9 +55,9 @@
 			<h:panelGroup>
 			      <!-- Add telefones -->
 			      <p:panel header="Telefone(s)" style="margin-bottom:20px">
-			         <h:panelGrid columns="8" cellspacing="6">
+			         <h:panelGrid id="gridTelefone" columns="8" cellspacing="6">
 			            <h:outputLabel value="DDD:" />
-			            <p:inputMask value="#{cadastroImobiliariasBean.nuTelefoneDdd}" mask="(99)"/>
+			            <p:inputMask size="5" value="#{cadastroImobiliariasBean.nuTelefoneDdd}" mask="(99)"/>
 			            <h:outputLabel value="Número: " />
 			            <p:inputMask size="10" value="#{cadastroImobiliariasBean.nuTelefone}" mask="99999-9999" 
 			            	style="text-align: center"/>
@@ -74,8 +69,8 @@
 			               <f:selectItem itemValue="P" itemLabel="Principal"/>
 			               <f:selectItem itemValue="F" itemLabel="Fax"/>
 			            </h:selectOneMenu>
-			            <p:commandButton action="#{cadastroImobiliariasBean.adicinaTelefoneNaLista}" value="Adicionar" update="panelPhones mensagens"
-			            	immediate="true"/>
+			            <p:commandButton action="#{cadastroImobiliariasBean.adicinaTelefoneNaLista}" value="Adicionar" 
+			            	update="panelPhones mensagens"/>
 			         </h:panelGrid>
 			      </p:panel>
 			      
@@ -112,32 +107,25 @@
 					<p:panel header="Endereço" style="margin-bottom:20px">
 						<p:panelGrid columns="2" id="painel3" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
 							<p:outputLabel value="CEP" for="cep"/>
-							<p:inputMask id="cep" size="10" maxlength="200" mask="99.999-999" required="true"
-								requiredMessage="Campo CEP obrigatório." value="#{cadastroImobiliariasBean.enderecoPessoa.nuCep}"/>
+							<p:inputMask id="cep" size="10" maxlength="200" mask="99.999-999" value="#{cadastroImobiliariasBean.nuCep}"/>
 								
 							<p:outputLabel value="UF" for="uf"/>
-							<p:inputText id="uf" size="5" maxlength="2" required="true"
-								requiredMessage="Campo UF obrigatório." value="#{cadastroImobiliariasBean.municipio.sgUf}"/>
+							<p:inputText id="uf" size="5" maxlength="2" value="#{cadastroImobiliariasBean.municipio.sgUf}"/>
 							
 							<p:outputLabel value="Endereço" for="endereco"/>
-							<p:inputText id="endereco" size="100" maxlength="200" required="true"
-								requiredMessage="Campo Endereço obrigatório." value="#{cadastroImobiliariasBean.enderecoPessoa.dsEndereco}"/>
+							<p:inputText id="endereco" size="100" maxlength="200" value="#{cadastroImobiliariasBean.enderecoPessoa.dsEndereco}"/>
 							
 							<p:outputLabel value="Número" for="numero"/>
-							<p:inputText id="numero" size="5" maxlength="5" required="true"
-								requiredMessage="Campo Número obrigatório." value="#{cadastroImobiliariasBean.enderecoPessoa.nuEndereco}"/>
+							<p:inputText id="numero" size="5" maxlength="5" value="#{cadastroImobiliariasBean.enderecoPessoa.nuEndereco}"/>
 							
 							<p:outputLabel value="Complemento" for="complemento"/>
-							<p:inputText id="complemento" size="80" maxlength="200"
-								value="#{cadastroImobiliariasBean.enderecoPessoa.dsComplemento}"/>
+							<p:inputText id="complemento" size="80" maxlength="200"	value="#{cadastroImobiliariasBean.enderecoPessoa.dsComplemento}"/>
 							
 							<p:outputLabel value="Bairro" for="bairro"/>
-							<p:inputText id="bairro" size="80" maxlength="200" required="true"
-								requiredMessage="Campo Bairro obrigatório." value="#{cadastroImobiliariasBean.bairro.noBairro}"/>
+							<p:inputText id="bairro" size="80" maxlength="200" value="#{cadastroImobiliariasBean.bairro.noBairro}"/>
 								
 							<p:outputLabel value="Município" for="municipio"/>
-							<p:inputText id="municipio" size="80" maxlength="200" required="true"
-								requiredMessage="Campo Município obrigatório." value="#{cadastroImobiliariasBean.municipio.noMunicipio}"/>
+							<p:inputText id="municipio" size="80" maxlength="200" value="#{cadastroImobiliariasBean.municipio.noMunicipio}"/>
 						</p:panelGrid>
 					</p:panel>
 				</h:panelGroup>
