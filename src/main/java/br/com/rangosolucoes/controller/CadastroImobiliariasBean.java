@@ -56,6 +56,7 @@ public class CadastroImobiliariasBean implements Serializable {
 	private TbMunicipio municipio;
 	private TbBairro bairro;
 	
+	private String sgUF;
 	private String nuCep;
 	private String nuTelefoneDdd;
 	private String nuTelefone;
@@ -93,6 +94,7 @@ public class CadastroImobiliariasBean implements Serializable {
 				FacesUtil.addErrorMessage("É necessário informar ao menos um telefone para contato na imobiliária.");
 			}
 			
+			municipio.setSgUf(sgUF);
 			municipio = municipioService.salvar(municipio);
 			
 			bairro.setTbMunicipio(municipio);
@@ -135,7 +137,7 @@ public class CadastroImobiliariasBean implements Serializable {
 	public void adicinaTelefoneNaLista(){
 		if(nuTelefone != "" && nuTelefone != null && nuTelefoneDdd != "" && nuTelefoneDdd != null &&
 				tpTelefone != "" && tpTelefone != null){
-			pessoaTelefone.setNuTelefoneDdd(nuTelefoneDdd);
+			pessoaTelefone.setNuTelefoneDdd(nuTelefoneDdd.replace("(", "").replace(")", ""));
 			pessoaTelefone.setNuTelefone(Integer.valueOf(nuTelefone.replace("-", "")));
 			pessoaTelefone.setTpTelefone(tpTelefone.charAt(0));
 			telefones.add(pessoaTelefone);
@@ -182,7 +184,7 @@ public class CadastroImobiliariasBean implements Serializable {
 			FacesUtil.addErrorMessage("O campo CEP é obrigatório.");
 		}
 		
-		if(municipio.getSgUf() == null || municipio.getSgUf() == ""){
+		if(this.sgUF == null || this.sgUF == ""){
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo UF é obrigatório.");
 		}
@@ -308,6 +310,14 @@ public class CadastroImobiliariasBean implements Serializable {
 
 	public void setNuCep(String nuCep) {
 		this.nuCep = nuCep;
+	}
+
+	public String getSgUF() {
+		return sgUF;
+	}
+
+	public void setSgUF(String sgUF) {
+		this.sgUF = sgUF;
 	}
 
 }

@@ -110,7 +110,7 @@
 							<p:inputMask id="cep" size="10" maxlength="200" mask="99.999-999" value="#{cadastroImobiliariasBean.nuCep}"/>
 								
 							<p:outputLabel value="UF" for="uf"/>
-							<p:selectOneMenu id="uf" value="#{cadastroImobiliariasBean.municipio.sgUf}">
+							<p:selectOneMenu id="uf" value="#{cadastroImobiliariasBean.sgUF}">
 				               <f:selectItem itemLabel="Selecione"/>
 				               <f:selectItems value="#{cadastroImobiliariasBean.estados}" var="estado" itemLabel="#{estado.sigla}" itemValue="#{estado}"/>
 				            </p:selectOneMenu>
