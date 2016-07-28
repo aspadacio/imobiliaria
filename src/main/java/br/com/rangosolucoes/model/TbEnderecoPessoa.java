@@ -26,7 +26,7 @@ public class TbEnderecoPessoa implements java.io.Serializable {
 	private TbMunicipio tbMunicipio;
 	private int nuCep;
 	private String dsEndereco;
-	private int nuEndereco;
+	private Integer nuEndereco;
 	private String dsComplemento;
 	private String nuDdd;
 	private Integer nuTelefone;
@@ -98,11 +98,11 @@ public class TbEnderecoPessoa implements java.io.Serializable {
 	}
 
 	@Column(name = "NU_ENDERECO", nullable = false)
-	public int getNuEndereco() {
+	public Integer getNuEndereco() {
 		return this.nuEndereco;
 	}
 
-	public void setNuEndereco(int nuEndereco) {
+	public void setNuEndereco(Integer nuEndereco) {
 		this.nuEndereco = nuEndereco;
 	}
 
