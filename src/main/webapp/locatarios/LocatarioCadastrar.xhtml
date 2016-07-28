@@ -15,8 +15,11 @@
 			
 			<!-- Barra com opções de ações pelo usuário  -->
 			<p:toolbar style="margin-top: 10px">
-				<p:toolbarGroup>
+				<p:toolbarGroup align="right">
 					<p:commandButton value="Pesquisar" action="#{locatarioCadastrarBean.pesquisar}" ajax="false"/>
+				</p:toolbarGroup>
+				<p:toolbarGroup>
+					<p:commandButton value="Incluir" action="#{locatarioCadastrarBean.validar}" ajax="false"/>
 				</p:toolbarGroup>
 			</p:toolbar>
 			
@@ -46,7 +49,7 @@
 			               <f:selectItem itemValue="P" itemLabel="Principal"/>
 			               <f:selectItem itemValue="F" itemLabel="Fax"/>
 			            </h:selectOneMenu>
-			            <p:commandButton action="#{locatarioCadastrarBean.addTelefone}" value="Adicionar" update="panelPhones insertPhone" 
+			            <p:commandButton action="#{locatarioCadastrarBean.addTelefone}" value="Adicionar" update="panelPhones insertPhone"
 			            	style="background-color: #fff; margin-left: 10px"/>
 			         </h:panelGrid>
 			      </p:panel>
@@ -147,8 +150,6 @@
 			         </h:panelGrid>
 			      </p:tab>
 			   </p:tabView>
-			   <br/>				
-			   <p:commandButton value="Incluir" action="#{locatarioCadastrarBean.validar}" ajax="false"/>
 			</h:form>
 		</h:form>
 	</ui:define>

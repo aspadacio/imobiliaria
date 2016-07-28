@@ -72,25 +72,25 @@
 				</p:column>
 				
 				<p:column headerText="Ações" style="text-align: center; width: 100px">
-					<!-- <p:button icon="ui-icon-pencil" title="Editar" outcome="/categorias/CadastroCategoria">
-						<f:param name="categoria" value="#{categoria.id}"/>
+					<p:button icon="ui-icon-pencil" title="Editar" outcome="/locatarios/LocatarioCadastrar">
+						<f:param name="idPessoa2Edit" value="#{locatario.idPessoa}"/>
+						<f:param name="isPessoaEdit" value="true"/>
 					</p:button>
 					<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show();"
-						process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog">
-						<f:setPropertyActionListener target="#{pesquisaCategoriasBean.categoriaSelecionada}" 
-							value="#{produto}"/>
-					</p:commandButton> -->
+						process="@this" update="confirmacaoExclusao">
+						<f:setPropertyActionListener target="#{locatarioPesquisarBean.idLocatarioSelecionada}" value="#{locatario.idPessoa}"/>
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
 			
 			<!-- model -->
-			<!-- <p:confirmDialog header="Exclusão de categoria" 
-				message="Tem certeza que deseja excluir a categoria #{pesquisaCategoriasBean.categoriaSelecionada.descricao}?"
+			<p:confirmDialog header="Exclusão de Locatario" 
+				message="Tem certeza que deseja excluir o locatário #{locatario.tbPessoaFisica.nuCpf != null ? locatario.tbPessoaFisica.noPessoaFisica : locatario.tbPessoaJuridica.noRazaoSocial}?"
 				widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
 				<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;"/>
 				<p:commandButton value="Sim" oncomplete="confirmacaoExclusao.hide();"
-					action="#{pesquisaCategoriasBean.excluir}" process="@this" update=":frmPesquisa:categoriasTable"/>
-			</p:confirmDialog> -->
+					action="#{locatarioPesquisarBean.excluir}" process="@this" update="locatarioTable"/>
+			</p:confirmDialog>
 			
 		</h:form>
 	</ui:define>

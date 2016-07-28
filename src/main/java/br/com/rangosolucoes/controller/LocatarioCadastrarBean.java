@@ -171,52 +171,42 @@ public class LocatarioCadastrarBean implements Serializable{
 		//Validacoes dos campos obrigatórios
 		if( nome == null || nome.equals("") ){
 			FacesUtil.addErrorMessage("É necessário informar o nome.");
-			return;
 		}
 		if( email == null || email.equals("") ){
 			FacesUtil.addErrorMessage("É necessário informar o e-mail.");
-			return;
 		}
 		if(phones.isEmpty() || !(phones.size() > 0)){
 			FacesUtil.addErrorMessage("É necessário informar ao menos um telefone.");
-			return;
 		}
 		if(endRua == null || endRua == "" ||
 				endCbRua == null || endCbRua == ""){
 			FacesUtil.addErrorMessage("É necessário informar a Rua.");
-			return;
 		}
 		if(endNr == null || endNr == "" ||
 				endCbNr == null || endCbNr == ""){
 			FacesUtil.addErrorMessage("É necessário informar o Número.");
-			return;
 		}
 		if(endBairro == null || endBairro == "" ||
 				endCbBairro == null || endCbBairro == ""){
 			FacesUtil.addErrorMessage("É necessário informar o Bairro.");
-			return;
 		}
 		if(endMunicipio == null || endMunicipio == "" ||
 				endCbMunicipio == null || endCbMunicipio == ""){
 			FacesUtil.addErrorMessage("É necessário informar o Município.");
-			return;
 		}
 		if(endUf == null || endUf == "" ||
 				endCbUf == null || endCbUf == ""){
 			FacesUtil.addErrorMessage("É necessário informar a UF.");
-			return;
 		}
 		
 		//verificar CNPJ ou CPF
 		if( isPessoaFisica ){
 			if(cpf == "" || cpf.isEmpty()){
 				FacesUtil.addErrorMessage("É necessário informar o CPF.");
-				return;
 			}
 		}else{
 			if(cnpj == "" || cnpj.isEmpty()){
 				FacesUtil.addErrorMessage("É necessário informar o CNPJ.");
-				return;
 			}
 		}
 		
@@ -250,7 +240,7 @@ public class LocatarioCadastrarBean implements Serializable{
 		endereco.setDsEndereco(endRua.toUpperCase());
 		endereco.setNuEndereco(Integer.parseInt(endNr));
 		endereco.setDsComplemento(endComplemento.toUpperCase());
-		endereco.setTpEndereco('D'); //Indefinido, por hora
+		endereco.setTpEndereco('R');
 		endereco.setTbMunicipio(municipio);
 		endereco.setTbBairro(bairro);
 		

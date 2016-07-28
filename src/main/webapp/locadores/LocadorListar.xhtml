@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/LayoutPadrao.xhtml">
+	
+	<ui:define name="titulo">Pesquisa de Locador</ui:define>
+	
+	<ui:define name="corpo">
+		<h:form id="masterForm" prependId="false">
+			<h1>Pesquisa de Locador</h1>
+			
+			<p:messages autoUpdate="true" closable="true"/>
+			
+			<!-- Barra com opções de ações pelo usuário  -->
+			<p:toolbar style="margin-top: 10px">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" action="#{locadorPesquisarBean.pesquisar}" update="locadorTable"/>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Novo" action="#{locadorPesquisarBean.cadastrar}" update="@form"/>
+				</p:toolbarGroup>
+			</p:toolbar>
+			
+			<!-- Grid com os filtros para pesquisa -->
+			<p:panelGrid columns="10" id="filtros" style="margin-top: 20px">
+				<p:outputLabel value="Descrição:"/>
+				<p:inputText size="25" value="#{locadorPesquisarBean.locadorFilter.nomeObs}" placeholder="Digite a descrição a ser pesquisado" style="width: 220px"/>
+				<p:outputLabel value="CNPJ:"/>
+				<h:selectOneMenu value="#{locadorPesquisarBean.locadorFilter.cnpj}" style="width: 120px">
+					<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+					<f:selectItems value="#{locadorPesquisarBean.cnpjs}" var="thiscnps" itemLabel="#{thiscnps}"/>
+				</h:selectOneMenu>
+				<p:outputLabel value="Município:"/>
+				<h:selectOneMenu value="#{locadorPesquisarBean.locadorFilter.municipio}" style="width: 160px">
+				<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+					<f:selectItems value="#{locadorPesquisarBean.municipios}" var="thismunicipio" itemLabel="#{thismunicipio}"/>
+				</h:selectOneMenu>
+				<p:outputLabel value="UF:"/>
+				<h:selectOneMenu value="#{locadorPesquisarBean.locadorFilter.uf}">
+				<f:selectItem itemLabel="..." noSelectionOption="true"/>
+					<f:selectItems value="#{locadorPesquisarBean.ufs}" var="thisuf" itemLabel="#{thisuf}"/>
+				</h:selectOneMenu>
+			</p:panelGrid>
+		
+			<!-- Conteúdo a ser apresentado quando pesquisado -->
+			<p:dataTable id="locadorTable" value="#{locadorPesquisarBean.locadores}" var="locador" style="margin-top: 20px"
+				emptyMessage="Nenhum locatário encontrado." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+				
+				<!-- Pessoa Física -->
+				<p:columnGroup rendered="#{locador.tbPessoaFisica.noPessoaFisica != null}">
+					<p:column headerText="Nome" >
+						<h:outputText value="#{locador.tbPessoaFisica.noPessoaFisica}" />
+					</p:column>
+					<p:column headerText="CPF" >
+						<h:outputText value="#{locador.tbPessoaFisica.nuCpf}" />
+					</p:column>
+				</p:columnGroup>
+				
+				<!-- Pessoa Jurídica -->
+				<p:column headerText="Razão Social" rendered="#{locador.tbPessoaJuridica.nuCnpj != null}">
+					<h:outputText value="#{locador.tbPessoaJuridica.noRazaoSocial}" />
+				</p:column>
+				<p:column headerText="CNPJ" rendered="#{locador.tbPessoaJuridica.nuCnpj != null}">
+					<h:outputText value="#{locador.tbPessoaJuridica.nuCnpj}" />
+				</p:column>
+				
+				<p:column headerText="Ações" style="text-align: center; width: 100px">
+					<p:button icon="ui-icon-pencil" title="Editar" outcome="/locadores/locadorCadastrar">
+						<f:param name="idPessoa2Edit" value="#{locador.idPessoa}"/>
+						<f:param name="isPessoaEdit" value="true"/>
+					</p:button>
+					<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show();"
+						process="@this" update="confirmacaoExclusao">
+						<f:setPropertyActionListener target="#{locadorPesquisarBean.idlocadorSelecionada}" value="#{locador.idPessoa}"/>
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+			
+			<!-- model -->
+			<p:confirmDialog header="Exclusão de Locador" 
+				message="Tem certeza que deseja excluir o Locador #{locador.tbPessoaFisica.nuCpf != null ? locador.tbPessoaFisica.noPessoaFisica : locador.tbPessoaJuridica.noRazaoSocial}?"
+				widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
+				<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;"/>
+				<p:commandButton value="Sim" oncomplete="confirmacaoExclusao.hide();"
+					action="#{locadorPesquisarBean.excluir}" process="@this" update="locadorTable"/>
+			</p:confirmDialog>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
