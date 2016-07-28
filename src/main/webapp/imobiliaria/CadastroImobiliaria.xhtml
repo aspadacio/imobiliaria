@@ -110,7 +110,10 @@
 							<p:inputMask id="cep" size="10" maxlength="200" mask="99.999-999" value="#{cadastroImobiliariasBean.nuCep}"/>
 								
 							<p:outputLabel value="UF" for="uf"/>
-							<p:inputText id="uf" size="5" maxlength="2" value="#{cadastroImobiliariasBean.municipio.sgUf}"/>
+							<p:selectOneMenu id="uf" value="#{cadastroImobiliariasBean.municipio.sgUf}">
+				               <f:selectItem itemLabel="Selecione"/>
+				               <f:selectItems value="#{cadastroImobiliariasBean.estados}" var="estado" itemLabel="#{estado.sigla}" itemValue="#{estado}"/>
+				            </p:selectOneMenu>
 							
 							<p:outputLabel value="Endereço" for="endereco"/>
 							<p:inputText id="endereco" size="100" maxlength="200" value="#{cadastroImobiliariasBean.enderecoPessoa.dsEndereco}"/>

@@ -10,6 +10,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import br.com.rangosolucoes.enumeration.Estados;
 import br.com.rangosolucoes.model.TbBairro;
 import br.com.rangosolucoes.model.TbEnderecoPessoa;
 import br.com.rangosolucoes.model.TbMunicipio;
@@ -207,6 +208,10 @@ public class CadastroImobiliariasBean implements Serializable {
 		}
 		
 		return preenchido;
+	}
+	
+	public Estados[] getEstados(){
+		return Estados.values();
 	}
 
 	public TbPessoaJuridica getPessoaJuridica() {
