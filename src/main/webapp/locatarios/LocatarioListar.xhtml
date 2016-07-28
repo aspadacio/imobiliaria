@@ -53,17 +53,22 @@
 			<p:dataTable id="locatarioTable" value="#{locatarioPesquisarBean.locatarios}" var="locatario" style="margin-top: 20px"
 				emptyMessage="Nenhum locatário encontrado." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
 				
-				<p:column headerText="Nome">
-					<h:outputText value="#{locatario.tbPessoaFisica.noPessoaFisica}"  />
-				</p:column>
+				<!-- Pessoa Física -->
+				<p:columnGroup rendered="#{locatario.tbPessoaFisica.noPessoaFisica != null}">
+					<p:column headerText="Nome" >
+						<h:outputText value="#{locatario.tbPessoaFisica.noPessoaFisica}" />
+					</p:column>
+					<p:column headerText="CPF" >
+						<h:outputText value="#{locatario.tbPessoaFisica.nuCpf}" />
+					</p:column>
+				</p:columnGroup>
 				
-				<p:column headerText="" style="width: 350px">
+				<!-- Pessoa Jurídica -->
+				<p:column headerText="Razão Social" rendered="#{locatario.tbPessoaJuridica.nuCnpj != null}">
+					<h:outputText value="#{locatario.tbPessoaJuridica.noRazaoSocial}" />
 				</p:column>
-				
-				<p:column headerText="" style="width: 350px">
-				</p:column>
-				
-				<p:column headerText="" style="width: 350px">
+				<p:column headerText="CNPJ" rendered="#{locatario.tbPessoaJuridica.nuCnpj != null}">
+					<h:outputText value="#{locatario.tbPessoaJuridica.nuCnpj}" />
 				</p:column>
 				
 				<p:column headerText="Ações" style="text-align: center; width: 100px">

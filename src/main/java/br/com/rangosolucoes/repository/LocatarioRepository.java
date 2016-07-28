@@ -145,7 +145,7 @@ public class LocatarioRepository implements Serializable {
 		
 		//add restrictions conforme filtro
 		if(filtro.getNome() != null && filtro.getNome() != ""){
-			criteria.add(Restrictions.like("pessoaFisica.noPessoaFisica", "%" + filtro.getNome() + "%"));
+			criteria.add(Restrictions.like("pessoaFisica.noPessoaFisica", "%" + filtro.getNome().toUpperCase() + "%"));
 		}
 		if(filtro.getCpf() != null && filtro.getCpf() != ""){
 			criteria.add(Restrictions.eq("pessoaFisica.nuCpf", filtro.getCpf()));

@@ -16,6 +16,7 @@ import lombok.Setter;
 import br.com.rangosolucoes.model.TbPessoa;
 import br.com.rangosolucoes.repository.filter.LocatarioFilter;
 import br.com.rangosolucoes.service.LocatarioService;
+import br.com.rangosolucoes.util.jsf.FacesUtil;
 
 @Named("locatarioPesquisarBean")
 @ConversationScoped
@@ -82,8 +83,22 @@ public class LocatarioPesquisarBean implements Serializable{
 	 * Método responsável por pesquisar um(ns) Locatário(s) conforme filtro {@link LocatarioFilter}
 	 * */
 	public void pesquisar(){
+		validarFiltro();
 		prepararFiltro();
 		locatarios = locatarioService.buscaPessoas(this.locatarioFilter);
+	}
+
+	/**
+	 * Método responsável por validar se o usuário preencheu ao menos um campo de {@link LocatarioFilter} para prosseguir com a pesquisa.
+	 * */
+	private void validarFiltro() {
+		if(locatarioFilter.getNome() == null || locatarioFilter.getNome() == "" &&
+				locatarioFilter.getCpf() == null || locatarioFilter.getCpf() == "" &&
+				locatarioFilter.getUf() == null || locatarioFilter.getUf() == "" &&
+				locatarioFilter.getCnpj() == null || locatarioFilter.getCnpj() == "" &&
+				locatarioFilter.getMunicipio() == null || locatarioFilter.getMunicipio() == ""){
+			FacesUtil.addErrorMessage("É necessário informar ao menos um parâmetro para realizar a pesquisa.");
+		}
 	}
 
 	/**
@@ -96,8 +111,5 @@ public class LocatarioPesquisarBean implements Serializable{
 		if(locatarioFilter.getUf() != null && locatarioFilter.getUf() != ""){
 			locatarioFilter.setUf(locatarioFilter.getUf().toLowerCase());			
 		}
-		/*if(locatarioFilter.getCpf() != null && locatarioFilter.getCpf() != ""){
-			
-		}*/
 	}
 }

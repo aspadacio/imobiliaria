@@ -181,6 +181,32 @@ public class LocatarioCadastrarBean implements Serializable{
 			FacesUtil.addErrorMessage("É necessário informar ao menos um telefone.");
 			return;
 		}
+		if(endRua == null || endRua == "" ||
+				endCbRua == null || endCbRua == ""){
+			FacesUtil.addErrorMessage("É necessário informar a Rua.");
+			return;
+		}
+		if(endNr == null || endNr == "" ||
+				endCbNr == null || endCbNr == ""){
+			FacesUtil.addErrorMessage("É necessário informar o Número.");
+			return;
+		}
+		if(endBairro == null || endBairro == "" ||
+				endCbBairro == null || endCbBairro == ""){
+			FacesUtil.addErrorMessage("É necessário informar o Bairro.");
+			return;
+		}
+		if(endMunicipio == null || endMunicipio == "" ||
+				endCbMunicipio == null || endCbMunicipio == ""){
+			FacesUtil.addErrorMessage("É necessário informar o Município.");
+			return;
+		}
+		if(endUf == null || endUf == "" ||
+				endCbUf == null || endCbUf == ""){
+			FacesUtil.addErrorMessage("É necessário informar a UF.");
+			return;
+		}
+		
 		//verificar CNPJ ou CPF
 		if( isPessoaFisica ){
 			if(cpf == "" || cpf.isEmpty()){
@@ -198,14 +224,14 @@ public class LocatarioCadastrarBean implements Serializable{
 		//Pessoa
 		if(isPessoaFisica){
 			locatPesFisica.setNuCpf(cpf.replace(".", "").replace("-", ""));
-			locatPesFisica.setNoPessoaFisica(nome);
+			locatPesFisica.setNoPessoaFisica(nome.toUpperCase());
 			pessoa.setTbPessoaFisica(locatPesFisica);
 		}else{
 			locatPesJuridica.setNuCnpj(cnpj.replace(".", "").replace("-", "").replace("/", ""));
 			locatPesJuridica.setNuInscricaoEstadual(inscEstadual.replace(".", "").replace("-", ""));
-			locatPesJuridica.setNoRazaoSocial(nmFantasia);
-			locatPesJuridica.setNoFantasia(nmFantasia);
-			locatPesJuridica.setNoContato(nmFantasia); //Nome Contato. Setar a nmFantasia por hora.
+			locatPesJuridica.setNoRazaoSocial(nmFantasia.toUpperCase());
+			locatPesJuridica.setNoFantasia(nmFantasia.toUpperCase());
+			locatPesJuridica.setNoContato(nmFantasia.toUpperCase()); //Nome Contato. Setar a nmFantasia por hora.
 			pessoa.setTbPessoaJuridica(locatPesJuridica);
 		}
 		
@@ -215,15 +241,15 @@ public class LocatarioCadastrarBean implements Serializable{
 		TbMunicipio municipio = new TbMunicipio();
 		TbBairro bairro = new TbBairro();
 		
-		municipio.setNoMunicipio(endMunicipio);
-		municipio.setSgUf(endUf);
+		municipio.setNoMunicipio(endMunicipio.toUpperCase());
+		municipio.setSgUf(endUf.toUpperCase());
 		
-		bairro.setNoBairro(endBairro);
+		bairro.setNoBairro(endBairro.toUpperCase());
 		
-		endereco.setNuCep(Integer.parseInt(endCep.replace("-", "")));
-		endereco.setDsEndereco(""); //vazio, por hora
+		endereco.setNuCep(Integer.parseInt(endCep.replace("-", "").toUpperCase()));
+		endereco.setDsEndereco(endRua.toUpperCase());
 		endereco.setNuEndereco(Integer.parseInt(endNr));
-		endereco.setDsComplemento(endComplemento);
+		endereco.setDsComplemento(endComplemento.toUpperCase());
 		endereco.setTpEndereco('D'); //Indefinido, por hora
 		endereco.setTbMunicipio(municipio);
 		endereco.setTbBairro(bairro);
@@ -237,15 +263,15 @@ public class LocatarioCadastrarBean implements Serializable{
 		municipio = new TbMunicipio();
 		bairro = new TbBairro();
 		
-		municipio.setNoMunicipio(endCbMunicipio);
-		municipio.setSgUf(endCbUf);
+		municipio.setNoMunicipio(endCbMunicipio.toUpperCase());
+		municipio.setSgUf(endCbUf.toUpperCase());
 		
-		bairro.setNoBairro(endCbBairro);
+		bairro.setNoBairro(endCbBairro.toUpperCase());
 		
 		endereco.setNuCep(Integer.parseInt(endCbCep.replace("-", "")));
-		endereco.setDsEndereco(""); //vazio, por hora
+		endereco.setDsEndereco(endCbRua.toUpperCase());
 		endereco.setNuEndereco(Integer.parseInt(endCbNr));
-		endereco.setDsComplemento(endCbComplemento);
+		endereco.setDsComplemento(endCbComplemento.toUpperCase());
 		endereco.setTpEndereco('C'); //Indefinido, por hora
 		endereco.setTbMunicipio(municipio);
 		endereco.setTbBairro(bairro);
@@ -260,7 +286,7 @@ public class LocatarioCadastrarBean implements Serializable{
 		locatarios.add(locatario);
 		
 		//Pessoa
-		pessoa.setDsEmail(email);
+		pessoa.setDsEmail(email.toUpperCase());
 		pessoa.setDtUltimaAlteracao(new Date());
 		pessoa.setTbEnderecoPessoas(enderecos);
 		pessoa.setTbPessoaTelefones(phones);
