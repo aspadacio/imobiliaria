@@ -47,6 +47,7 @@ public class LocatarioCadastrarBean implements Serializable{
 	@Getter @Setter private String tpTelefone;
 	@Getter @Setter private Boolean isPessoaFisica; //"True" = Pessoa Física; "False" = Pessoa Jurídica
 	@Getter @Setter private Boolean isSameAddress; //Referente 'Endereço' e 'Endereço Cobrança'. "True" = Mesmo Endereço, "False" = Endereços Diferentes.
+	@Getter @Setter private Long idLocatarioSelecionado; //esse valor vem da págian LocatarioListar.
 	
 	@Getter @Setter private TbPessoa pessoa;
 	@Getter @Setter private TbLocatario locatario;
@@ -139,6 +140,17 @@ public class LocatarioCadastrarBean implements Serializable{
 		FacesContext.getCurrentInstance().getExternalContext().redirect("LocatarioListar.xhtml"); //change context
 		return; //to the method's invoking stops
 		//return "/imobiliaria/LocatarioListar?faces-redirect=true";
+	}
+	
+	/**
+	 * Método responsável por editar um Locatário.
+	 * */
+	public void editar(){
+		if(idLocatarioSelecionado != 0){
+			//TODO
+		}else{
+			FacesUtil.addErrorMessage("LocatarioCadastrarBean::editar :: Não foi possível editar o Locatário.");
+		}
 	}
 
 	/**
@@ -323,9 +335,6 @@ public class LocatarioCadastrarBean implements Serializable{
 		//Pessoa
 		pessoa.setDsEmail(email.toUpperCase());
 		pessoa.setDtUltimaAlteracao(new Date());
-		pessoa.setTbEnderecoPessoas(enderecos);
-		pessoa.setTbPessoaTelefones(phones);
-		pessoa.setTbLocatarios(locatarios);
 		
 		cadastrar();
 	}

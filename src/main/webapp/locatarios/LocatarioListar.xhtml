@@ -70,9 +70,8 @@
 				</p:column>
 				
 				<p:column headerText="Ações" style="text-align: center; width: 100px">
-					<p:button icon="ui-icon-pencil" title="Editar" outcome="/locatarios/LocatarioCadastrar">
-						<f:param name="idPessoa2Edit" value="#{locatario.idPessoa}"/>
-						<f:param name="isPessoaEdit" value="true"/>
+					<p:button icon="ui-icon-pencil" title="Editar" onclick="#{locatarioCadastrarBean.editar}">
+						<f:setPropertyActionListener target="#{locatarioCadastrarBean.idLocatarioSelecionado}" value="#{locatario.idPessoa}"/>
 					</p:button>
 					<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show();"
 						process="@this" update=":masterForm:confirmacaoExclusaoDialog">
@@ -86,7 +85,7 @@
 				message="Tem certeza que deseja excluir o locatário #{locatario.tbPessoaFisica.nuCpf != null ? locatario.tbPessoaFisica.noPessoaFisica : locatario.tbPessoaJuridica.noRazaoSocial}?">
 				<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;"/>
 				<p:commandButton value="Sim" oncomplete="confirmacaoExclusao.hide();"
-					action="#{locatarioPesquisarBean.excluir}" process="@this" update="locatarioTable"/>
+					action="#{locatarioPesquisarBean.excluir}" process="@this" update="@form"/>
 			</p:confirmDialog>
 			
 		</h:form>

@@ -67,10 +67,7 @@
 				</p:column>
 				
 				<p:column headerText="Ações" style="text-align: center; width: 100px">
-					<p:button icon="ui-icon-pencil" title="Editar" outcome="/locadores/locadorCadastrar">
-						<f:param name="idPessoa2Edit" value="#{locador.idPessoa}"/>
-						<f:param name="isPessoaEdit" value="true"/>
-					</p:button>
+					<p:button icon="ui-icon-pencil" title="Editar" onclick="#{locadorPesquisarBean.editar}"></p:button>
 					<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show();"
 						process="@this" update="confirmacaoExclusao">
 						<f:setPropertyActionListener target="#{locadorPesquisarBean.idlocadorSelecionada}" value="#{locador.idPessoa}"/>

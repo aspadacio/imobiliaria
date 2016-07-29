@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,7 +19,8 @@ import br.com.rangosolucoes.service.LocatarioService;
 import br.com.rangosolucoes.util.jsf.FacesUtil;
 
 @Named("locatarioPesquisarBean")
-@ConversationScoped
+//@ConversationScoped -- perde conteúdo de idLocatarioSelecionada
+@SessionScoped
 public class LocatarioPesquisarBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -73,7 +74,11 @@ public class LocatarioPesquisarBean implements Serializable{
 	 *  
 	 * */
 	public void excluir(){
-		locatarioService.remover(idLocatarioSelecionada);
+		if(idLocatarioSelecionada != 0){
+			locatarioService.remover(idLocatarioSelecionada);			
+		}else{
+			FacesUtil.addErrorMessage("LocatarioPesquisarBean::excluir :: Não foi possível excluir o Locatário.");
+		}
 	}
 	
 	/**

@@ -76,6 +76,14 @@ public class LocadorPesquisarBean implements Serializable{
 	}
 	
 	/**
+	 * Método responsável por editar um Locatário. Envia para a tela LocadorCadastar
+	 *  
+	 * */
+	public void Editar(){
+		//TODO
+	}
+	
+	/**
 	 * Método responsável por buscar no banco de dados
 	 * as informações inseridas pelo usuário que serão usadas
 	 * nas combos para facilitar a pesquisa.

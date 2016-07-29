@@ -20,6 +20,7 @@ import br.com.rangosolucoes.model.TbPessoaFisica;
 import br.com.rangosolucoes.model.TbPessoaJuridica;
 import br.com.rangosolucoes.model.TbPessoaTelefone;
 import br.com.rangosolucoes.repository.filter.LocatarioFilter;
+import br.com.rangosolucoes.service.NegocioException;
 
 public class LocatarioRepository implements Serializable {
 
@@ -170,9 +171,121 @@ public class LocatarioRepository implements Serializable {
 	 * @param idLocatarioSelecionada referente a {@link TbPessoa} ID_PESSOA
 	 * */
 	public void remover(int idLocatarioSelecionada) {
+		boolean isPessoaFisica = false;
+		TbPessoa pessoaPersisted = null;
+		TbPessoaFisica pFisicaPersisted = null;
+		TbPessoaJuridica pJuridicaPersisted = null;
+		List<TbEnderecoPessoa> enderecosPersisted = null;
+		List<TbPessoaTelefone> telefonesPersisted = null;
+		
 		//buscar Pessoa salva na tabela TbPessoa
-		TbPessoa pessoaPersisted = manager.find(TbPessoa.class, new Long(idLocatarioSelecionada));
-		manager.remove(pessoaPersisted);
+		pessoaPersisted = findPessoaById(new Long(idLocatarioSelecionada));
+		
+		//Buscar ou pessoaJuridica ou pessoaFisica que foi cadastrada
+		if(pessoaPersisted.getTbPessoaFisica() != null){
+			//Pessoa Física
+			pFisicaPersisted = findPessoaFisicaById(new String(pessoaPersisted.getTbPessoaFisica().getNuCpf()));
+			isPessoaFisica = true;
+		}else{
+			//Pessoa Jurídica
+			pJuridicaPersisted = findPessoaJuridicaById(new String(pessoaPersisted.getTbPessoaJuridica().getNuCnpj()));
+		}
+		
+		//Buscar Endereço a partir do idPessoa
+		enderecosPersisted = findEnderecosById(pessoaPersisted.getIdPessoa());
+		
+		//Bucar Telefones a partir do idPessoa
+		telefonesPersisted = findPhonesById(pessoaPersisted.getIdPessoa());
+		
+		try{
+			//Excluindo respeitando as FKs
+			for (TbPessoaTelefone telefone : telefonesPersisted) {
+				manager.remove(telefone);
+			}
+			for (TbEnderecoPessoa endereco : enderecosPersisted) {
+				manager.remove(endereco);
+			}
+			
+			manager.remove(pessoaPersisted);
+			
+			if(isPessoaFisica){
+				manager.remove(pFisicaPersisted);
+			}else{
+				manager.remove(pJuridicaPersisted);
+			}
+			
+			manager.flush();
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new NegocioException("LocatarioRepository::remover :: Erro ao excluir Locatário.");
+		}
 	}
 	
+	/**
+	 * Método responsável por retornar a pessoa {@link TbPessoa} a partir do id ID_PESSOA
+	 * */
+	private TbPessoa findPessoaById(Long idLocatarioSelecionada) {
+		return manager
+				.createQuery(
+						"FROM TbPessoa WHERE idPessoa = :idLocatarioSelecionada",
+						TbPessoa.class)
+				.setParameter("idLocatarioSelecionada", idLocatarioSelecionada)
+				.getSingleResult();
+	}
+
+	/**
+	 * Método responsável por retornar a Pessoa Jurídica {@link TbPessoaJuridica} a partir do cnpj NU_CNPJ
+	 * */
+	private TbPessoaJuridica findPessoaJuridicaById(String nuCnpj) {
+		return manager
+				.createQuery(
+						"FROM TbPessoaJuridica WHERE nuCnpj = :cnpj",
+						TbPessoaJuridica.class)
+				.setParameter("cnpj", nuCnpj)
+				.getSingleResult();
+	}
+
+	/**
+	 * Método responsável por retornar a Pessoa Física {@link TbPessoaFisica} a partir do cpf NU_CPF
+	 * */
+	private TbPessoaFisica findPessoaFisicaById(String nuCpf) {
+		Session session = manager.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(TbPessoaFisica.class);
+		
+		if(nuCpf != null && nuCpf != ""){
+			criteria.add(Restrictions.eq("nuCpf", nuCpf));			
+		}
+		
+		return (TbPessoaFisica) criteria.list().get(0);
+	}
+
+	/**
+	 * Método responsável por retornar os Telefones {@link TbPessoaTelefone} a partir do id ID_PESSOA
+	 * */
+	@SuppressWarnings("unchecked")
+	private List<TbPessoaTelefone> findPhonesById(Long idPessoa) {
+		Session session = manager.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(TbPessoaTelefone.class);
+		
+		if(idPessoa != null){
+			criteria.add(Restrictions.eq("tbPessoa.idPessoa", idPessoa));			
+		}
+		
+		return criteria.list();
+	}
+
+	/**
+	 * Método responsável por retornar o Endereco {@link TbEnderecoPessoa} a partir do id ID_PESSOA
+	 * */
+	@SuppressWarnings("unchecked")
+	private List<TbEnderecoPessoa> findEnderecosById(Long idPessoa) {
+		Session session = manager.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(TbEnderecoPessoa.class);
+		
+		if(idPessoa != null){
+			criteria.add(Restrictions.eq("tbPessoa.idPessoa", idPessoa));			
+		}
+		
+		return criteria.list();
+	}
 }
