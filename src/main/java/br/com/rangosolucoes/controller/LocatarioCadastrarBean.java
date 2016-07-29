@@ -323,9 +323,9 @@ public class LocatarioCadastrarBean implements Serializable{
 		//Pessoa
 		pessoa.setDsEmail(email.toUpperCase());
 		pessoa.setDtUltimaAlteracao(new Date());
-		//pessoa.setTbEnderecoPessoas(enderecos);
-		//pessoa.setTbPessoaTelefones(phones);
-		//pessoa.setTbLocatarios(locatarios);
+		pessoa.setTbEnderecoPessoas(enderecos);
+		pessoa.setTbPessoaTelefones(phones);
+		pessoa.setTbLocatarios(locatarios);
 		
 		cadastrar();
 	}

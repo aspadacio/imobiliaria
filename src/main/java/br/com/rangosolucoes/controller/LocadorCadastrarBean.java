@@ -181,7 +181,7 @@ public class LocadorCadastrarBean implements Serializable{
 		//Pessoa
 		pessoa.setDsEmail(""); //Por hora, ao Locador não é pedido o email
 		pessoa.setDsObservacao(dsObservacao.toUpperCase()); //p.ex.: "LOCADOR TESTE (PROPRIETÁRIO)1"
-		//pessoa.setTbLocadors(locadores);
+		pessoa.setTbLocadors(locadores);
 		
 		cadastrar();
 	}
