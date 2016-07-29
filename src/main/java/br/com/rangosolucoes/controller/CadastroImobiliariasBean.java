@@ -18,7 +18,7 @@ import br.com.rangosolucoes.model.TbPessoa;
 import br.com.rangosolucoes.model.TbPessoaJuridica;
 import br.com.rangosolucoes.model.TbPessoaTelefone;
 import br.com.rangosolucoes.service.BairroService;
-import br.com.rangosolucoes.service.CadastroImobiliariaService;
+import br.com.rangosolucoes.service.ImobiliariaService;
 import br.com.rangosolucoes.service.EnderecoPessoaService;
 import br.com.rangosolucoes.service.MunicipioService;
 import br.com.rangosolucoes.service.PessoaService;
@@ -32,7 +32,7 @@ public class CadastroImobiliariasBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private CadastroImobiliariaService imobiliariaService;
+	private ImobiliariaService imobiliariaService;
 	
 	@Inject
 	private PessoaService pessoaService;
@@ -277,11 +277,11 @@ public class CadastroImobiliariasBean implements Serializable {
 		this.telefones = telefones;
 	}
 
-	public CadastroImobiliariaService getImobiliariaService() {
+	public ImobiliariaService getImobiliariaService() {
 		return imobiliariaService;
 	}
 
-	public void setImobiliariaService(CadastroImobiliariaService imobiliariaService) {
+	public void setImobiliariaService(ImobiliariaService imobiliariaService) {
 		this.imobiliariaService = imobiliariaService;
 	}
 

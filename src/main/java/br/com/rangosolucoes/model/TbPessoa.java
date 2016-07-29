@@ -2,9 +2,7 @@ package br.com.rangosolucoes.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,11 +28,6 @@ public class TbPessoa implements java.io.Serializable {
 	private String dsEmail;
 	private Date dtUltimaAlteracao;
 	private String dsObservacao;
-	private List<TbLocador> tbLocadors = new ArrayList<>();
-	private List<TbEnderecoPessoa> tbEnderecoPessoas = new ArrayList<>();
-	private List<TbPessoaTelefone> tbPessoaTelefones = new ArrayList<>();
-	private List<TbContrato> tbContratos = new ArrayList<>();
-	private List<TbLocatario> tbLocatarios = new ArrayList<>();
 
 	public TbPessoa() {
 	}
@@ -99,51 +91,6 @@ public class TbPessoa implements java.io.Serializable {
 
 	public void setDsObservacao(String dsObservacao) {
 		this.dsObservacao = dsObservacao;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbPessoa")
-	public List<TbLocador> getTbLocadors() {
-		return this.tbLocadors;
-	}
-
-	public void setTbLocadors(List<TbLocador> tbLocadors) {
-		this.tbLocadors = tbLocadors;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbPessoa")
-	public List<TbEnderecoPessoa> getTbEnderecoPessoas() {
-		return this.tbEnderecoPessoas;
-	}
-
-	public void setTbEnderecoPessoas(List<TbEnderecoPessoa> tbEnderecoPessoas) {
-		this.tbEnderecoPessoas = tbEnderecoPessoas;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbPessoa")
-	public List<TbPessoaTelefone> getTbPessoaTelefones() {
-		return this.tbPessoaTelefones;
-	}
-
-	public void setTbPessoaTelefones(List<TbPessoaTelefone> tbPessoaTelefones) {
-		this.tbPessoaTelefones = tbPessoaTelefones;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbPessoa")
-	public List<TbContrato> getTbContratos() {
-		return this.tbContratos;
-	}
-
-	public void setTbContratos(List<TbContrato> tbContratos) {
-		this.tbContratos = tbContratos;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbPessoa")
-	public List<TbLocatario> getTbLocatarios() {
-		return this.tbLocatarios;
-	}
-
-	public void setTbLocatarios(List<TbLocatario> tbLocatarios) {
-		this.tbLocatarios = tbLocatarios;
 	}
 
 	@Override

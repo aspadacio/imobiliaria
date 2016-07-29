@@ -23,7 +23,7 @@ public class PessoaJuridicaConverter implements Converter{
 		TbPessoaJuridica retorno = null;
 		
 		if(value != null){
-			retorno = imobiliariaRepository.porId(value);
+			retorno = imobiliariaRepository.porCNPJ(value);
 		}
 		
 		return retorno;

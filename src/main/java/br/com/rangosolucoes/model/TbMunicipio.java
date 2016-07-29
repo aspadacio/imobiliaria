@@ -2,15 +2,10 @@ package br.com.rangosolucoes.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -23,9 +18,6 @@ public class TbMunicipio implements java.io.Serializable {
 	private Long idMunicipio;
 	private String noMunicipio;
 	private String sgUf;
-	private List<TbEnderecoPessoa> tbEnderecoPessoas = new ArrayList<>();
-	private List<TbBairro> tbBairros = new ArrayList<>();
-	private List<TbImovel> tbImovels = new ArrayList<>();
 
 	public TbMunicipio() {
 	}
@@ -59,33 +51,6 @@ public class TbMunicipio implements java.io.Serializable {
 
 	public void setSgUf(String sgUf) {
 		this.sgUf = sgUf;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbMunicipio")
-	public List<TbEnderecoPessoa> getTbEnderecoPessoas() {
-		return this.tbEnderecoPessoas;
-	}
-
-	public void setTbEnderecoPessoas(List<TbEnderecoPessoa> tbEnderecoPessoas) {
-		this.tbEnderecoPessoas = tbEnderecoPessoas;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbMunicipio")
-	public List<TbBairro> getTbBairros() {
-		return this.tbBairros;
-	}
-
-	public void setTbBairros(List<TbBairro> tbBairros) {
-		this.tbBairros = tbBairros;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbMunicipio")
-	public List<TbImovel> getTbImovels() {
-		return this.tbImovels;
-	}
-
-	public void setTbImovels(List<TbImovel> tbImovels) {
-		this.tbImovels = tbImovels;
 	}
 
 	@Override

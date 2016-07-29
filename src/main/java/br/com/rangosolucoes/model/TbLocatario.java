@@ -2,9 +2,7 @@ package br.com.rangosolucoes.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,8 +25,6 @@ public class TbLocatario implements java.io.Serializable {
 	private Long idLocatario;
 	private TbPessoa tbPessoa;
 	private Date dtCadastro;
-	private List<TbContrato> tbContratos = new ArrayList<>();
-	private List<TbImovel> tbImovels = new ArrayList<>();
 
 	public TbLocatario() {
 	}
@@ -65,24 +60,6 @@ public class TbLocatario implements java.io.Serializable {
 
 	public void setDtCadastro(Date dtCadastro) {
 		this.dtCadastro = dtCadastro;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbLocatario")
-	public List<TbContrato> getTbContratos() {
-		return this.tbContratos;
-	}
-
-	public void setTbContratos(List<TbContrato> tbContratos) {
-		this.tbContratos = tbContratos;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbLocatario")
-	public List<TbImovel> getTbImovels() {
-		return this.tbImovels;
-	}
-
-	public void setTbImovels(List<TbImovel> tbImovels) {
-		this.tbImovels = tbImovels;
 	}
 
 	@Override

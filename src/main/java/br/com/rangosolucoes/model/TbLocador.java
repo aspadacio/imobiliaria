@@ -3,8 +3,6 @@ package br.com.rangosolucoes.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,7 +25,6 @@ public class TbLocador implements java.io.Serializable {
 	private Long idLocador;
 	private TbPessoa tbPessoa;
 	private Date dtCadastro;
-	private Set<TbContrato> tbContratos = new HashSet<TbContrato>(0);
 
 	public TbLocador() {
 	}
@@ -64,15 +60,6 @@ public class TbLocador implements java.io.Serializable {
 
 	public void setDtCadastro(Date dtCadastro) {
 		this.dtCadastro = dtCadastro;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbLocador")
-	public Set<TbContrato> getTbContratos() {
-		return this.tbContratos;
-	}
-
-	public void setTbContratos(Set<TbContrato> tbContratos) {
-		this.tbContratos = tbContratos;
 	}
 
 	@Override

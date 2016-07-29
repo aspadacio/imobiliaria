@@ -1,13 +1,8 @@
 package br.com.rangosolucoes.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -22,7 +17,6 @@ public class TbPessoaJuridica implements java.io.Serializable {
 	private String noFantasia;
 	private String nuInscricaoEstadual;
 	private String noContato;
-	private List<TbPessoa> tbPessoas = new ArrayList<>();
 
 	public TbPessoaJuridica() {
 	}
@@ -76,15 +70,6 @@ public class TbPessoaJuridica implements java.io.Serializable {
 
 	public void setNoContato(String noContato) {
 		this.noContato = noContato;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbPessoaJuridica")
-	public List<TbPessoa> getTbPessoas() {
-		return this.tbPessoas;
-	}
-
-	public void setTbPessoas(List<TbPessoa> tbPessoas) {
-		this.tbPessoas = tbPessoas;
 	}
 
 	@Override

@@ -1,13 +1,8 @@
 package br.com.rangosolucoes.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -19,7 +14,6 @@ public class TbPessoaFisica implements java.io.Serializable {
 
 	private String nuCpf;
 	private String noPessoaFisica;
-	private List<TbPessoa> tbPessoas = new ArrayList<>();
 
 	public TbPessoaFisica() {
 	}
@@ -43,15 +37,6 @@ public class TbPessoaFisica implements java.io.Serializable {
 
 	public void setNoPessoaFisica(String noPessoaFisica) {
 		this.noPessoaFisica = noPessoaFisica;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbPessoaFisica")
-	public List<TbPessoa> getTbPessoas() {
-		return this.tbPessoas;
-	}
-
-	public void setTbPessoas(List<TbPessoa> tbPessoas) {
-		this.tbPessoas = tbPessoas;
 	}
 
 	@Override

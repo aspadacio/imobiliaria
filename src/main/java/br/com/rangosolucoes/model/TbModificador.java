@@ -2,15 +2,10 @@ package br.com.rangosolucoes.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -23,7 +18,6 @@ public class TbModificador implements java.io.Serializable {
 	private Long idModificador;
 	private String noModificador;
 	private String dsModificador;
-	private List<TbContratoModificador> tbContratoModificadors = new ArrayList<>();
 
 	public TbModificador() {
 	}
@@ -56,15 +50,6 @@ public class TbModificador implements java.io.Serializable {
 
 	public void setDsModificador(String dsModificador) {
 		this.dsModificador = dsModificador;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tbModificador")
-	public List<TbContratoModificador> getTbContratoModificadors() {
-		return this.tbContratoModificadors;
-	}
-
-	public void setTbContratoModificadors(List<TbContratoModificador> tbContratoModificadors) {
-		this.tbContratoModificadors = tbContratoModificadors;
 	}
 
 	@Override

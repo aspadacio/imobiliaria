@@ -5,16 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.rangosolucoes.model.TbPessoaJuridica;
+import br.com.rangosolucoes.service.ImobiliariaService;
+import br.com.rangosolucoes.util.jsf.FacesUtil;
 
 @Named("pesquisaImobiliariasBean")
-@ConversationScoped
+@SessionScoped
 public class PesquisaImobiliariasBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
+	
+	@Inject
+	private ImobiliariaService imobiliariaService;
 	
 	private List<TbPessoaJuridica> pessoasJuridicas;
 	private TbPessoaJuridica filtroPessoaJuridica;
@@ -28,11 +34,14 @@ public class PesquisaImobiliariasBean implements Serializable{
 	}
 	
 	public void pesquisar(){
-		
+		pessoasJuridicas = imobiliariaService.filtrados(filtroPessoaJuridica);
 	}
 	
 	public void excluir(){
+		imobiliariaService.excluir(pessoaJuridicaSelecionada);
+		pessoasJuridicas.remove(pessoaJuridicaSelecionada);
 		
+		FacesUtil.addInfoMessage("Imobiliária " + pessoaJuridicaSelecionada.getNoRazaoSocial() + " excluída com sucesso.");
 	}
 	
 	public String novaPesquisa(){

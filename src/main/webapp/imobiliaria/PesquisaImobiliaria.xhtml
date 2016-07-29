@@ -51,7 +51,7 @@
 				
 				<p:column headerText="Ações" style="text-align: center; width: 100px">
 					<p:button icon="ui-icon-pencil" title="Editar" outcome="/imobiliaria/CadastroImobiliaria">
-						<f:param name="imobiliaria" value="#{imobiliaria.id}"/>
+						<f:param name="imobiliaria" value="#{imobiliaria.nuCnpj}"/>
 					</p:button>
 					<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show();"
 						process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog">
@@ -63,7 +63,7 @@
 			</p:dataTable>
 			
 			<p:confirmDialog header="Exclusão de categoria" 
-				message="Tem certeza que deseja excluir a Imobiliária #{pesquisaImobiliariasBean.pessoaJuridicaSelecionada.noRazaoSocial}?"
+				message="Tem certeza que deseja excluir #{pesquisaImobiliariasBean.pessoaJuridicaSelecionada.noRazaoSocial}?"
 				widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
 				<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;"/>
 				<p:commandButton value="Sim" oncomplete="confirmacaoExclusao.hide();"
