@@ -73,7 +73,7 @@ public class LocatarioPesquisarBean implements Serializable{
 	 *  
 	 * */
 	public void excluir(){
-		//TODO
+		locatarioService.remover(idLocatarioSelecionada);
 	}
 	
 	/**

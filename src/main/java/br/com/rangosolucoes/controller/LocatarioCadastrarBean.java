@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,7 +27,8 @@ import br.com.rangosolucoes.service.LocatarioService;
 import br.com.rangosolucoes.util.jsf.FacesUtil;
 
 @Named("locatarioCadastrarBean")
-@ConversationScoped
+//@ConversationScoped :: qndo chama addTelefone() perde o conteúdo de phones
+@SessionScoped
 public class LocatarioCadastrarBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -82,6 +83,12 @@ public class LocatarioCadastrarBean implements Serializable{
 		initClean();
 	}
 	
+	//Aciona quando é clicado em NOVO para cadastrar um novo Locatario
+	public void novoCadastro() throws IOException{
+		initClean();
+		FacesContext.getCurrentInstance().getExternalContext().redirect("LocatarioCadastrar.xhtml"); //change context
+	}
+	
 	//Método responsável por limpar/inicializar os atributos locais.
 	private void initClean() {
 		pessoa = new TbPessoa();
@@ -95,11 +102,31 @@ public class LocatarioCadastrarBean implements Serializable{
 		phones = new ArrayList<TbPessoaTelefone>();
 		phone = new TbPessoaTelefone();
 		
-		//inicializar
-		nuTelefoneDdd = "";
-		nuTelefone = "";
-		tpTelefone = "";
-		isSameAddress = false;
+		//Limpar
+		nome				= "";
+		email				= "";
+		nmFantasia			= "";
+		cnpj				= "";
+		cpf					= "";
+		inscEstadual		= "";
+		nuTelefoneDdd		= "";
+		nuTelefone			= "";
+		tpTelefone			= "";
+		endRua				= "";
+		endBairro			= "";
+		endMunicipio		= "";
+		endUf				= "";
+		endComplemento		= "";
+		endCep				= "";
+		endNr				= "";
+		endCbRua			= "";
+		endCbBairro			= "";
+		endCbMunicipio		= "";
+		endCbUf				= "";	
+		endCbComplemento	= "";
+		endCbCep			= "";
+		endCbNr				= "";
+		endCbTel			= "";
 	}
 	
 	/**
@@ -135,7 +162,6 @@ public class LocatarioCadastrarBean implements Serializable{
 		}else{
 			FacesUtil.addErrorMessage("É necessário informar todos os dados do telefone.");
 		}
-		return;
 	}
 	
 	/**
@@ -168,47 +194,66 @@ public class LocatarioCadastrarBean implements Serializable{
 	 * de realizar o cadastro de um {@link TbPessoa}
 	 * */
 	public void validar(){
+		boolean isAddError = false; //"True" = Se faltou algum preenchimento
+		
 		//Validacoes dos campos obrigatórios
 		if( nome == null || nome.equals("") ){
 			FacesUtil.addErrorMessage("É necessário informar o nome.");
+			isAddError = true;
 		}
 		if( email == null || email.equals("") ){
 			FacesUtil.addErrorMessage("É necessário informar o e-mail.");
+			isAddError = true;
 		}
 		if(phones.isEmpty() || !(phones.size() > 0)){
 			FacesUtil.addErrorMessage("É necessário informar ao menos um telefone.");
+			isAddError = true;
 		}
 		if(endRua == null || endRua == "" ||
 				endCbRua == null || endCbRua == ""){
 			FacesUtil.addErrorMessage("É necessário informar a Rua.");
+			isAddError = true;
 		}
 		if(endNr == null || endNr == "" ||
 				endCbNr == null || endCbNr == ""){
 			FacesUtil.addErrorMessage("É necessário informar o Número.");
+			isAddError = true;
 		}
 		if(endBairro == null || endBairro == "" ||
 				endCbBairro == null || endCbBairro == ""){
 			FacesUtil.addErrorMessage("É necessário informar o Bairro.");
+			isAddError = true;
 		}
 		if(endMunicipio == null || endMunicipio == "" ||
 				endCbMunicipio == null || endCbMunicipio == ""){
 			FacesUtil.addErrorMessage("É necessário informar o Município.");
+			isAddError = true;
 		}
 		if(endUf == null || endUf == "" ||
 				endCbUf == null || endCbUf == ""){
 			FacesUtil.addErrorMessage("É necessário informar a UF.");
+			isAddError = true;
 		}
 		
-		//verificar CNPJ ou CPF
-		if( isPessoaFisica ){
-			if(cpf == "" || cpf.isEmpty()){
-				FacesUtil.addErrorMessage("É necessário informar o CPF.");
-			}
+		if(isPessoaFisica == null){
+			FacesUtil.addErrorMessage("É necessário informar se é Pessoa ou Empresa.");
+			isAddError = true;
 		}else{
-			if(cnpj == "" || cnpj.isEmpty()){
-				FacesUtil.addErrorMessage("É necessário informar o CNPJ.");
+			//verificar CNPJ ou CPF
+			if( isPessoaFisica ){
+				if(cpf == "" || cpf.isEmpty()){
+					FacesUtil.addErrorMessage("É necessário informar o CPF.");
+					isAddError = true;
+				}
+			}else{
+				if(cnpj == "" || cnpj.isEmpty()){
+					FacesUtil.addErrorMessage("É necessário informar o CNPJ.");
+					isAddError = true;
+				}
 			}
 		}
+		
+		if(isAddError){ return; } //necessário para não estourar exception na página.
 		
 		//--Preparando os objetos para inserção
 		//Pessoa
