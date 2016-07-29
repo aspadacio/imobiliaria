@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import br.com.rangosolucoes.model.TbBairro;
 import br.com.rangosolucoes.model.TbEnderecoPessoa;
+import br.com.rangosolucoes.model.TbLocatario;
 import br.com.rangosolucoes.model.TbMunicipio;
 import br.com.rangosolucoes.model.TbPessoa;
 import br.com.rangosolucoes.model.TbPessoaFisica;
@@ -57,5 +58,13 @@ public class LocatarioService implements Serializable {
 	@Transacional
 	public List<TbPessoa> buscaPessoas(LocatarioFilter locatarioFilter) {
 		return locatarioRepository.buscaPessoas(locatarioFilter);
+	}
+	
+	/**
+	 * Método responsável por remover Locatário {@link TbLocatario} e suas dependências.
+	 * */
+	@Transacional
+	public void remover(int idLocatarioSelecionada) {
+		locatarioRepository.remover(idLocatarioSelecionada);
 	}
 }

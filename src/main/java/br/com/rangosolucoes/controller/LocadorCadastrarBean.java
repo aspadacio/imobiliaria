@@ -57,6 +57,12 @@ public class LocadorCadastrarBean implements Serializable{
 		initClean();
 	}
 	
+	//Aciona quando é clicado em NOVO para cadastrar um novo Locador
+	public void novoCadastro() throws IOException{
+		initClean();
+		FacesContext.getCurrentInstance().getExternalContext().redirect("LocadorCadastrar.xhtml"); //change context
+	}
+	
 	//Método responsável por limpar/inicializar os atributos locais.
 	private void initClean() {
 		pessoa = new TbPessoa();
@@ -64,6 +70,18 @@ public class LocadorCadastrarBean implements Serializable{
 		endereco = new TbEnderecoPessoa();
 		locadPesJuridica = new TbPessoaJuridica();
 		locadores = new ArrayList<TbLocador>();
+		
+		//Limpar atributos
+		cnpj			= "";
+		dsObservacao	= "";
+		inscEstadual	= "";
+		endCep			= "";
+		endRua			= "";
+		endNr			= "";
+		endBairro		= "";
+		endComplemento	= "";
+		endMunicipio	= "";
+		endUf			= "";
 	}
 	
 	/**
@@ -91,32 +109,47 @@ public class LocadorCadastrarBean implements Serializable{
 	 * de realizar o cadastro de um {@link TbPessoa} e {@link TbPessoaJuridica}
 	 * */
 	public void validar(){
+		boolean isAddError = false; //"True" = Se faltou algum preenchimento
+		
 		//Validacoes dos campos obrigatórios
 		if(dsObservacao == null || dsObservacao == ""){
 			FacesUtil.addErrorMessage("É necessário informar a Descrição.");
+			isAddError = true;
 		}
 		if(endRua == null || endRua == ""){
 			FacesUtil.addErrorMessage("É necessário informar a Rua.");
+			isAddError = true;
+		}
+		if(endCep == null || endCep == ""){
+			FacesUtil.addErrorMessage("É necessário informar o CEP.");
+			isAddError = true;
 		}
 		if(endNr == null || endNr == ""){
 			FacesUtil.addErrorMessage("É necessário informar o Número.");
+			isAddError = true;
 		}
 		if(endBairro == null || endBairro == ""){
 			FacesUtil.addErrorMessage("É necessário informar o Bairro.");
+			isAddError = true;
 		}
 		if(endMunicipio == null || endMunicipio == ""){
 			FacesUtil.addErrorMessage("É necessário informar o Município.");
+			isAddError = true;
 		}
 		if(endUf == null || endUf == ""){
 			FacesUtil.addErrorMessage("É necessário informar a UF.");
+			isAddError = true;
 		}
 		if(cnpj == "" || cnpj.isEmpty()){
 				FacesUtil.addErrorMessage("É necessário informar o CNPJ.");
+				isAddError = true;
 		}
+		
+		if(isAddError){ return; } //necessário para não estourar exception na página.
 		
 		//--Preparando os objetos para inserção
 		locadPesJuridica.setNuCnpj(cnpj.replace(".", "").replace("-", "").replace("/", ""));
-		locadPesJuridica.setNuInscricaoEstadual(inscEstadual.replace(".", "").replace("-", ""));
+		locadPesJuridica.setNuInscricaoEstadual(""); //inscEstadual.replace(".", "").replace("-", "")
 		locadPesJuridica.setNoRazaoSocial("");
 		locadPesJuridica.setNoFantasia("");
 		locadPesJuridica.setNoContato(""); //Nome Contato.

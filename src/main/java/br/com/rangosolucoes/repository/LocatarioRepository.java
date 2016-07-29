@@ -13,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 
 import br.com.rangosolucoes.model.TbBairro;
 import br.com.rangosolucoes.model.TbEnderecoPessoa;
+import br.com.rangosolucoes.model.TbLocatario;
 import br.com.rangosolucoes.model.TbMunicipio;
 import br.com.rangosolucoes.model.TbPessoa;
 import br.com.rangosolucoes.model.TbPessoaFisica;
@@ -162,6 +163,16 @@ public class LocatarioRepository implements Serializable {
 		}*/
 		
 		return criteria.addOrder(Order.asc("idPessoa")).list();
+	}
+
+	/**
+	 * Método responsável por remover Locatário {@link TbLocatario} e suas dependências.
+	 * @param idLocatarioSelecionada referente a {@link TbPessoa} ID_PESSOA
+	 * */
+	public void remover(int idLocatarioSelecionada) {
+		//buscar Pessoa salva na tabela TbPessoa
+		TbPessoa pessoaPersisted = manager.find(TbPessoa.class, new Long(idLocatarioSelecionada));
+		manager.remove(pessoaPersisted);
 	}
 	
 }
