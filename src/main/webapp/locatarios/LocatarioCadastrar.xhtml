@@ -15,8 +15,11 @@
 			
 			<!-- Barra com opções de ações pelo usuário  -->
 			<p:toolbar style="margin-top: 10px">
-				<p:toolbarGroup>
+				<p:toolbarGroup align="right">
 					<p:commandButton value="Pesquisar" action="#{locatarioCadastrarBean.pesquisar}" ajax="false"/>
+				</p:toolbarGroup>
+				<p:toolbarGroup>
+					<p:commandButton value="Incluir" action="#{locatarioCadastrarBean.validar}" ajax="false"/>
 				</p:toolbarGroup>
 			</p:toolbar>
 			
@@ -34,7 +37,7 @@
 			   <h:panelGroup>
 			      <!-- Add telefones -->
 			      <p:panel header="Telefone(s)" style="margin-bottom:20px">
-			         <h:panelGrid columns="8" cellspacing="6">
+			         <h:panelGrid columns="8" cellspacing="6" id="insertPhone">
 			            <h:outputLabel value="DDD:" />
 			            <p:inputMask value="#{locatarioCadastrarBean.nuTelefoneDdd}" mask="(99)" />
 			            <h:outputLabel value="Número: " />
@@ -46,7 +49,7 @@
 			               <f:selectItem itemValue="P" itemLabel="Principal"/>
 			               <f:selectItem itemValue="F" itemLabel="Fax"/>
 			            </h:selectOneMenu>
-			            <p:commandButton action="#{locatarioCadastrarBean.addTelefone}" value="Adicionar" update="panelPhones" 
+			            <p:commandButton action="#{locatarioCadastrarBean.addTelefone}" value="Adicionar" update="panelPhones insertPhone"
 			            	style="background-color: #fff; margin-left: 10px"/>
 			         </h:panelGrid>
 			      </p:panel>
@@ -108,11 +111,11 @@
 			      <p:tab id="endereco" title="Endereço">
 			         <h:panelGrid columns="4" styleClass="">
 			            <p:outputLabel value="CEP:"/>
-			            <p:inputMask value="#{locatarioCadastrarBean.endCep}" mask="99999-999" />
+			            <p:inputMask value="#{locatarioCadastrarBean.endCep}" mask="99999-999"/>
 			            <p:outputLabel value="Endereço:"/>
-			            <p:inputText size="60" value="#{locatarioCadastrarBean.endRua}" />
+			            <p:inputText size="60" value="#{locatarioCadastrarBean.endRua}"/>
 			            <p:outputLabel value="Número:"/>
-			            <p:inputMask value="#{locatarioCadastrarBean.endNr}" mask="99999" />
+			            <p:inputMask value="#{locatarioCadastrarBean.endNr}"/>
 			            <p:outputLabel value="Bairro:"/>
 			            <p:inputText value="#{locatarioCadastrarBean.endBairro}" />
 			            <p:outputLabel value="Município:"/>
@@ -126,11 +129,11 @@
 			      <p:tab id="enderecoCob" title="Endereço Cobrança">
 			         <h:panelGrid columns="4" id="enderecoCobData">
 			            <p:outputLabel value="CEP:"/>
-			            <p:inputMask value="#{locatarioCadastrarBean.endCbCep}" mask="99999-999" />
+			            <p:inputMask value="#{locatarioCadastrarBean.endCbCep}" mask="99999-999"/>
 			            <p:outputLabel value="Endereço:"/>
-			            <p:inputText size="60" value="#{locatarioCadastrarBean.endCbRua}" />
+			            <p:inputText size="60" value="#{locatarioCadastrarBean.endCbRua}"/>
 			            <p:outputLabel value="Número:"/>
-			            <p:inputMask value="#{locatarioCadastrarBean.endCbNr}" mask="99999"/>
+			            <p:inputMask value="#{locatarioCadastrarBean.endCbNr}"/>
 			            <p:outputLabel value="Bairro:"/>
 			            <p:inputText value="#{locatarioCadastrarBean.endCbBairro}" />
 			            <p:outputLabel value="Município:"/>
@@ -147,8 +150,6 @@
 			         </h:panelGrid>
 			      </p:tab>
 			   </p:tabView>
-			   <br/>				
-			   <p:commandButton value="Incluir" action="#{locatarioCadastrarBean.validar}" ajax="false"/>
 			</h:form>
 		</h:form>
 	</ui:define>

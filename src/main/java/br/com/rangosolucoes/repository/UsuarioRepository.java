@@ -38,8 +38,7 @@ public class UsuarioRepository implements Serializable{
 			// nenhum usuario encontrado com o email informado
 			System.out.println("UsuarioRepository::porEmail - Erro ao retornar usuário da base.");
 		} catch(Exception e){
-			System.out.println("UsuarioRepository::porEmail - Erro ao conectar-se a base.");
-			System.out.println(e.getCause().getMessage());
+			System.out.println("UsuarioRepository::porEmail - Erro ao conectar-se a base. " + e.getCause().getCause());
 		}
 		
 		return usuario;

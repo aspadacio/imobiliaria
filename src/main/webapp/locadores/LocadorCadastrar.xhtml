@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/LayoutPadrao.xhtml">
+	
+	<ui:define name="titulo">Cadastrar Locador</ui:define>
+	
+	<ui:define name="corpo">
+		<h:form id="frmPesquisa" prependId="false">
+			<h1>Cadastrar Locador</h1>
+			
+			<p:messages autoUpdate="true" closable="true"/>
+			
+			<!-- Barra com opções de ações pelo usuário  -->
+			<p:toolbar style="margin-top: 10px">
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Pesquisar" action="#{locadorCadastrarBean.pesquisar}" ajax="false"/>
+				</p:toolbarGroup>
+				<p:toolbarGroup>
+					 <p:commandButton value="Novo" ajax="false"/>
+				</p:toolbarGroup>
+				<p:toolbarGroup>
+					 <p:commandButton value="Salvar" action="#{locadorCadastrarBean.validar}" ajax="false"/>
+				</p:toolbarGroup>
+			</p:toolbar>
+			
+			<p:separator />
+		
+			<!-- Grid com campos para adicionar novo locador -->
+			<h:form id="addlocador" prependId="false">
+				<h:panelGrid columns="2" style="margin-bottom: 10px">
+			      <p:outputLabel value="Descrição:"/>
+			      <p:inputText size="40" id="nome" value="#{locadorCadastrarBean.dsObservacao}" placeholder="Descrição do Locador"/>
+			      <p:outputLabel value="CNPJ:"/>
+			      <p:inputMask value="#{locadorCadastrarBean.cnpj}" mask="99.999.999/9999-99" style="margin-right: 10px"/>
+			   </h:panelGrid>
+			   <br/>
+			   <!-- Endereços -->
+			   <p:tabView id="tabViewEndereco" style="margin-top: 10px">
+			      <p:tab id="endereco" title="Endereço">
+			         <h:panelGrid columns="4" styleClass="">
+			            <p:outputLabel value="CEP:"/>
+			            <p:inputMask value="#{locadorCadastrarBean.endCep}" mask="99999-999"/>
+			            <p:outputLabel value="Endereço:"/>
+			            <p:inputText size="60" value="#{locadorCadastrarBean.endRua}"/>
+			            <p:outputLabel value="Número:"/>
+			            <p:inputMask value="#{locadorCadastrarBean.endNr}"/>
+			            <p:outputLabel value="Bairro:"/>
+			            <p:inputText value="#{locadorCadastrarBean.endBairro}" />
+			            <p:outputLabel value="Município:"/>
+			            <p:inputMask value="#{locadorCadastrarBean.endMunicipio}"/>
+			            <p:outputLabel value="UF:"/>
+			            <p:inputMask value="#{locadorCadastrarBean.endUf}"/>
+			            <p:outputLabel value="Complemento:"/>
+			            <p:inputText size="60" value="#{locadorCadastrarBean.endComplemento}" />
+			         </h:panelGrid>
+			      </p:tab>
+			      </p:tabView>
+			</h:form>
+		</h:form>
+	</ui:define>
+</ui:composition>
