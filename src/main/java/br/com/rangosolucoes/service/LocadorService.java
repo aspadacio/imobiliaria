@@ -39,23 +39,42 @@ public class LocadorService implements Serializable {
 		return locadorRepository.buscaPessoas(locadorFilter);
 	}
 
-	public List<String> retornarNomeObss() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	/**
+	 * Método responsável por retornar todos os CNPJ dos Locadores cadastrados.
+	 * */
+	@Transacional
 	public List<String> retornarCnpjs() {
-		// TODO Auto-generated method stub
-		return null;
+		return locadorRepository.retornarCnpjs();
 	}
-
+	
+	/**
+	 * Método responsável por retornar todos os Municipios.
+	 * */
+	@Transacional
 	public List<String> retornarMunicipios() {
-		// TODO Auto-generated method stub
-		return null;
+		return locadorRepository.retornarMunicipios();
 	}
 
+	/**
+	 * Método responsável por retornar todos as UFs.
+	 * */
+	@Transacional
 	public List<String> retornarUfs() {
-		// TODO Auto-generated method stub
-		return null;
+		return locadorRepository.retornarUfs();
+	}
+
+	/**
+	 * Método responsável por remover Locador {@link TbLocador} e suas dependências.
+	 * */
+	@Transacional
+	public void remover(TbPessoa locadorSelecionado) {
+		locadorRepository.remover(locadorSelecionado);
+	}
+	
+	/**
+	 * Método responsável por retornar o Endereco {@link TbEnderecoPessoa} a partir do id ID_PESSOA
+	 * */
+	public TbEnderecoPessoa findEnderecoById(Long idPessoa){
+		return locadorRepository.findEnderecoById(idPessoa);
 	}
 }

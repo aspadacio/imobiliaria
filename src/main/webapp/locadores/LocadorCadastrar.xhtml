@@ -8,6 +8,12 @@
 	<ui:define name="titulo">Cadastrar Locador</ui:define>
 	
 	<ui:define name="corpo">
+		<!-- parâmetros passados da página LocadorListar -->
+		<f:metadata>
+			<f:viewParam name="cnpj" value="#{locadorCadastrarBean.cnpj}"/>
+			<f:event listener="#{locadorCadastrarBean.fillLocador2Edit}" type="preRenderView"></f:event>
+		</f:metadata>
+	
 		<h:form id="frmPesquisa" prependId="false">
 			<h1>Cadastrar Locador</h1>
 			
@@ -22,7 +28,7 @@
 					 <p:commandButton value="Novo" action="#{locadorCadastrarBean.novoCadastro}" ajax="false"/> 
 				</p:toolbarGroup>
 				<p:toolbarGroup>
-					 <p:commandButton value="Salvar" action="#{locadorCadastrarBean.validar}" ajax="false"/>
+					 <p:commandButton value="Salvar" action="#{locadorCadastrarBean.validar}" ajax="false" update="@form"/>
 				</p:toolbarGroup>
 			</p:toolbar>
 			

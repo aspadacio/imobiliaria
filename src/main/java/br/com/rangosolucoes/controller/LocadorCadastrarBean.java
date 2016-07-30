@@ -2,7 +2,6 @@ package br.com.rangosolucoes.controller;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +20,7 @@ import br.com.rangosolucoes.model.TbLocador;
 import br.com.rangosolucoes.model.TbMunicipio;
 import br.com.rangosolucoes.model.TbPessoa;
 import br.com.rangosolucoes.model.TbPessoaJuridica;
+import br.com.rangosolucoes.repository.filter.LocadorFilter;
 import br.com.rangosolucoes.service.LocadorService;
 import br.com.rangosolucoes.util.jsf.FacesUtil;
 
@@ -41,7 +41,6 @@ public class LocadorCadastrarBean implements Serializable{
 	@Getter @Setter private TbLocador locador;
 	@Getter @Setter private TbEnderecoPessoa endereco;
 	@Getter @Setter private TbPessoaJuridica locadPesJuridica;
-	@Getter @Setter private List<TbLocador> locadores;
 	
 	//Endereco
 	@Getter @Setter @NonNull private String endCep;
@@ -69,7 +68,6 @@ public class LocadorCadastrarBean implements Serializable{
 		locador = new TbLocador();
 		endereco = new TbEnderecoPessoa();
 		locadPesJuridica = new TbPessoaJuridica();
-		locadores = new ArrayList<TbLocador>();
 		
 		//Limpar atributos
 		cnpj			= "";
@@ -102,6 +100,8 @@ public class LocadorCadastrarBean implements Serializable{
 	public void cadastrar(){
 		//Chamar service para cadastrar Pessoa com os dados da tela LocadorCadastrar
 		locadorService.salvarPessoa(pessoa, locador, locadPesJuridica, endereco);
+		FacesUtil.addInfoMessage("Locador " + pessoa.getDsObservacao() + " foi salvo com sucesso.");
+		initClean();
 	}
 	
 	/**
@@ -150,8 +150,8 @@ public class LocadorCadastrarBean implements Serializable{
 		//--Preparando os objetos para inserção
 		locadPesJuridica.setNuCnpj(cnpj.replace(".", "").replace("-", "").replace("/", ""));
 		locadPesJuridica.setNuInscricaoEstadual(""); //inscEstadual.replace(".", "").replace("-", "")
-		locadPesJuridica.setNoRazaoSocial("");
-		locadPesJuridica.setNoFantasia("");
+		locadPesJuridica.setNoRazaoSocial(dsObservacao.toUpperCase());
+		locadPesJuridica.setNoFantasia(dsObservacao.toUpperCase());
 		locadPesJuridica.setNoContato(""); //Nome Contato.
 		pessoa.setTbPessoaJuridica(locadPesJuridica);
 		
@@ -176,12 +176,40 @@ public class LocadorCadastrarBean implements Serializable{
 		//Locador
 		locador.setDtCadastro(new Date());
 		
-		locadores.add(locador);
-		
 		//Pessoa
 		pessoa.setDsEmail(""); //Por hora, ao Locador não é pedido o email
 		pessoa.setDsObservacao(dsObservacao.toUpperCase()); //p.ex.: "LOCADOR TESTE (PROPRIETÁRIO)1"
+		pessoa.setDtUltimaAlteracao(new Date());
 		
 		cadastrar();
+	}
+	
+	/**
+	 * Método chamado no f:event quando é necessário editar um Locador vindo da página LocadorListar.
+	 * Método responsável por preencher a tela com a pessoa {@link TbPessoa} a ser editada.
+	 * @param cnpj vindo através da requisição GET
+	 */
+	public void fillLocador2Edit(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		//Valida se é um postBack ou um ValidationFailed. Só entra se for uma requisição
+	    if (!facesContext.isPostback() && !facesContext.isValidationFailed()) {
+	       //buscando dados a partir do CNPJ
+	    	LocadorFilter filtro = new LocadorFilter();
+	    	filtro.setCnpj(cnpj);
+	    	
+	    	List<TbPessoa> pessoas = locadorService.buscaPessoas(filtro);
+	    	TbPessoa pessoa = pessoas.get(0);//Haverá apenas uma pessoa com aquele CNPJ
+	    	
+	    	this.dsObservacao = pessoa.getDsObservacao();
+	    	TbEnderecoPessoa endereco = locadorService.findEnderecoById(pessoa.getIdPessoa());
+	    	
+	    	this.endCep = Integer.toString(endereco.getNuCep());
+	    	this.endRua = endereco.getDsEndereco();
+	    	this.endNr = Integer.toString(endereco.getNuEndereco());
+	    	this.endComplemento = endereco.getDsComplemento();
+	    	this.endMunicipio = endereco.getTbMunicipio().getNoMunicipio();
+	    	this.endBairro = endereco.getTbBairro().getNoBairro();
+	    	this.endUf = endereco.getTbMunicipio().getSgUf();
+	    }
 	}
 }
