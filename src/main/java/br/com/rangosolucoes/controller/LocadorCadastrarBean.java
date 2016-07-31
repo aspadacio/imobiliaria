@@ -30,56 +30,76 @@ public class LocadorCadastrarBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
+	@Getter @Setter private String cnpj;
+	
+	@Getter @Setter private String dsObservacao; //usar este atribudo para colocar a "Descrição" do Locador. Será setado em tbPessoa.dsObservacao
+	@Getter @Setter private String uiTitle; //define o título da página
+	@Getter @Setter @NonNull private String endBairro;
+	//Endereco
+	@Getter @Setter @NonNull private String endCep;
+	
+	@Getter @Setter @NonNull private String endComplemento;
+	@Getter @Setter private TbEnderecoPessoa endereco;
+	@Getter @Setter @NonNull private String endMunicipio;
+	@Getter @Setter @NonNull private String endNr;
+	
+	@Getter @Setter @NonNull private String endRua;
+	@Getter @Setter @NonNull private String endUf;
+	@Getter @Setter private String inscEstadual;
+	@Getter @Setter private TbLocador locador;
+	@Getter @Setter private TbPessoaJuridica locadPesJuridica;
+	@Getter @Setter private TbPessoa pessoa;
 	@Inject
 	LocadorService locadorService;
 	
-	@Getter @Setter private String cnpj;
-	@Getter @Setter private String dsObservacao; //usar este atribudo para colocar a "Descrição" do Locador. Será setado em tbPessoa.dsObservacao
-	@Getter @Setter private String inscEstadual;
-	
-	@Getter @Setter private TbPessoa pessoa;
-	@Getter @Setter private TbLocador locador;
-	@Getter @Setter private TbEnderecoPessoa endereco;
-	@Getter @Setter private TbPessoaJuridica locadPesJuridica;
-	
-	//Endereco
-	@Getter @Setter @NonNull private String endCep;
-	@Getter @Setter @NonNull private String endRua;
-	@Getter @Setter @NonNull private String endNr;
-	@Getter @Setter @NonNull private String endBairro;
-	@Getter @Setter @NonNull private String endComplemento;
-	@Getter @Setter @NonNull private String endMunicipio;
-	@Getter @Setter @NonNull private String endUf;
-	
-	@PostConstruct
-	private void init(){
+	/**
+	 * Método responsável por cadastrar um novo Locatário
+	 *
+	 * */
+	public void cadastrar(){
+		//Chamar service para cadastrar Pessoa com os dados da tela LocadorCadastrar
+		locadorService.salvarPessoa(pessoa, locador, locadPesJuridica, endereco);
+		FacesUtil.addInfoMessage("Locador " + pessoa.getDsObservacao() + " foi salvo com sucesso.");
 		initClean();
+	}
+	
+	/**
+	 * Método chamado no f:event quando é necessário editar um Locador vindo da página LocadorListar.
+	 * Método responsável por preencher a tela com a pessoa {@link TbPessoa} a ser editada.
+	 * @param cnpj vindo através da requisição GET
+	 */
+	public void fillLocador2Edit(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		//Valida se é um postBack ou um ValidationFailed. Só entra se for uma requisição.
+		//Valida tbm se está enviando o atributo 'cnpj'
+	    if (!facesContext.isPostback() && !facesContext.isValidationFailed() &&
+	    		facesContext.getExternalContext().getRequestParameterMap().get("cnpj") != null) {
+	       //buscando dados a partir do CNPJ
+	    	LocadorFilter filtro = new LocadorFilter();
+	    	filtro.setCnpj(cnpj);
+	    	
+	    	List<TbPessoa> pessoas = locadorService.buscaPessoas(filtro);
+	    	TbPessoa pessoa = pessoas.get(0);//Haverá apenas uma pessoa com aquele CNPJ
+	    	
+	    	this.dsObservacao = pessoa.getDsObservacao();
+	    	TbEnderecoPessoa endereco = locadorService.findEnderecoById(pessoa.getIdPessoa());
+	    	
+	    	this.endCep = Integer.toString(endereco.getNuCep());
+	    	this.endRua = endereco.getDsEndereco();
+	    	this.endNr = Integer.toString(endereco.getNuEndereco());
+	    	this.endComplemento = endereco.getDsComplemento();
+	    	this.endMunicipio = endereco.getTbMunicipio().getNoMunicipio();
+	    	this.endBairro = endereco.getTbBairro().getNoBairro();
+	    	this.endUf = endereco.getTbMunicipio().getSgUf();
+	    	
+	    	this.uiTitle = "Editar Locador";
+	    }
 	}
 	
 	//Aciona quando é clicado em NOVO para cadastrar um novo Locador
 	public void novoCadastro() throws IOException{
 		initClean();
 		FacesContext.getCurrentInstance().getExternalContext().redirect("LocadorCadastrar.xhtml"); //change context
-	}
-	
-	//Método responsável por limpar/inicializar os atributos locais.
-	private void initClean() {
-		pessoa = new TbPessoa();
-		locador = new TbLocador();
-		endereco = new TbEnderecoPessoa();
-		locadPesJuridica = new TbPessoaJuridica();
-		
-		//Limpar atributos
-		cnpj			= "";
-		dsObservacao	= "";
-		inscEstadual	= "";
-		endCep			= "";
-		endRua			= "";
-		endNr			= "";
-		endBairro		= "";
-		endComplemento	= "";
-		endMunicipio	= "";
-		endUf			= "";
 	}
 	
 	/**
@@ -91,17 +111,6 @@ public class LocadorCadastrarBean implements Serializable{
 		initClean();
 		FacesContext.getCurrentInstance().getExternalContext().redirect("LocadorListar.xhtml"); //change context
 		return;
-	}
-	
-	/**
-	 * Método responsável por cadastrar um novo Locatário
-	 *
-	 * */
-	public void cadastrar(){
-		//Chamar service para cadastrar Pessoa com os dados da tela LocadorCadastrar
-		locadorService.salvarPessoa(pessoa, locador, locadPesJuridica, endereco);
-		FacesUtil.addInfoMessage("Locador " + pessoa.getDsObservacao() + " foi salvo com sucesso.");
-		initClean();
 	}
 	
 	/**
@@ -184,34 +193,30 @@ public class LocadorCadastrarBean implements Serializable{
 		cadastrar();
 	}
 	
-	/**
-	 * Método chamado no f:event quando é necessário editar um Locador vindo da página LocadorListar.
-	 * Método responsável por preencher a tela com a pessoa {@link TbPessoa} a ser editada.
-	 * @param cnpj vindo através da requisição GET
-	 */
-	public void fillLocador2Edit(){
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		//Valida se é um postBack ou um ValidationFailed. Só entra se for uma requisição.
-		//Valida tbm se está enviando o atributo 'cnpj'
-	    if (!facesContext.isPostback() && !facesContext.isValidationFailed() &&
-	    		facesContext.getExternalContext().getRequestParameterMap().get("cnpj") != null) {
-	       //buscando dados a partir do CNPJ
-	    	LocadorFilter filtro = new LocadorFilter();
-	    	filtro.setCnpj(cnpj);
-	    	
-	    	List<TbPessoa> pessoas = locadorService.buscaPessoas(filtro);
-	    	TbPessoa pessoa = pessoas.get(0);//Haverá apenas uma pessoa com aquele CNPJ
-	    	
-	    	this.dsObservacao = pessoa.getDsObservacao();
-	    	TbEnderecoPessoa endereco = locadorService.findEnderecoById(pessoa.getIdPessoa());
-	    	
-	    	this.endCep = Integer.toString(endereco.getNuCep());
-	    	this.endRua = endereco.getDsEndereco();
-	    	this.endNr = Integer.toString(endereco.getNuEndereco());
-	    	this.endComplemento = endereco.getDsComplemento();
-	    	this.endMunicipio = endereco.getTbMunicipio().getNoMunicipio();
-	    	this.endBairro = endereco.getTbBairro().getNoBairro();
-	    	this.endUf = endereco.getTbMunicipio().getSgUf();
-	    }
+	@PostConstruct
+	private void init(){
+		initClean();
+	}
+	
+	//Método responsável por limpar/inicializar os atributos locais.
+	private void initClean() {		
+		pessoa = new TbPessoa();
+		locador = new TbLocador();
+		endereco = new TbEnderecoPessoa();
+		locadPesJuridica = new TbPessoaJuridica();
+		
+		uiTitle = "Novo Locador";
+		
+		//Limpar atributos
+		cnpj			= "";
+		dsObservacao	= "";
+		inscEstadual	= "";
+		endCep			= "";
+		endRua			= "";
+		endNr			= "";
+		endBairro		= "";
+		endComplemento	= "";
+		endMunicipio	= "";
+		endUf			= "";
 	}
 }

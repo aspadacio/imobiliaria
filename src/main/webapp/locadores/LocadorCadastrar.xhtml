@@ -5,7 +5,8 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/template/LayoutPadrao.xhtml">
 	
-	<ui:define name="titulo">Cadastrar Locador</ui:define>
+	<!-- Verificar o título correto dependendo da ação do usuario -->
+	<ui:define name="titulo">#{locadorCadastrarBean.uiTitle}</ui:define>
 	
 	<ui:define name="corpo">
 		<!-- parâmetros passados da página LocadorListar -->

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -29,41 +30,6 @@ public class LocadorRepository implements Serializable {
 	private EntityManager manager;
 
 	/**
-	 *  Método responsável por salvar um Locador com suas devidas entidades {@link TbPesso}, {@link TbPessoaJuridica}, {@link TbMunicipio}, {@link TbBairro}
-	 * @param endereco 
-	 * 
-	 * */
-	public void salvarPessoa(TbPessoa pessoa, TbLocador locador,
-			TbPessoaJuridica locadPesJuridica, TbEnderecoPessoa endereco) {
-		manager.merge(pessoa.getTbPessoaJuridica()); //TbPessoaJuridica
-		
-		//Persistindo Pessoa
-		TbPessoa pessoaPersisted = manager.merge(pessoa); //TbPessoa
-		
-		//TODO check if Municipio & Bairro exists. If yes, so get them and sets to 'endereco' below.
-		//Persistindo Endereço completo: Municipio, Bairro e Endereço
-		TbMunicipio municipioPersisted = null;
-		TbBairro bairroPersisted = null;
-		//municipio
-		municipioPersisted = manager.merge(endereco.getTbMunicipio()); //TbMunicipio
-			
-		//bairro
-		endereco.getTbBairro().setTbMunicipio(municipioPersisted);
-		bairroPersisted = manager.merge(endereco.getTbBairro()); //TbBairro
-			
-		//Locador
-		locador.setTbPessoa(pessoaPersisted);
-		manager.merge(locador);
-		
-		//endereco
-		endereco.setTbMunicipio(municipioPersisted);
-		endereco.setTbBairro(bairroPersisted);
-		endereco.setTbPessoa(pessoaPersisted);
-		manager.merge(endereco); //TbEnderecoPesso
-		
-	}
-
-	/**
 	 * Método responsável por retornar Pessoas (locador) conforme filtro {@link LocadorFilter}
 	 * */
 	@SuppressWarnings("unchecked")
@@ -86,6 +52,53 @@ public class LocadorRepository implements Serializable {
 			return criteria.addOrder(Order.asc("idPessoa")).list();
 		}else{
 			return null;
+		}
+	}
+
+	/**
+	 * Método responsável por retornar o Endereco {@link TbEnderecoPessoa} a partir do id ID_PESSOA
+	 * */
+	public TbEnderecoPessoa findEnderecoById(Long idPessoa) {
+		Session session = manager.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(TbEnderecoPessoa.class);
+		
+		if(idPessoa != null){
+			criteria.add(Restrictions.eq("tbPessoa.idPessoa", idPessoa));			
+		}
+		
+		return (TbEnderecoPessoa) criteria.uniqueResult();
+	}
+
+	/**
+	 * Método responsável por remover Locador {@link TbLocador} e suas dependências.
+	 * */
+	public void remover(TbPessoa locadorSelecionado) {
+		TbPessoa pessoaPersisted = null;
+		TbLocador locadorPersisted = null;
+		TbPessoaJuridica pJuridicaPersisted = null;
+		TbEnderecoPessoa enderecoPersisted = null;
+		
+		//buscar Pessoa salva na tabela TbPessoa
+		pessoaPersisted = findPessoaById(locadorSelecionado.getIdPessoa());
+		
+		//Buscar na pessoaJuridica que foi cadastrada
+		pJuridicaPersisted = findPessoaJuridicaById(new String(pessoaPersisted.getTbPessoaJuridica().getNuCnpj()));
+		
+		//Bucsar o Locador que foi cadastrado
+		locadorPersisted = findLocadorById(locadorSelecionado.getIdPessoa());
+		
+		//Buscar Endereço a partir do idPessoa
+		enderecoPersisted = findEnderecoById(pessoaPersisted.getIdPessoa());
+		
+		try{
+			//Excluindo respeitando as FKs		
+			manager.remove(enderecoPersisted);
+			manager.remove(locadorPersisted);
+			manager.remove(pessoaPersisted);
+			manager.remove(pJuridicaPersisted);
+			manager.flush();
+		}catch(Exception e){
+			throw new NegocioException("LocadorRepository::remover :: Erro ao excluir Locador.: " + e.getCause().getCause());
 		}
 	}
 
@@ -124,36 +137,106 @@ public class LocadorRepository implements Serializable {
 	}
 
 	/**
-	 * Método responsável por remover Locador {@link TbLocador} e suas dependências.
+	 *  Método responsável por salvar um Locador com suas devidas dependências {@link TbPesso}, {@link TbPessoaJuridica}, {@link TbMunicipio}, {@link TbBairro}
+	 * @param endereco 
+	 * 
 	 * */
-	public void remover(TbPessoa locadorSelecionado) {
+	public void salvarPessoa(TbPessoa pessoa, TbLocador locador,
+			TbPessoaJuridica locadPesJuridica, TbEnderecoPessoa endereco) {
+		//Tabelas usadas neste método
 		TbPessoa pessoaPersisted = null;
-		TbLocador locadorPersisted = null;
-		TbPessoaJuridica pJuridicaPersisted = null;
+		TbPessoaJuridica pjPersisted = null;
+		TbMunicipio municipioPersisted = null;
+		TbBairro bairroPersisted = null;
+		TbLocador locadorPersistedLocador = null;
 		TbEnderecoPessoa enderecoPersisted = null;
 		
-		//buscar Pessoa salva na tabela TbPessoa
-		pessoaPersisted = findPessoaById(locadorSelecionado.getIdPessoa());
-		
-		//Buscar na pessoaJuridica que foi cadastrada
-		pJuridicaPersisted = findPessoaJuridicaById(new String(pessoaPersisted.getTbPessoaJuridica().getNuCnpj()));
-		
-		//Bucsar o Locador que foi cadastrado
-		locadorPersisted = findLocadorById(locadorSelecionado.getIdPessoa());
-		
-		//Buscar Endereço a partir do idPessoa
-		enderecoPersisted = findEnderecoById(pessoaPersisted.getIdPessoa());
-		
-		try{
-			//Excluindo respeitando as FKs		
-			manager.remove(enderecoPersisted);
-			manager.remove(locadorPersisted);
-			manager.remove(pessoaPersisted);
-			manager.remove(pJuridicaPersisted);
-			manager.flush();
-		}catch(Exception e){
-			throw new NegocioException("LocadorRepository::remover :: Erro ao excluir Locador.: " + e.getCause().getCause());
+		//Persistindo Pessoa
+		pjPersisted = manager.find(TbPessoaJuridica.class, pessoa.getTbPessoaJuridica().getNuCnpj()); //Find by primary key. Search for an entity of the specified class and primary key
+		manager.merge(pessoa.getTbPessoaJuridica()); //TbPessoaJuridica
+		//Check if already exist. If yes then it´s an editing process.
+		if(pjPersisted != null){
+			//Already exist. So it´s an editing process.
+			pessoaPersisted = findPessoaByCnpj(pjPersisted.getNuCnpj());
+			pessoa.setIdPessoa(pessoaPersisted.getIdPessoa());//set id da pessoa. Portanto será feito o UPDATE
+			pessoaPersisted = manager.merge(pessoa); //TbPessoa updating
+		}else{
+			//Doesnt exist. So it´s an insert process.
+			pessoaPersisted = manager.merge(pessoa); //TbPessoa
 		}
+		
+		//Persistindo Endereço completo: Municipio, Bairro e Endereço
+		//check if Municipio exist. If yes, so get them and sets to 'endereco' below.
+		try{
+			municipioPersisted = findMunicipioByName(endereco.getTbMunicipio().getNoMunicipio());
+		}catch(NoResultException e){
+			//ignorar se não tiver resultado = 0 row(s) returned
+		}
+		if(municipioPersisted != null){
+			//Already exist. So it´s an editing process.
+			try{
+				bairroPersisted = findBairroByMunicipioId(municipioPersisted.getIdMunicipio());
+			}catch(NoResultException e){
+				//ignorar se não tiver resultado = 0 row(s) returned
+			}
+			//if Bairro with that MunicipioId doesnt exist, so save it.
+			if(bairroPersisted == null){
+				endereco.getTbBairro().getTbMunicipio().setIdMunicipio(municipioPersisted.getIdMunicipio());
+				bairroPersisted = manager.merge(endereco.getTbBairro()); //TbBairro
+			}
+		}else{
+			//Doesnt exist. So it´s an insert process.
+			//municipio
+			municipioPersisted = manager.merge(endereco.getTbMunicipio()); //TbMunicipio
+			endereco.getTbBairro().setTbMunicipio(municipioPersisted);
+			bairroPersisted = manager.merge(endereco.getTbBairro()); //TbBairro
+		}
+		//END - Persistindo Endereço completo: Municipio, Bairro e Endereço
+			
+		//Locador
+		locador.setTbPessoa(pessoaPersisted);
+		//check if Locador exist.
+		try{
+			locadorPersistedLocador = findLocadorById(pessoaPersisted.getIdPessoa());
+		}catch(NoResultException e){
+			//ignorar se não tiver resultado = 0 row(s) returned
+		}
+		if(locadorPersistedLocador != null){
+			//Already exist. So it´s an editing process.
+			locador.setIdLocador(locadorPersistedLocador.getIdLocador());
+		}
+		manager.merge(locador);
+		
+		//endereco
+		//check if Endereco exist.
+		try{
+			enderecoPersisted = findEnderecoById(pessoaPersisted.getIdPessoa());
+		}catch(NoResultException e){
+			//ignorar se não tiver resultado = 0 row(s) returned
+		}
+		if(enderecoPersisted != null){
+			//Already exist. So it´s an editing process.
+			endereco.setIdEnderecoPessoa(enderecoPersisted.getIdEnderecoPessoa());
+		}
+		endereco.setTbMunicipio(municipioPersisted);
+		endereco.setTbBairro(bairroPersisted);
+		endereco.setTbPessoa(pessoaPersisted);
+		manager.merge(endereco); //TbEnderecoPesso
+		
+	}
+
+	/**
+	 * Método responsável por, se encontar no DB, retornar a {@link TbBairro} já inserida no banco.
+	 * @param idMunicipio
+	 * @return {@link TbBairro}
+	 */
+	private TbBairro findBairroByMunicipioId(Long idMunicipio) {
+		return manager
+				.createQuery(
+						"FROM TbBairro WHERE tbMunicipio.idMunicipio = :idMunicipio",
+						TbBairro.class)
+				.setParameter("idMunicipio", idMunicipio)
+				.getSingleResult();
 	}
 
 	/**
@@ -168,6 +251,34 @@ public class LocadorRepository implements Serializable {
 				.getSingleResult();
 	}
 
+	/**
+	 * Método responsável por, se encontar no DB, retornar a {@link TbMunicipio} já inserida no banco.
+	 * @param noMunicipio
+	 * @return {@link TbMunicipio}
+	 */
+	private TbMunicipio findMunicipioByName(String noMunicipio) {
+		return manager
+				.createQuery(
+						"FROM TbMunicipio WHERE noMunicipio = :noMunicipio",
+						TbMunicipio.class)
+				.setParameter("noMunicipio", noMunicipio)
+				.getSingleResult();
+	}
+
+	/**
+	 * Método responsável por retornar uma pessoa {@link TbPessoa} a partir do CNPJ da {@link TbPessoaJuridica}
+	 * @param número do cnpj do locador
+	 * @return {@link TbPessoa}
+	 */
+	private TbPessoa findPessoaByCnpj(String cnpj) {
+		return manager
+				.createQuery(
+						"FROM TbPessoa WHERE tbPessoaJuridica.nuCnpj = :cnpj",
+						TbPessoa.class)
+				.setParameter("cnpj", cnpj)
+				.getSingleResult();
+	}
+	
 	/**
 	 * Método responsável por retornar a pessoa {@link TbPessoa} a partir do id ID_PESSOA
 	 * */
@@ -190,19 +301,5 @@ public class LocadorRepository implements Serializable {
 						TbPessoaJuridica.class)
 				.setParameter("cnpj", nuCnpj)
 				.getSingleResult();
-	}
-	
-	/**
-	 * Método responsável por retornar o Endereco {@link TbEnderecoPessoa} a partir do id ID_PESSOA
-	 * */
-	public TbEnderecoPessoa findEnderecoById(Long idPessoa) {
-		Session session = manager.unwrap(Session.class);
-		Criteria criteria = session.createCriteria(TbEnderecoPessoa.class);
-		
-		if(idPessoa != null){
-			criteria.add(Restrictions.eq("tbPessoa.idPessoa", idPessoa));			
-		}
-		
-		return (TbEnderecoPessoa) criteria.uniqueResult();
 	}
 }
