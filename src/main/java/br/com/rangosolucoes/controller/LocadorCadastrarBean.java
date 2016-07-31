@@ -191,8 +191,10 @@ public class LocadorCadastrarBean implements Serializable{
 	 */
 	public void fillLocador2Edit(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		//Valida se é um postBack ou um ValidationFailed. Só entra se for uma requisição
-	    if (!facesContext.isPostback() && !facesContext.isValidationFailed()) {
+		//Valida se é um postBack ou um ValidationFailed. Só entra se for uma requisição.
+		//Valida tbm se está enviando o atributo 'cnpj'
+	    if (!facesContext.isPostback() && !facesContext.isValidationFailed() &&
+	    		facesContext.getExternalContext().getRequestParameterMap().get("cnpj") != null) {
 	       //buscando dados a partir do CNPJ
 	    	LocadorFilter filtro = new LocadorFilter();
 	    	filtro.setCnpj(cnpj);
