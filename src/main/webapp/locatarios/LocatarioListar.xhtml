@@ -15,7 +15,7 @@
 			
 			<!-- Barra com opções de ações pelo usuário  -->
 			<p:toolbar style="margin-top: 10px">
-				<p:toolbarGroup>
+				<p:toolbarGroup align="right">
 					<p:commandButton value="Novo" action="#{locatarioPesquisarBean.cadastrar}" update="@form"/>
 				</p:toolbarGroup>
 				<p:toolbarGroup>
@@ -54,42 +54,42 @@
 				emptyMessage="Nenhum locatário encontrado." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
 				
 				<!-- Pessoa Física -->
-				<p:columnGroup rendered="#{locatario.tbPessoaFisica.noPessoaFisica != null}">
-					<p:column headerText="Nome" >
-						<h:outputText value="#{locatario.tbPessoaFisica.noPessoaFisica}" />
-					</p:column>
-					<p:column headerText="CPF" >
-						<h:outputText value="#{locatario.tbPessoaFisica.nuCpf}" />
-					</p:column>
-				</p:columnGroup>
+				<p:column headerText="Nome" >
+					<h:outputText value="#{locatario.tbPessoaFisica.noPessoaFisica == null ? '-' : locatario.tbPessoaFisica.noPessoaFisica}" rendered="#{locatario.tbPessoaFisica.noPessoaFisica != null}"/>
+				</p:column>
+				<p:column headerText="CPF">
+					<h:outputText value="#{locatario.tbPessoaFisica.nuCpf}" rendered="#{locatario.tbPessoaFisica.noPessoaFisica != null}"/>
+				</p:column>
 				
 				<!-- Pessoa Jurídica -->
-				<p:column headerText="Razão Social" rendered="#{locatario.tbPessoaJuridica.nuCnpj != null}">
-					<h:outputText value="#{locatario.tbPessoaJuridica.noRazaoSocial}" />
+				<p:column headerText="Razão Social">
+					<h:outputText value="#{locatario.tbPessoaJuridica.noRazaoSocial == null ? '-' : locatario.tbPessoaJuridica.noRazaoSocial}"/>
 				</p:column>
-				<p:column headerText="CNPJ" rendered="#{locatario.tbPessoaJuridica.nuCnpj != null}">
-					<h:outputText value="#{locatario.tbPessoaJuridica.nuCnpj}" />
+				<p:column headerText="CNPJ">
+					<h:outputText value="#{locatario.tbPessoaJuridica.nuCnpj == null ? '-' : locatario.tbPessoaJuridica.nuCnpj}"/>
 				</p:column>
 				
 				<p:column headerText="Ações" style="text-align: center; width: 100px">
 					<p:button icon="ui-icon-pencil" title="Editar" outcome="/locatarios/LocatarioCadastrar">
-						<f:param name="idPessoa2Edit" value="#{locatario.idPessoa}"/>
-						<f:param name="isPessoaEdit" value="true"/>
+						<!-- parâmetros enviado para outra tela -->
+						<f:param name="isPessoaFisica"
+							value="#{locatario.tbPessoaFisica == null ? 'False' : 'True'}" />
+							<!-- 'genericId' se for PF passa o número do CPF, se for PJ passa o número do CNPJ -->
+						<f:param name="genericId" value="{#locatario.tbPessoaFisica == null ? #{locatario.tbPessoaFisica.nuCpf} : locatario.tbPessoaJuridica.nuCnpj}" />
 					</p:button>
 					<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show();"
-						process="@this" update="confirmacaoExclusao">
-						<f:setPropertyActionListener target="#{locatarioPesquisarBean.idLocatarioSelecionada}" value="#{locatario.idPessoa}"/>
+						process="@this" update=":masterForm:confirmacaoExclusaoDialog">
+						<f:setPropertyActionListener target="#{locatarioPesquisarBean.locatarioSelecionado}" value="#{locatario}"/>
 					</p:commandButton>
-				</p:column>
+				</p:column>				
 			</p:dataTable>
 			
 			<!-- model -->
-			<p:confirmDialog header="Exclusão de Locatario" 
-				message="Tem certeza que deseja excluir o locatário #{locatario.tbPessoaFisica.nuCpf != null ? locatario.tbPessoaFisica.noPessoaFisica : locatario.tbPessoaJuridica.noRazaoSocial}?"
-				widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
+			<p:confirmDialog header="Exclusão de Locatario" widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog"
+				message="Tem certeza que deseja excluir o locatário #{locatario.tbPessoaFisica.nuCpf != null ? locatario.tbPessoaFisica.noPessoaFisica : locatario.tbPessoaJuridica.noRazaoSocial}?">
 				<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;"/>
 				<p:commandButton value="Sim" oncomplete="confirmacaoExclusao.hide();"
-					action="#{locatarioPesquisarBean.excluir}" process="@this" update="locatarioTable"/>
+					action="#{locatarioPesquisarBean.excluir}" process="@this" update="@form"/>
 			</p:confirmDialog>
 			
 		</h:form>

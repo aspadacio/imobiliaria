@@ -5,9 +5,16 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/template/LayoutPadrao.xhtml">
 	
-	<ui:define name="titulo">Cadastrar Locador</ui:define>
+	<!-- Verificar o título correto dependendo da ação do usuario -->
+	<ui:define name="titulo">#{locadorCadastrarBean.uiTitle}</ui:define>
 	
 	<ui:define name="corpo">
+		<!-- parâmetros passados da página LocadorListar -->
+		<f:metadata>
+			<f:viewParam name="cnpj" value="#{locadorCadastrarBean.cnpj}"/>
+			<f:event listener="#{locadorCadastrarBean.fillLocador2Edit}" type="preRenderView"></f:event>
+		</f:metadata>
+	
 		<h:form id="frmPesquisa" prependId="false">
 			<h1>Cadastrar Locador</h1>
 			
@@ -19,10 +26,10 @@
 					<p:commandButton value="Pesquisar" action="#{locadorCadastrarBean.pesquisar}" ajax="false"/>
 				</p:toolbarGroup>
 				<p:toolbarGroup>
-					 <p:commandButton value="Novo" ajax="false"/>
+					 <p:commandButton value="Novo" action="#{locadorCadastrarBean.novoCadastro}" ajax="false"/> 
 				</p:toolbarGroup>
 				<p:toolbarGroup>
-					 <p:commandButton value="Salvar" action="#{locadorCadastrarBean.validar}" ajax="false"/>
+					 <p:commandButton value="Salvar" action="#{locadorCadastrarBean.validar}" ajax="false" update="@form"/>
 				</p:toolbarGroup>
 			</p:toolbar>
 			

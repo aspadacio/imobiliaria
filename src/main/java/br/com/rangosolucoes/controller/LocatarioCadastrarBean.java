@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -23,11 +23,13 @@ import br.com.rangosolucoes.model.TbPessoa;
 import br.com.rangosolucoes.model.TbPessoaFisica;
 import br.com.rangosolucoes.model.TbPessoaJuridica;
 import br.com.rangosolucoes.model.TbPessoaTelefone;
+import br.com.rangosolucoes.repository.filter.LocatarioFilter;
 import br.com.rangosolucoes.service.LocatarioService;
 import br.com.rangosolucoes.util.jsf.FacesUtil;
 
 @Named("locatarioCadastrarBean")
-@ConversationScoped
+//@ConversationScoped :: qndo chama addTelefone() perde o conteúdo de phones
+@SessionScoped
 public class LocatarioCadastrarBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -46,6 +48,7 @@ public class LocatarioCadastrarBean implements Serializable{
 	@Getter @Setter private String tpTelefone;
 	@Getter @Setter private Boolean isPessoaFisica; //"True" = Pessoa Física; "False" = Pessoa Jurídica
 	@Getter @Setter private Boolean isSameAddress; //Referente 'Endereço' e 'Endereço Cobrança'. "True" = Mesmo Endereço, "False" = Endereços Diferentes.
+	@Getter @Setter private Long idLocatarioSelecionado; //esse valor vem da págian LocatarioListar.
 	
 	@Getter @Setter private TbPessoa pessoa;
 	@Getter @Setter private TbLocatario locatario;
@@ -82,6 +85,12 @@ public class LocatarioCadastrarBean implements Serializable{
 		initClean();
 	}
 	
+	//Aciona quando é clicado em NOVO para cadastrar um novo Locatario
+	public void novoCadastro() throws IOException{
+		initClean();
+		FacesContext.getCurrentInstance().getExternalContext().redirect("LocatarioCadastrar.xhtml"); //change context
+	}
+	
 	//Método responsável por limpar/inicializar os atributos locais.
 	private void initClean() {
 		pessoa = new TbPessoa();
@@ -95,11 +104,31 @@ public class LocatarioCadastrarBean implements Serializable{
 		phones = new ArrayList<TbPessoaTelefone>();
 		phone = new TbPessoaTelefone();
 		
-		//inicializar
-		nuTelefoneDdd = "";
-		nuTelefone = "";
-		tpTelefone = "";
-		isSameAddress = false;
+		//Limpar
+		nome				= "";
+		email				= "";
+		nmFantasia			= "";
+		cnpj				= "";
+		cpf					= "";
+		inscEstadual		= "";
+		nuTelefoneDdd		= "";
+		nuTelefone			= "";
+		tpTelefone			= "";
+		endRua				= "";
+		endBairro			= "";
+		endMunicipio		= "";
+		endUf				= "";
+		endComplemento		= "";
+		endCep				= "";
+		endNr				= "";
+		endCbRua			= "";
+		endCbBairro			= "";
+		endCbMunicipio		= "";
+		endCbUf				= "";	
+		endCbComplemento	= "";
+		endCbCep			= "";
+		endCbNr				= "";
+		endCbTel			= "";
 	}
 	
 	/**
@@ -135,7 +164,6 @@ public class LocatarioCadastrarBean implements Serializable{
 		}else{
 			FacesUtil.addErrorMessage("É necessário informar todos os dados do telefone.");
 		}
-		return;
 	}
 	
 	/**
@@ -161,6 +189,12 @@ public class LocatarioCadastrarBean implements Serializable{
 	public void cadastrar(){
 		//Chamar service para cadastrar Pessoa com os dados da tela LocatarioCadastrar
 		locatarioService.salvarPessoa(pessoa, phones, enderecos, municipios, bairros, isPessoaFisica, isSameAddress);
+		FacesUtil
+				.addInfoMessage("O Locatário " + pessoa.getTbPessoaFisica() != null ? pessoa
+						.getTbPessoaFisica().getNoPessoaFisica() : pessoa
+						.getTbPessoaJuridica().getNoRazaoSocial()
+						+ " foi salvo com sucesso.");
+		initClean();
 	}
 	
 	/**
@@ -168,47 +202,66 @@ public class LocatarioCadastrarBean implements Serializable{
 	 * de realizar o cadastro de um {@link TbPessoa}
 	 * */
 	public void validar(){
+		boolean isAddError = false; //"True" = Se faltou algum preenchimento
+		
 		//Validacoes dos campos obrigatórios
 		if( nome == null || nome.equals("") ){
 			FacesUtil.addErrorMessage("É necessário informar o nome.");
+			isAddError = true;
 		}
 		if( email == null || email.equals("") ){
 			FacesUtil.addErrorMessage("É necessário informar o e-mail.");
+			isAddError = true;
 		}
 		if(phones.isEmpty() || !(phones.size() > 0)){
 			FacesUtil.addErrorMessage("É necessário informar ao menos um telefone.");
+			isAddError = true;
 		}
 		if(endRua == null || endRua == "" ||
 				endCbRua == null || endCbRua == ""){
 			FacesUtil.addErrorMessage("É necessário informar a Rua.");
+			isAddError = true;
 		}
 		if(endNr == null || endNr == "" ||
 				endCbNr == null || endCbNr == ""){
 			FacesUtil.addErrorMessage("É necessário informar o Número.");
+			isAddError = true;
 		}
 		if(endBairro == null || endBairro == "" ||
 				endCbBairro == null || endCbBairro == ""){
 			FacesUtil.addErrorMessage("É necessário informar o Bairro.");
+			isAddError = true;
 		}
 		if(endMunicipio == null || endMunicipio == "" ||
 				endCbMunicipio == null || endCbMunicipio == ""){
 			FacesUtil.addErrorMessage("É necessário informar o Município.");
+			isAddError = true;
 		}
 		if(endUf == null || endUf == "" ||
 				endCbUf == null || endCbUf == ""){
 			FacesUtil.addErrorMessage("É necessário informar a UF.");
+			isAddError = true;
 		}
 		
-		//verificar CNPJ ou CPF
-		if( isPessoaFisica ){
-			if(cpf == "" || cpf.isEmpty()){
-				FacesUtil.addErrorMessage("É necessário informar o CPF.");
-			}
+		if(isPessoaFisica == null){
+			FacesUtil.addErrorMessage("É necessário informar se é Pessoa ou Empresa.");
+			isAddError = true;
 		}else{
-			if(cnpj == "" || cnpj.isEmpty()){
-				FacesUtil.addErrorMessage("É necessário informar o CNPJ.");
+			//verificar CNPJ ou CPF
+			if( isPessoaFisica ){
+				if(cpf == "" || cpf.isEmpty()){
+					FacesUtil.addErrorMessage("É necessário informar o CPF.");
+					isAddError = true;
+				}
+			}else{
+				if(cnpj == "" || cnpj.isEmpty()){
+					FacesUtil.addErrorMessage("É necessário informar o CNPJ.");
+					isAddError = true;
+				}
 			}
 		}
+		
+		if(isAddError){ return; } //necessário para não estourar exception na página.
 		
 		//--Preparando os objetos para inserção
 		//Pessoa
@@ -220,8 +273,8 @@ public class LocatarioCadastrarBean implements Serializable{
 			locatPesJuridica.setNuCnpj(cnpj.replace(".", "").replace("-", "").replace("/", ""));
 			locatPesJuridica.setNuInscricaoEstadual(inscEstadual.replace(".", "").replace("-", ""));
 			locatPesJuridica.setNoRazaoSocial(nmFantasia.toUpperCase());
-			locatPesJuridica.setNoFantasia(nmFantasia.toUpperCase());
-			locatPesJuridica.setNoContato(nmFantasia.toUpperCase()); //Nome Contato. Setar a nmFantasia por hora.
+			locatPesJuridica.setNoFantasia(nome.toUpperCase());
+			locatPesJuridica.setNoContato(nome.toUpperCase()); //Nome Contato. Setar a nmFantasia por hora.
 			pessoa.setTbPessoaJuridica(locatPesJuridica);
 		}
 		
@@ -278,10 +331,89 @@ public class LocatarioCadastrarBean implements Serializable{
 		//Pessoa
 		pessoa.setDsEmail(email.toUpperCase());
 		pessoa.setDtUltimaAlteracao(new Date());
-		//pessoa.setTbEnderecoPessoas(enderecos);
-		//pessoa.setTbPessoaTelefones(phones);
-		//pessoa.setTbLocatarios(locatarios);
 		
 		cadastrar();
+	}
+	
+	/**
+	 * Método chamado no f:event quando é necessário editar um Locatário vindo da página LocatárioListar.
+	 * Método responsável por preencher a tela com a pessoa {@link TbPessoa} a ser editada.
+	 * @param cnpj vindo através da requisição GET
+	 * @param cpj vindo através da requisição GET
+	 * @param isPessoaFisica vindo através da requisição GET
+	 */
+	public void fillLocador2Edit(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		//Valida se é um postBack ou um ValidationFailed. Só entra se for uma requisição
+		//Valida tbm se está enviando o atributo 'genericId'
+	    if (!facesContext.isPostback() && !facesContext.isValidationFailed() &&
+	    		facesContext.getExternalContext().getRequestParameterMap().get("genericId") != null) {
+	    	//Limpando os atributos da tela
+	    	initClean();
+	    	//Atributos locais a serem usados para buscar dados do respectivo Locatário.
+	    	LocatarioFilter filtro = new LocatarioFilter();
+	    	List<TbEnderecoPessoa> enderecos = null;
+	    	List<TbPessoaTelefone> telefones = null;
+	    	List<TbPessoa> pessoas = null;
+	    	TbPessoa pessoa = null;
+	    	
+	    	//Buscar TbPessoa a partir do cpf ou cnpj
+	    	if(this.isPessoaFisica){
+	    		filtro.setCpf(this.cpf);
+	    		pessoas = locatarioService.buscaPessoas(filtro);
+	    	}else{
+	    		//Pessoa Jurídica
+	    		filtro.setCnpj(this.cnpj);
+	    		pessoas = locatarioService.buscaPessoas(filtro);
+	    	}
+	    	
+	    	//Haverá apenas uma pessoa com aquele CNPJ ou CPF
+	    	pessoa = pessoas.get(0); //TbPessoa
+	    	
+	    	//Buscar TbEnderecoPessoa a partir da TbPessoa.idPessoa
+	    	enderecos = locatarioService.findEnderecosById(pessoa.getIdPessoa());
+	    	
+	    	//Buscar TbPessoaTelefone a partir da TbPessoa.idPessoa
+	    	telefones = locatarioService.findPhonesById(pessoa.getIdPessoa());
+	    	
+	    	//Setando dados buscados nos atributos da tela
+	    	this.email = pessoa.getDsEmail();
+	    	//Pessoa Física
+	    	if(this.isPessoaFisica){ //TbPessoaFisica
+	    		this.nome = pessoa.getTbPessoaFisica().getNoPessoaFisica();
+	    		this.cpf = pessoa.getTbPessoaFisica().getNuCpf();
+	    	}else{ //TbPessoaJuridica
+	    		//Pessoa Jurídica
+	    		this.nome = pessoa.getTbPessoaJuridica().getNoFantasia();
+	    		this.cnpj = pessoa.getTbPessoaJuridica().getNuCnpj();
+	    		this.inscEstadual = pessoa.getTbPessoaJuridica().getNuInscricaoEstadual();
+	    		this.nmFantasia = pessoa.getTbPessoaJuridica().getNoRazaoSocial();
+	    	}
+	    	
+	    	//Telefones
+	    	this.phones = telefones;
+	    	
+	    	//Enderecos
+	    	for (TbEnderecoPessoa endereco : enderecos) {
+				//Endereço Residencial 'R'
+	    		if(endereco.getTpEndereco() == 'R'){
+					this.endCep = Integer.toString(endereco.getNuCep());
+					this.endRua = endereco.getDsEndereco();
+					this.endNr = Integer.toString(endereco.getNuEndereco());
+					this.endMunicipio = endereco.getTbMunicipio().getNoMunicipio();
+					this.endUf = endereco.getTbMunicipio().getSgUf();
+					this.endComplemento = endereco.getDsComplemento();
+				}else{
+					//Endereço de Cobrança 'C'
+					this.endCbCep = Integer.toString(endereco.getNuCep());
+					this.endCbRua = endereco.getDsEndereco();
+					this.endCbNr = Integer.toString(endereco.getNuEndereco());
+					this.endCbMunicipio = endereco.getTbMunicipio().getNoMunicipio();
+					this.endCbUf = endereco.getTbMunicipio().getSgUf();
+					this.endCbComplemento = endereco.getDsComplemento();
+					this.endCbTel = Integer.toString(endereco.getNuTelefone());
+				}
+			}
+	    }
 	}
 }

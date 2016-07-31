@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,7 +19,8 @@ import br.com.rangosolucoes.service.LocatarioService;
 import br.com.rangosolucoes.util.jsf.FacesUtil;
 
 @Named("locatarioPesquisarBean")
-@ConversationScoped
+//@ConversationScoped -- perde conteúdo de idLocatarioSelecionada
+@SessionScoped
 public class LocatarioPesquisarBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -28,9 +29,9 @@ public class LocatarioPesquisarBean implements Serializable{
 	LocatarioService locatarioService;
 	
 	@Getter @Setter LocatarioFilter locatarioFilter;
+	@Getter @Setter TbPessoa locatarioSelecionado; //pega o Locatario selecionado na tela.
 	@Getter @Setter List<TbPessoa> locatarios;
 	
-	@Getter @Setter private int idLocatarioSelecionada; //pega Id do Locatario selecionado na tela.
 	
 	//Listas de dados buscados no banco para serem usados como pesquisa
 	@Getter @Setter private List<String> cpfs;
@@ -49,6 +50,7 @@ public class LocatarioPesquisarBean implements Serializable{
 	//Método responsável por limpar/inicializar os atributos locais.
 	private void initClean() {
 		locatarioFilter = new LocatarioFilter();
+		locatarioSelecionado = new TbPessoa();
 		locatarios = new ArrayList<TbPessoa>();
 		
 		cpfs = new ArrayList<String>();
@@ -73,6 +75,26 @@ public class LocatarioPesquisarBean implements Serializable{
 	 *  
 	 * */
 	public void excluir(){
+		if(locatarioSelecionado != null){
+			locatarioService.remover(locatarioSelecionado);
+			FacesUtil
+					.addInfoMessage("O Locatário "
+							+ (locatarioSelecionado.getTbPessoaFisica() != null ? locatarioSelecionado
+							.getTbPessoaFisica().getNoPessoaFisica()
+							: locatarioSelecionado.getTbPessoaJuridica()
+									.getNoRazaoSocial())
+									+ " foi removido com sucesso.");
+			init(); //Limpar
+		}else{
+			FacesUtil.addErrorMessage("LocatarioPesquisarBean::excluir :: Não foi possível excluir o Locatário.");
+		}
+	}
+	
+	/**
+	 * Método responsável editar um Locatário.
+	 *  
+	 * */
+	public void enviar2Editar(){
 		//TODO
 	}
 	
@@ -108,6 +130,8 @@ public class LocatarioPesquisarBean implements Serializable{
 				locatarioFilter.getCnpj() == null || locatarioFilter.getCnpj() == "" &&
 				locatarioFilter.getMunicipio() == null || locatarioFilter.getMunicipio() == ""){
 			FacesUtil.addErrorMessage("É necessário informar ao menos um parâmetro para realizar a pesquisa.");
+			locatarios = null;
+			return;
 		}
 	}
 

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,7 +19,8 @@ import br.com.rangosolucoes.service.LocadorService;
 import br.com.rangosolucoes.util.jsf.FacesUtil;
 
 @Named("locadorPesquisarBean")
-@ConversationScoped
+//@ConversationScoped -- cada click em algum botão chama o @PostConstruct
+@SessionScoped
 public class LocadorPesquisarBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -29,11 +30,10 @@ public class LocadorPesquisarBean implements Serializable{
 	
 	@Getter @Setter LocadorFilter locadorFilter;
 	@Getter @Setter List<TbPessoa> locadores;
-	
-	@Getter @Setter private int idlocadorSelecionada; //pega Id do locador selecionado na tela.
+	@Getter @Setter TbPessoa locadorSelecionado;	
 	
 	//Listas de dados buscados no banco para serem usados como pesquisa
-	@Getter @Setter private List<String> nomeObss; //representa o conteúdo dentro de tbPessoa.dsObservaca. p.ex.: "LOCADOR TESTE (PROPRIETÁRIO)1"
+	//@Getter @Setter private List<String> nomeObss; //representa o conteúdo dentro de tbPessoa.dsObservaca. p.ex.: "LOCADOR TESTE (PROPRIETÁRIO)1"
 	@Getter @Setter private List<String> cnpjs;
 	@Getter @Setter private List<String> municipios;
 	@Getter @Setter private List<String> ufs;
@@ -51,7 +51,7 @@ public class LocadorPesquisarBean implements Serializable{
 		locadorFilter = new LocadorFilter();
 		locadores = new ArrayList<TbPessoa>();
 		
-		nomeObss = new ArrayList<String>();
+		//nomeObss = new ArrayList<String>();
 		cnpjs = new ArrayList<String>();
 		municipios = new ArrayList<String>();
 		ufs = new ArrayList<String>();
@@ -72,6 +72,21 @@ public class LocadorPesquisarBean implements Serializable{
 	 *  
 	 * */
 	public void excluir(){
+		if(locadorSelecionado != null){
+			locadorService.remover(locadorSelecionado);
+			FacesUtil.addInfoMessage("O Locador " + locadorSelecionado.getDsObservacao() + " foi removido com sucesso.");
+			//Limpar
+			initClean();
+		}else{
+			FacesUtil.addErrorMessage("LocatarioPesquisarBean::excluir :: Não foi possível excluir o Locatário.");
+		}
+	}
+	
+	/**
+	 * Método responsável por editar um Locatário. Envia para a tela LocadorCadastar
+	 *  
+	 * */
+	public void editar(){
 		//TODO
 	}
 	
@@ -81,7 +96,7 @@ public class LocadorPesquisarBean implements Serializable{
 	 * nas combos para facilitar a pesquisa.
 	 * */
 	private void retornarFiltrosDB() {
-		nomeObss = locadorService.retornarNomeObss();
+		//nomeObss = locadorService.retornarNomeObss();
 		cnpjs = locadorService.retornarCnpjs();
 		municipios = locadorService.retornarMunicipios();
 		ufs = locadorService.retornarUfs();
@@ -95,17 +110,17 @@ public class LocadorPesquisarBean implements Serializable{
 		validarFiltro();
 		prepararFiltro();
 		locadores = locadorService.buscaPessoas(this.locadorFilter);
+		locadorFilter = new LocadorFilter();
 	}
 
 	/**
 	 * Método responsável por validar se o usuário preencheu ao menos um campo de {@link LocadorFilter} para prosseguir com a pesquisa.
 	 * */
-	private void validarFiltro() {
-		if(locadorFilter.getNomeObs() == null || locadorFilter.getNomeObs() == "" &&
-				locadorFilter.getUf() == null || locadorFilter.getUf() == "" &&
-				locadorFilter.getCnpj() == null || locadorFilter.getCnpj() == "" &&
-				locadorFilter.getMunicipio() == null || locadorFilter.getMunicipio() == ""){
+	private void validarFiltro() { 
+		if(locadorFilter.getNomeObs() == "" &&  locadorFilter.getUf() == null &&
+				locadorFilter.getCnpj() == null && locadorFilter.getMunicipio() == null){
 			FacesUtil.addErrorMessage("É necessário informar ao menos um parâmetro para realizar a pesquisa.");
+			locadorFilter = null;
 		}
 	}
 
@@ -113,11 +128,13 @@ public class LocadorPesquisarBean implements Serializable{
 	 * Método responsável por alterar {@link String} para lowerCase e tirar caracteres indevidos.
 	 * */
 	private void prepararFiltro() {
-		if(locadorFilter.getNomeObs() != null && locadorFilter.getNomeObs() != ""){
-			locadorFilter.setNomeObs(locadorFilter.getNomeObs().toUpperCase());			
-		}
-		if(locadorFilter.getUf() != null && locadorFilter.getUf() != ""){
-			locadorFilter.setUf(locadorFilter.getUf().toUpperCase());			
+		if(locadorFilter != null){
+			if(locadorFilter.getNomeObs() != null && locadorFilter.getNomeObs() != ""){
+				locadorFilter.setNomeObs(locadorFilter.getNomeObs().toUpperCase());			
+			}
+			if(locadorFilter.getUf() != null && locadorFilter.getUf() != ""){
+				locadorFilter.setUf(locadorFilter.getUf().toUpperCase());			
+			}
 		}
 	}
 }
