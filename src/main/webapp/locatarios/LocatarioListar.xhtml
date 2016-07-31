@@ -70,12 +70,16 @@
 				</p:column>
 				
 				<p:column headerText="Ações" style="text-align: center; width: 100px">
-					<p:button icon="ui-icon-pencil" title="Editar" onclick="#{locatarioCadastrarBean.editar}">
-						<f:setPropertyActionListener target="#{locatarioCadastrarBean.idLocatarioSelecionado}" value="#{locatario.idPessoa}"/>
+					<p:button icon="ui-icon-pencil" title="Editar" outcome="/locatarios/LocatarioCadastrar">
+						<!-- parâmetros enviado para outra tela -->
+						<f:param name="isPessoaFisica"
+							value="#{locatario.tbPessoaFisica == null ? 'False' : 'True'}" />
+							<!-- 'genericId' se for PF passa o número do CPF, se for PJ passa o número do CNPJ -->
+						<f:param name="genericId" value="{#locatario.tbPessoaFisica == null ? #{locatario.tbPessoaFisica.nuCpf} : locatario.tbPessoaJuridica.nuCnpj}" />
 					</p:button>
 					<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show();"
 						process="@this" update=":masterForm:confirmacaoExclusaoDialog">
-						<f:setPropertyActionListener target="#{locatarioPesquisarBean.idLocatarioSelecionada}" value="#{locatario.idPessoa}"/>
+						<f:setPropertyActionListener target="#{locatarioPesquisarBean.locatarioSelecionado}" value="#{locatario}"/>
 					</p:commandButton>
 				</p:column>				
 			</p:dataTable>

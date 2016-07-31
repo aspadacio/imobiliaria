@@ -34,22 +34,22 @@ public class LocatarioService implements Serializable {
 
 	@Transacional
 	public List<String> retornarCpfs() {
-		return locatarioRepository.retonarCpfs();
+		return locatarioRepository.retornarCpfs();
 	}
 
 	@Transacional
 	public List<String> retornarCnpjs() {
-		return locatarioRepository.retonarCnpjs();
+		return locatarioRepository.retornarCnpjs();
 	}
 
 	@Transacional
 	public List<String> retornarMunicipios() {
-		return locatarioRepository.retonarMunicipios();
+		return locatarioRepository.retornarMunicipios();
 	}
 
 	@Transacional
 	public List<String> retornarUfs() {
-		return locatarioRepository.retonarUfs();
+		return locatarioRepository.retornarUfs();
 	}
 
 	/**
@@ -64,7 +64,22 @@ public class LocatarioService implements Serializable {
 	 * Método responsável por remover Locatário {@link TbLocatario} e suas dependências.
 	 * */
 	@Transacional
-	public void remover(int idLocatarioSelecionada) {
-		locatarioRepository.remover(idLocatarioSelecionada);
+	public void remover(TbPessoa locatarioSelecionado) {
+		locatarioRepository.remover(locatarioSelecionado);
+	}
+	
+	/**
+	 * Método responsável por retornar o Endereco {@link TbEnderecoPessoa} a partir do id ID_PESSOA
+	 * */
+	@Transacional
+	public List<TbEnderecoPessoa> findEnderecosById(Long idPessoa) {
+		return locatarioRepository.findEnderecosById(idPessoa);
+	}
+	
+	/**
+	 * Método responsável por retornar os Telefones {@link TbPessoaTelefone} a partir do id ID_PESSOA
+	 * */
+	public List<TbPessoaTelefone> findPhonesById(Long idPessoa) {
+		return locatarioRepository.findPhonesById(idPessoa);
 	}
 }

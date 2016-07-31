@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.rangosolucoes.model.TbBairro;
@@ -102,17 +103,27 @@ public class LocatarioRepository implements Serializable {
 	 * inseridos no DB e retornar.
 	 * */
 	@SuppressWarnings("unchecked")
-	public List<String> retonarCpfs() {
+	public List<String> retornarCpfs() {
 		return manager.createQuery("SELECT PF.nuCpf FROM TbPessoaFisica PF").getResultList();
 	}
 
 	/**
-	 * Método responsável por pegar todos os CNPJs
+	 * Método responsável por pegar todos os CNPJs de Locatários
 	 * inseridos no DB e retornar.
 	 * */
 	@SuppressWarnings("unchecked")
-	public List<String> retonarCnpjs() {
-		return manager.createQuery("SELECT PJ.nuCnpj FROM TbPessoaJuridica PJ").getResultList();
+	public List<String> retornarCnpjs() {
+		Session session = manager.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(TbLocatario.class);		
+			
+		//Alias para pegar todos os CNPJs apenas dos Locatários
+		criteria.createAlias("tbPessoa", "pessoa");
+		criteria.createAlias("pessoa.tbPessoaJuridica", "pj");
+		
+		//retornar apenas os CNPJs
+		criteria.setProjection(Projections.property("pj.nuCnpj"));
+		
+		return criteria.list();
 	}
 
 	/**
@@ -120,7 +131,7 @@ public class LocatarioRepository implements Serializable {
 	 * inseridos no DB e retornar.
 	 * */
 	@SuppressWarnings("unchecked")
-	public List<String> retonarMunicipios() {
+	public List<String> retornarMunicipios() {
 		return manager.createQuery("SELECT MN.noMunicipio FROM TbMunicipio MN").getResultList();
 	}
 
@@ -129,7 +140,7 @@ public class LocatarioRepository implements Serializable {
 	 * inseridos no DB e retornar.
 	 * */
 	@SuppressWarnings("unchecked")
-	public List<String> retonarUfs() {
+	public List<String> retornarUfs() {
 		return manager.createQuery("SELECT MN.sgUf FROM TbMunicipio MN").getResultList();
 	}
 
@@ -156,21 +167,15 @@ public class LocatarioRepository implements Serializable {
 			criteria.createAlias("tbPessoaJuridica", "pessoaJuridica");
 			criteria.add(Restrictions.eq("pessoaJuridica.nuCnpj", filtro.getCnpj()));
 		}
-		/*if(filtro.getMunicipio() != null && filtro.getMunicipio() != ""){
-			criteria.add(Restrictions);
-		}
-		if(filtro.getUf() != null && filtro.getUf() != ""){
-			criteria.add(Restrictions);
-		}*/
 		
 		return criteria.addOrder(Order.asc("idPessoa")).list();
 	}
 
 	/**
 	 * Método responsável por remover Locatário {@link TbLocatario} e suas dependências.
-	 * @param idLocatarioSelecionada referente a {@link TbPessoa} ID_PESSOA
+	 * @param locatarioSelecionado referente a {@link TbPessoa} ID_PESSOA
 	 * */
-	public void remover(int idLocatarioSelecionada) {
+	public void remover(TbPessoa locatarioSelecionado) {
 		boolean isPessoaFisica = false;
 		TbPessoa pessoaPersisted = null;
 		TbPessoaFisica pFisicaPersisted = null;
@@ -179,7 +184,7 @@ public class LocatarioRepository implements Serializable {
 		List<TbPessoaTelefone> telefonesPersisted = null;
 		
 		//buscar Pessoa salva na tabela TbPessoa
-		pessoaPersisted = findPessoaById(new Long(idLocatarioSelecionada));
+		pessoaPersisted = findPessoaById(locatarioSelecionado.getIdPessoa());
 		
 		//Buscar ou pessoaJuridica ou pessoaFisica que foi cadastrada
 		if(pessoaPersisted.getTbPessoaFisica() != null){
@@ -263,7 +268,7 @@ public class LocatarioRepository implements Serializable {
 	 * Método responsável por retornar os Telefones {@link TbPessoaTelefone} a partir do id ID_PESSOA
 	 * */
 	@SuppressWarnings("unchecked")
-	private List<TbPessoaTelefone> findPhonesById(Long idPessoa) {
+	public List<TbPessoaTelefone> findPhonesById(Long idPessoa) {
 		Session session = manager.unwrap(Session.class);
 		Criteria criteria = session.createCriteria(TbPessoaTelefone.class);
 		
@@ -278,7 +283,7 @@ public class LocatarioRepository implements Serializable {
 	 * Método responsável por retornar o Endereco {@link TbEnderecoPessoa} a partir do id ID_PESSOA
 	 * */
 	@SuppressWarnings("unchecked")
-	private List<TbEnderecoPessoa> findEnderecosById(Long idPessoa) {
+	public List<TbEnderecoPessoa> findEnderecosById(Long idPessoa) {
 		Session session = manager.unwrap(Session.class);
 		Criteria criteria = session.createCriteria(TbEnderecoPessoa.class);
 		

@@ -8,6 +8,15 @@
 	<ui:define name="titulo">Cadastrar Locatário</ui:define>
 	
 	<ui:define name="corpo">
+		<!-- parâmetros passados da página LocatarioListar -->
+		<f:metadata>
+			<f:viewParam name="isPessoaFisica" value="#{locatarioCadastrarBean.isPessoaFisica}"/>
+			<!-- 'genericId' se for PF passa o número do CPF, se for PJ passa o número do CNPJ -->
+			<f:viewParam name="genericId" 
+				value="#{locatarioCadastrarBean.isPessoaFisica == 'True' ? locatarioCadastrarBean.cpf : locatarioCadastrarBean.cnpj}"/>
+			<f:event listener="#{locatarioCadastrarBean.fillLocador2Edit}" type="preRenderView"></f:event>
+		</f:metadata>
+	
 		<h:form id="frmPesquisa" prependId="false">
 			<h1>Cadastrar Locatário</h1>
 			
