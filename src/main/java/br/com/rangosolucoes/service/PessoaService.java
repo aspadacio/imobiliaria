@@ -17,12 +17,6 @@ public class PessoaService implements Serializable{
 	
 	@Transacional
 	public TbPessoa salvar(TbPessoa pessoa){
-		TbPessoa pessoaExistente = pessoaRepository.porCNPJ(pessoa.getTbPessoaJuridica().getNuCnpj());
-		
-		if(pessoaExistente != null && pessoaExistente.equals(pessoa)){
-			throw new NegocioException("Já existe uma Pessoa cadastrada com o CNPJ informado.");
-		}
-		
 		return pessoaRepository.salvar(pessoa);
 	}
 

@@ -12,6 +12,7 @@
 		
 		<f:metadata>
 			<o:viewParam name="imobiliaria" converter="pessoaJuridicaConverter" value="#{cadastroImobiliariasBean.pessoaJuridica}"/>
+			<f:event listener="#{cadastroImobiliariasBean.alteraImobiliariaSelecionada}" type="preRenderView"></f:event>
 		</f:metadata>
 	
 		<h:form>

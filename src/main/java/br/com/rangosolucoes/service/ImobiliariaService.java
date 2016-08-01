@@ -18,12 +18,6 @@ public class ImobiliariaService implements Serializable{
 	
 	@Transacional
 	public TbPessoaJuridica salvar(TbPessoaJuridica pessoaJuridica){
-		TbPessoaJuridica pessoaJuridicaExistente = imobiliariaRepository.porCNPJ(pessoaJuridica.getNuCnpj());
-		
-		if(pessoaJuridicaExistente != null && pessoaJuridicaExistente.equals(pessoaJuridica)){
-			throw new NegocioException("Já existe uma Pessoa Jurídica com o CNPJ informado.");
-		}
-		
 		return imobiliariaRepository.salvar(pessoaJuridica);
 	}
 	

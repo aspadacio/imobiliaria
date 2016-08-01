@@ -17,12 +17,6 @@ public class EnderecoPessoaService implements Serializable{
 	
 	@Transacional
 	public TbEnderecoPessoa salvar(TbEnderecoPessoa enderecoPessoa){
-		TbEnderecoPessoa enderecoPessoaExistente = enderecoPessoaRepository.porPessoaEMunicipio(enderecoPessoa.getTbPessoa(), enderecoPessoa.getTbMunicipio());
-		
-		if(enderecoPessoaExistente != null && enderecoPessoaExistente.equals(enderecoPessoa)){
-			throw new NegocioException("Já existe um Endereço cadastrado para Pessoa Jurídica e Município informados.");
-		}
-		
 		return enderecoPessoaRepository.salvar(enderecoPessoa);
 	}
 

@@ -20,10 +20,10 @@ public class BairroService implements Serializable{
 		TbBairro bairroExistente = bairroRepository.porNomeDoBairro(bairro.getNoBairro());
 		
 		if(bairroExistente != null && bairroExistente.equals(bairro)){
-			throw new NegocioException("Já existe um Bairro com o nome informado.");
+			return bairroExistente;
+		}else{
+			return bairroRepository.salvar(bairro);
 		}
-		
-		return bairroRepository.salvar(bairro);
 	}
 
 }

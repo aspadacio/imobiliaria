@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -17,6 +18,7 @@ import br.com.rangosolucoes.model.TbMunicipio;
 import br.com.rangosolucoes.model.TbPessoa;
 import br.com.rangosolucoes.model.TbPessoaJuridica;
 import br.com.rangosolucoes.model.TbPessoaTelefone;
+import br.com.rangosolucoes.repository.ImobiliariaRepository;
 import br.com.rangosolucoes.service.BairroService;
 import br.com.rangosolucoes.service.ImobiliariaService;
 import br.com.rangosolucoes.service.EnderecoPessoaService;
@@ -49,6 +51,9 @@ public class CadastroImobiliariasBean implements Serializable {
 	@Inject
 	private EnderecoPessoaService enderecoPessoaService;
 	
+	@Inject
+	private ImobiliariaRepository imobiliariaRepository;
+	
 	private TbPessoaJuridica pessoaJuridica;
 	private TbPessoaTelefone pessoaTelefone;
 	private TbPessoa pessoa;
@@ -69,7 +74,7 @@ public class CadastroImobiliariasBean implements Serializable {
 	}
 	
 	public boolean isEditando() {
-		return this.pessoaJuridica.getNuCnpj() != null;
+		return this.pessoaJuridica.getNuCnpj() != null && !this.pessoaJuridica.getNuCnpj().equals("");
 	}
 
 	public String novoCadastro() {
@@ -77,11 +82,20 @@ public class CadastroImobiliariasBean implements Serializable {
 		return "/imobiliaria/CadastroImobiliaria?faces-redirect=true";
 	}
 
-	public String salvar() {
+	public void salvar() {
 		if(camposPreenchidos()){
 			pessoaJuridica.setNoContato("a definir");
 			String cnpjTemp = pessoaJuridica.getNuCnpj().replace(".", "").replace("/", "").replace("-", "");
 			pessoaJuridica.setNuCnpj(cnpjTemp);
+			
+			boolean existePessoaJuridica = imobiliariaRepository.porCNPJ(pessoaJuridica.getNuCnpj()) != null;
+			
+			if(existePessoaJuridica){
+				FacesUtil.addInfoMessage("Imobiliária alterada com sucesso!");
+			}else{
+				FacesUtil.addInfoMessage("Imobiliária cadastrada com sucesso!");
+			}
+			
 			pessoaJuridica = imobiliariaService.salvar(pessoaJuridica);
 			
 			pessoa = populaPessoa(pessoaJuridica);
@@ -109,10 +123,6 @@ public class CadastroImobiliariasBean implements Serializable {
 			enderecoPessoa = enderecoPessoaService.salvar(enderecoPessoa);
 			
 			limpar();
-			FacesUtil.addInfoMessage("Imobiliária cadastrada com sucesso!");
-			return "/imobiliaria/CadastroImobiliaria?faces-redirect=true";
-		}else{
-			return "";
 		}
 	}
 	
@@ -215,6 +225,23 @@ public class CadastroImobiliariasBean implements Serializable {
 		}
 		
 		return preenchido;
+	}
+	
+	public void alteraImobiliariaSelecionada(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		/*Valida se é um postBack ou um ValidationFailed. Só entra se for uma requisição
+		  Valida tbm se está enviando o atributo 'imobiliaria'*/
+		
+		if(!facesContext.isPostback() && !facesContext.isValidationFailed() &&
+				facesContext.getExternalContext().getRequestParameterMap().get("imobiliaria") != null){
+			this.pessoa = imobiliariaRepository.consultaPessoa(pessoaJuridica.getNuCnpj());
+			this.telefones = imobiliariaRepository.consultaTelefonesPessoa(this.pessoa.getIdPessoa());
+			this.enderecoPessoa = imobiliariaRepository.consultaEnderecoPessoa(this.pessoa.getIdPessoa());
+			this.nuCep = String.valueOf(this.enderecoPessoa.getNuCep());
+			this.bairro = this.enderecoPessoa.getTbBairro();
+			this.municipio = this.enderecoPessoa.getTbMunicipio();
+			this.sgUF = this.municipio.getSgUf();
+		}
 	}
 	
 	public Estados[] getEstados(){

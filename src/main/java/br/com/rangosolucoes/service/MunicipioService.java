@@ -20,10 +20,10 @@ public class MunicipioService implements Serializable{
 		TbMunicipio municipioExistente = municipioRepository.porNomeDoMunicipio(municipio.getNoMunicipio());
 		
 		if(municipioExistente != null && municipioExistente.equals(municipio)){
-			throw new NegocioException("Já existe um Município com o nome informado.");
+			return municipioExistente;
+		}else{
+			return municipioRepository.salvar(municipio);
 		}
-		
-		return municipioRepository.salvar(municipio);
 	}
 
 }

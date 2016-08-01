@@ -17,12 +17,6 @@ public class PessoaTelefoneService implements Serializable{
 	
 	@Transacional
 	public TbPessoaTelefone salvar(TbPessoaTelefone pessoaTelefone){
-		TbPessoaTelefone pessoaTelefoneExistente = pessoaTelefoneRepository.porNumeroTelefone(pessoaTelefone.getNuTelefone());
-		
-		if(pessoaTelefoneExistente != null && pessoaTelefoneExistente.equals(pessoaTelefone)){
-			throw new NegocioException("O telefone já está cadastrado.");
-		}
-		
 		return pessoaTelefoneRepository.salvar(pessoaTelefone);
 	}
 }
