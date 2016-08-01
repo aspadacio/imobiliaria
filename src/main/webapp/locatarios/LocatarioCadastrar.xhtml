@@ -5,15 +5,15 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/template/LayoutPadrao.xhtml">
 	
-	<ui:define name="titulo">Cadastrar Locatário</ui:define>
+	<!-- Verificar o título correto dependendo da ação do usuario -->
+	<ui:define name="titulo">#{locatarioCadastrarBean.is2edit ? 'Editando Locatário' : 'Novo Locatário'}</ui:define>
 	
 	<ui:define name="corpo">
 		<!-- parâmetros passados da página LocatarioListar -->
 		<f:metadata>
 			<f:viewParam name="isPessoaFisica" value="#{locatarioCadastrarBean.isPessoaFisica}"/>
 			<!-- 'genericId' se for PF passa o número do CPF, se for PJ passa o número do CNPJ -->
-			<f:viewParam name="genericId" 
-				value="#{locatarioCadastrarBean.isPessoaFisica == 'True' ? locatarioCadastrarBean.cpf : locatarioCadastrarBean.cnpj}"/>
+			<f:viewParam name="genericId" value="#{locatarioCadastrarBean.genericId}"/>
 			<f:event listener="#{locatarioCadastrarBean.fillLocador2Edit}" type="preRenderView"></f:event>
 		</f:metadata>
 	

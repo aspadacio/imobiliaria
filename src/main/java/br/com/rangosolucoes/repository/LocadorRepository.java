@@ -175,7 +175,7 @@ public class LocadorRepository implements Serializable {
 		if(municipioPersisted != null){
 			//Already exist. So it´s an editing process.
 			try{
-				bairroPersisted = findBairroByMunicipioId(municipioPersisted.getIdMunicipio());
+				bairroPersisted = findBairroByMunicipioIdNome(municipioPersisted.getIdMunicipio(), endereco.getTbBairro().getNoBairro());
 			}catch(NoResultException e){
 				//ignorar se não tiver resultado = 0 row(s) returned
 			}
@@ -230,12 +230,13 @@ public class LocadorRepository implements Serializable {
 	 * @param idMunicipio
 	 * @return {@link TbBairro}
 	 */
-	private TbBairro findBairroByMunicipioId(Long idMunicipio) {
+	private TbBairro findBairroByMunicipioIdNome(Long idMunicipio, String noBairro) {
 		return manager
 				.createQuery(
-						"FROM TbBairro WHERE tbMunicipio.idMunicipio = :idMunicipio",
+						"FROM TbBairro WHERE tbMunicipio.idMunicipio = :idMunicipio AND noBairro = :noBairro",
 						TbBairro.class)
 				.setParameter("idMunicipio", idMunicipio)
+				.setParameter("noBairro", noBairro)
 				.getSingleResult();
 	}
 
