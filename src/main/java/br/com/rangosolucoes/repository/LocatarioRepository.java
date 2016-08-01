@@ -16,6 +16,7 @@ import org.hibernate.criterion.Restrictions;
 
 import br.com.rangosolucoes.model.TbBairro;
 import br.com.rangosolucoes.model.TbEnderecoPessoa;
+import br.com.rangosolucoes.model.TbLocador;
 import br.com.rangosolucoes.model.TbLocatario;
 import br.com.rangosolucoes.model.TbMunicipio;
 import br.com.rangosolucoes.model.TbPessoa;
@@ -41,7 +42,6 @@ public class LocatarioRepository implements Serializable {
 	 * @param isSameAddress - diz se "Endereco" e "Endereco Cobranca" são iguais. 
 	 * 
 	 * */
-	@SuppressWarnings("null")
 	public void salvarPessoa(TbPessoa pessoa, List<TbPessoaTelefone> phones,
 			List<TbEnderecoPessoa> enderecos, List<TbMunicipio> municipios,
 			List<TbBairro> bairros, Boolean isPessoaFisica,
@@ -54,6 +54,7 @@ public class LocatarioRepository implements Serializable {
 		TbEnderecoPessoa enderecoPersisted = null;
 		TbMunicipio municipioPersisted = null;
 		TbBairro bairroPersisted = null;
+		TbLocatario locatarioPersisted = null;
 		TbLocatario locatario = new TbLocatario();
 		
 		//Persistindo Pessoa Física / Jurídica
@@ -184,9 +185,29 @@ public class LocatarioRepository implements Serializable {
 		//END-Persistindo Endereço completo: Municipio, Bairro e Endereço
 		
 		//Pesistindo o locatário
+		//check if locatário exist.
+		try{
+			locatarioPersisted = findLocatarioById(pessoaPersisted.getIdPessoa());
+		}catch(NoResultException e){} //ignorar se não tiver resultado = 0 row(s) returned
+		if(locatarioPersisted != null){
+			//Already exist. So it´s an editing process.
+			locatario.setIdLocatario(locatarioPersisted.getIdLocatario()); //set Primary Key
+		}
 		locatario.setTbPessoa(pessoaPersisted);
 		locatario.setDtCadastro(new Date());
 		manager.merge(locatario);
+	}
+
+	/**
+	 * Método responsável por retornar o Locatário {@link TbLocatario} a partir do id ID_PESSOA
+	 * */
+	private TbLocatario findLocatarioById(Long idPessoa) {
+		return manager
+				.createQuery(
+						"FROM TbLocatario WHERE tbPessoa.idPessoa = :idPessoa",
+						TbLocatario.class)
+				.setParameter("idPessoa", idPessoa)
+				.getSingleResult();
 	}
 
 	/**
