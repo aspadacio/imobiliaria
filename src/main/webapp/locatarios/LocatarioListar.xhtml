@@ -75,7 +75,8 @@
 						<f:param name="isPessoaFisica"
 							value="#{locatario.tbPessoaFisica == null ? 'False' : 'True'}" />
 							<!-- 'genericId' se for PF passa o número do CPF, se for PJ passa o número do CNPJ -->
-						<f:param name="genericId" value="{#locatario.tbPessoaFisica == null ? #{locatario.tbPessoaFisica.nuCpf} : locatario.tbPessoaJuridica.nuCnpj}" />
+						<f:param name="genericId" 
+						 value="#{locatario.tbPessoaFisica == null ? locatario.tbPessoaJuridica.nuCnpj : locatario.tbPessoaFisica.nuCpf}" />
 					</p:button>
 					<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show();"
 						process="@this" update=":masterForm:confirmacaoExclusaoDialog">

@@ -46,9 +46,10 @@ public class LocatarioCadastrarBean implements Serializable{
 	@Getter @Setter private String nuTelefoneDdd;
 	@Getter @Setter private String nuTelefone;
 	@Getter @Setter private String tpTelefone;
+	@Getter @Setter private String genericId; //Passado pela página LocadorListar. Um genérico que pode ser o CNPJ ou o CPF.
+	@Getter @Setter private Boolean is2edit; //verifica se o usuário está cadastrando ou editando.
 	@Getter @Setter private Boolean isPessoaFisica; //"True" = Pessoa Física; "False" = Pessoa Jurídica
 	@Getter @Setter private Boolean isSameAddress; //Referente 'Endereço' e 'Endereço Cobrança'. "True" = Mesmo Endereço, "False" = Endereços Diferentes.
-	@Getter @Setter private Long idLocatarioSelecionado; //esse valor vem da págian LocatarioListar.
 	
 	@Getter @Setter private TbPessoa pessoa;
 	@Getter @Setter private TbLocatario locatario;
@@ -103,6 +104,8 @@ public class LocatarioCadastrarBean implements Serializable{
 		bairros = new ArrayList<TbBairro>();
 		phones = new ArrayList<TbPessoaTelefone>();
 		phone = new TbPessoaTelefone();
+		
+		is2edit = false; //verifica se o usuário está cadastrando ou editando.
 		
 		//Limpar
 		nome				= "";
@@ -242,6 +245,10 @@ public class LocatarioCadastrarBean implements Serializable{
 			FacesUtil.addErrorMessage("É necessário informar a UF.");
 			isAddError = true;
 		}
+		if(endCbTel == null || endCbTel == ""){
+			FacesUtil.addErrorMessage("É necessário informar um número de contato no Endereço de Cobrança.");
+			isAddError = true;
+		}
 		
 		if(isPessoaFisica == null){
 			FacesUtil.addErrorMessage("É necessário informar se é Pessoa ou Empresa.");
@@ -262,6 +269,8 @@ public class LocatarioCadastrarBean implements Serializable{
 		}
 		
 		if(isAddError){ return; } //necessário para não estourar exception na página.
+		
+		cleanLists(); //Limpando as listas antes de preenchê-las.
 		
 		//--Preparando os objetos para inserção
 		//Pessoa
@@ -293,7 +302,7 @@ public class LocatarioCadastrarBean implements Serializable{
 		endereco.setDsEndereco(endRua.toUpperCase());
 		endereco.setNuEndereco(Integer.parseInt(endNr));
 		endereco.setDsComplemento(endComplemento.toUpperCase());
-		endereco.setTpEndereco('R');
+		endereco.setTpEndereco('R'); //Residencial
 		endereco.setTbMunicipio(municipio);
 		endereco.setTbBairro(bairro);
 		
@@ -315,7 +324,8 @@ public class LocatarioCadastrarBean implements Serializable{
 		endereco.setDsEndereco(endCbRua.toUpperCase());
 		endereco.setNuEndereco(Integer.parseInt(endCbNr));
 		endereco.setDsComplemento(endCbComplemento.toUpperCase());
-		endereco.setTpEndereco('C'); //Indefinido, por hora
+		endereco.setNuTelefone(new Integer(0)); //Integer.parseInt(endCbTel.replace("-", "").replace("(", "").replace(")", "").replace(" ", "")));
+		endereco.setTpEndereco('C'); //Cobranca
 		endereco.setTbMunicipio(municipio);
 		endereco.setTbBairro(bairro);
 		
@@ -335,6 +345,17 @@ public class LocatarioCadastrarBean implements Serializable{
 		cadastrar();
 	}
 	
+	/**
+	 * Método responsável por limpar as listas antes de preenchê-las e enviá-las para o cadastro.
+	 */
+	private void cleanLists() {
+		//this.phones = new ArrayList<TbPessoaTelefone>(); //exceto este porque é persistido no método addTelefone()
+		this.enderecos = new ArrayList<TbEnderecoPessoa>();
+		this.municipios = new ArrayList<TbMunicipio>();
+		this.bairros = new ArrayList<TbBairro>();
+		this.locatarios = new ArrayList<TbLocatario>();
+	}
+
 	/**
 	 * Método chamado no f:event quando é necessário editar um Locatário vindo da página LocatárioListar.
 	 * Método responsável por preencher a tela com a pessoa {@link TbPessoa} a ser editada.
@@ -359,11 +380,11 @@ public class LocatarioCadastrarBean implements Serializable{
 	    	
 	    	//Buscar TbPessoa a partir do cpf ou cnpj
 	    	if(this.isPessoaFisica){
-	    		filtro.setCpf(this.cpf);
+	    		filtro.setCpf(this.genericId);
 	    		pessoas = locatarioService.buscaPessoas(filtro);
 	    	}else{
 	    		//Pessoa Jurídica
-	    		filtro.setCnpj(this.cnpj);
+	    		filtro.setCnpj(this.genericId);
 	    		pessoas = locatarioService.buscaPessoas(filtro);
 	    	}
 	    	
@@ -414,6 +435,7 @@ public class LocatarioCadastrarBean implements Serializable{
 					this.endCbTel = Integer.toString(endereco.getNuTelefone());
 				}
 			}
+	    	this.is2edit = true; //verifica se o usuário está cadastrando ou editando.
 	    }
 	}
 }

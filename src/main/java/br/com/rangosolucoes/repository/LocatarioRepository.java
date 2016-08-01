@@ -1,10 +1,12 @@
 package br.com.rangosolucoes.repository;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -31,7 +33,7 @@ public class LocatarioRepository implements Serializable {
 	private EntityManager manager;
 
 	/**
-	 * Método responsável por salvar um Locatário com suas devidas entidades {@link TbPesso}, {@link TbPessoaFisica}, {@link TbPessoaJuridica}, {@link TbPessoaTelefone} e {@link TbMunicipio}
+	 * Método responsável por salvar um Locatário {@link TbLocatario} com suas devidas entidades {@link TbPessoa}, {@link TbPessoaFisica}, {@link TbPessoaJuridica}, {@link TbPessoaTelefone} e {@link TbMunicipio}
 	 * @param bairros 
 	 * @param municipios 
 	 * @param enderecos 
@@ -39,34 +41,100 @@ public class LocatarioRepository implements Serializable {
 	 * @param isSameAddress - diz se "Endereco" e "Endereco Cobranca" são iguais. 
 	 * 
 	 * */
+	@SuppressWarnings("null")
 	public void salvarPessoa(TbPessoa pessoa, List<TbPessoaTelefone> phones,
 			List<TbEnderecoPessoa> enderecos, List<TbMunicipio> municipios,
 			List<TbBairro> bairros, Boolean isPessoaFisica,
 			Boolean isSameAddress) {
-		//Persistindo Pessoa Física / Jurídica
-		if(isPessoaFisica){
-			manager.merge(pessoa.getTbPessoaFisica()); //TbPessoaFisica
-		}else{
-			manager.merge(pessoa.getTbPessoaJuridica()); //TbPessoaJuridica
-		}
-		
-		//Persistindo Pessoa
-		TbPessoa pessoaPersisted = manager.merge(pessoa); //TbPessoa
-		
-		//Persistindo Endereço completo: Municipio, Bairro e Endereço
+		//Tabelas usadas neste método
+		TbPessoa pessoaPersisted = null;
+		TbPessoaFisica pfPersisted = null;
+		TbPessoaJuridica pjPersisted = null;
+		TbPessoaTelefone phonePersisted = null;
+		TbEnderecoPessoa enderecoPersisted = null;
 		TbMunicipio municipioPersisted = null;
 		TbBairro bairroPersisted = null;
+		TbLocatario locatario = new TbLocatario();
+		
+		//Persistindo Pessoa Física / Jurídica
+		if(isPessoaFisica){
+			//Pessoa Física
+			pfPersisted = manager.find(TbPessoaFisica.class, pessoa.getTbPessoaFisica().getNuCpf()); //check if exist
+			//Check if already exist. If yes then it´s an editing process.
+			if(pfPersisted != null){
+				//Already exist. So it´s an editing process.
+				pessoaPersisted = findPessoaByCpf(pfPersisted.getNuCpf());
+				pessoa.getTbPessoaFisica().setNuCpf(pfPersisted.getNuCpf()); //set Primary Key
+				pessoa.setIdPessoa(pessoaPersisted.getIdPessoa()); //set Primary Key
+			}
+			manager.merge(pessoa.getTbPessoaFisica()); //TbPessoaFisica			
+		}else{
+			//Pessoa Jurídica
+			pjPersisted = manager.find(TbPessoaJuridica.class, pessoa.getTbPessoaJuridica().getNuCnpj()); //check if exist
+			//Check if already exist. If yes then it´s an editing process.
+			if(pjPersisted != null){
+				//Already exist. So it´s an editing process.
+				pessoaPersisted = findPessoaByCnpj(pjPersisted.getNuCnpj());
+				pessoa.getTbPessoaJuridica().setNuCnpj(pjPersisted.getNuCnpj()); //set Primary Key
+				pessoa.setIdPessoa(pessoaPersisted.getIdPessoa()); //set Primary Key
+			}
+			manager.merge(pessoa.getTbPessoaJuridica()); //TbPessoaJuridica		
+		}
+		//Persistindo Pessoa
+		pessoaPersisted = manager.merge(pessoa); //TbPessoa
+		//END-Persistindo Pessoa Física / Jurídica
+		
+		//Persistindo Telefone(s)
+		for(TbPessoaTelefone telefone : phones){
+			//check if Telefone exist.
+			try{
+				phonePersisted = findPhoneByIdTelDdd(pessoaPersisted.getIdPessoa(), telefone.getNuTelefone(), telefone.getNuTelefoneDdd());
+			}catch(NoResultException e){ } //ignorar se não tiver resultado = 0 row(s) returned
+			if(phonePersisted != null){
+				//Already exist. So it´s an editing process.
+				telefone.setIdPessoaTelefone(phonePersisted.getIdPessoaTelefone()); //set Primary Key
+			}
+			telefone.setTbPessoa(pessoaPersisted); //Usado para setar a FK_PESSOATELEFONE_PESSOA
+			manager.merge(telefone); //TbPessoaTelefone
+		}
+		//END-Persistindo Telefone(s)
+		
+		//Persistindo Endereço completo: Municipio, Bairro e Endereço
 		if(!isSameAddress){
 			//Diferentes dados em "Endereço" e "Endereço Cobrança"
 			for (int i=0; i<enderecos.size(); i++) {
-				//municipio
+				//Municipio
+				//check if Municipio exist.
+				try{
+					municipioPersisted = findMunicipioByName(municipios.get(i).getNoMunicipio());
+				}catch(NoResultException e){} //ignorar se não tiver resultado = 0 row(s) returned
+				if(municipioPersisted != null){
+					//Already exist. So it´s an editing process.
+					municipios.get(i).setIdMunicipio(municipioPersisted.getIdMunicipio()); //set Primary Key
+				}
 				municipioPersisted = manager.merge(municipios.get(i)); //TbMunicipio
 				
-				//bairro
+				//Bairro
+				//check if Bairro exist.
+				try{
+					bairroPersisted = findBairroByMunicipioIdNome(municipioPersisted.getIdMunicipio(), bairros.get(i).getNoBairro());					
+				}catch(NoResultException e){} //ignorar se não tiver resultado = 0 row(s) returned
+				if(bairroPersisted != null){
+					//Already exist. So it´s an editing process.
+					bairros.get(i).setIdBairro(bairroPersisted.getIdBairro()); //set Primary Key
+				}
 				bairros.get(i).setTbMunicipio(municipioPersisted);
 				bairroPersisted = manager.merge(bairros.get(i)); //TbBairro
 				
-				//endereco
+				//Endereco
+				//check if Endereco exist.
+				try{
+					enderecoPersisted = findEnderecoByIdTipo(pessoaPersisted.getIdPessoa(), enderecos.get(i).getTpEndereco());
+				}catch(NoResultException e){} //ignorar se não tiver resultado = 0 row(s) returned
+				if(enderecoPersisted != null){
+					//Already exist. So it´s an editing process.
+					enderecos.get(i).setIdEnderecoPessoa(enderecoPersisted.getIdEnderecoPessoa());
+				}
 				enderecos.get(i).setTbMunicipio(municipioPersisted);
 				enderecos.get(i).setTbBairro(bairroPersisted);
 				enderecos.get(i).setTbPessoa(pessoaPersisted);
@@ -75,27 +143,142 @@ public class LocatarioRepository implements Serializable {
 		}else{
 			//**Mesmo Endereço - então não muda o Municipio (TbMunicipio) e o Bairro (TbBairro)**//
 			//municipio
+			//check if Municipio exist.
+			try{
+				municipioPersisted = findMunicipioByName(municipios.get(0).getNoMunicipio());
+			}catch(NoResultException e){} //ignorar se não tiver resultado = 0 row(s) returned
+			if(municipioPersisted != null){
+				//Already exist. So it´s an editing process.
+				municipios.get(0).setIdMunicipio(municipioPersisted.getIdMunicipio()); //set Primary Key
+			}
 			municipioPersisted = manager.merge(municipios.get(0)); //TbMunicipio
 			
 			//bairro
+			//check if Bairro exist.
+			try{
+				bairroPersisted = findBairroByMunicipioIdNome(municipioPersisted.getIdMunicipio(), bairros.get(0).getNoBairro());					
+			}catch(NoResultException e){} //ignorar se não tiver resultado = 0 row(s) returned
+			if(bairroPersisted != null){
+				//Already exist. So it´s an editing process.
+				bairros.get(0).setIdBairro(bairroPersisted.getIdBairro()); //set Primary Key
+			}
 			bairros.get(0).setTbMunicipio(municipioPersisted);
 			bairroPersisted = manager.merge(bairros.get(0)); //TbBairro
 			
 			for (int i=0; i<enderecos.size(); i++) {
 				//endereco
+				//check if Endereco exist.
+				try{
+					enderecoPersisted = findEnderecoByIdTipo(pessoaPersisted.getIdPessoa(), enderecos.get(i).getTpEndereco());
+				}catch(NoResultException e){} //ignorar se não tiver resultado = 0 row(s) returned
+				if(enderecoPersisted != null){
+					//Already exist. So it´s an editing process.
+					enderecos.get(i).setIdEnderecoPessoa(enderecoPersisted.getIdEnderecoPessoa());
+				}
 				enderecos.get(i).setTbMunicipio(municipioPersisted);
 				enderecos.get(i).setTbBairro(bairroPersisted);
 				enderecos.get(i).setTbPessoa(pessoaPersisted);
 				manager.merge(enderecos.get(i)); //TbEnderecoPesso
 			}
 		}
+		//END-Persistindo Endereço completo: Municipio, Bairro e Endereço
 		
-		
-		//Persistindo Telefone(s)
-		for(TbPessoaTelefone telefone : phones){
-			telefone.setTbPessoa(pessoaPersisted); //Usado para setar a FK_PESSOATELEFONE_PESSOA
-			manager.merge(telefone); //TbPessoaTelefone
-		}
+		//Pesistindo o locatário
+		locatario.setTbPessoa(pessoaPersisted);
+		locatario.setDtCadastro(new Date());
+		manager.merge(locatario);
+	}
+
+	/**
+	 * Método responsável por retornar o Endereco {@link TbEnderecoPessoa} a partir dos parâmetros abaixo.
+	 * @param idPessoa referente a tabela {@link TbPessoa}
+	 * @param tpEndereco tipo do endereço: 'R' = Residencial; 'C' = Cobrança
+	 * @return {@link TbEnderecoPessoa}
+	 */
+	private TbEnderecoPessoa findEnderecoByIdTipo(Long idPessoa, char tpEndereco) {
+		return manager
+				.createQuery(
+						"FROM TbEnderecoPessoa WHERE tbPessoa.idPessoa = :idPessoa AND tpEndereco = :tpEndereco",
+						TbEnderecoPessoa.class)
+				.setParameter("idPessoa", idPessoa)
+				.setParameter("tpEndereco", tpEndereco)
+				.getSingleResult();
+	}
+
+	/**
+	 * @param idMunicipio
+	 * @param noBairro
+	 * @return
+	 */
+	private TbBairro findBairroByMunicipioIdNome(Long idMunicipio, String noBairro) {
+		return manager
+				.createQuery(
+						"FROM TbBairro WHERE tbMunicipio.idMunicipio = :idMunicipio AND noBairro = :noBairro",
+						TbBairro.class)
+				.setParameter("idMunicipio", idMunicipio)
+				.setParameter("noBairro", noBairro)
+				.getSingleResult();
+	}
+
+	/**
+	 * Método responsável por, se encontar no DB, retornar a {@link TbMunicipio} já inserida no banco.
+	 * @param noMunicipio
+	 * @return {@link TbMunicipio}
+	 */
+	private TbMunicipio findMunicipioByName(String noMunicipio) {
+		return manager
+				.createQuery(
+						"FROM TbMunicipio WHERE noMunicipio = :noMunicipio",
+						TbMunicipio.class)
+				.setParameter("noMunicipio", noMunicipio)
+				.getSingleResult();
+	}
+
+	/**
+	 * Método responsável por retornar um telefone {@link TbPessoaTelefone} a partir dos parâmetros abaixo.
+	 * @param idPessoa corresponde a PRIMARY_KEY da tabela {@link TbPessoa}
+	 * @param nuTelefone
+	 * @param nuTelefoneDdd
+	 * @return
+	 */
+	private TbPessoaTelefone findPhoneByIdTelDdd(Long idPessoa, int nuTelefone,
+			String nuTelefoneDdd) {
+		return manager
+				.createQuery(
+						"FROM TbPessoaTelefone WHERE tbPessoa.idPessoa = :idPessoa AND nuTelefone = :nuTelefone AND nuTelefoneDdd = :nuTelefoneDdd",
+						TbPessoaTelefone.class)
+				.setParameter("idPessoa", idPessoa)
+				.setParameter("nuTelefone", nuTelefone)
+				.setParameter("nuTelefoneDdd", nuTelefoneDdd)
+				.getSingleResult();
+	}
+
+	/**
+	 * Método responsável por retornar uma pessoa {@link TbPessoa} a partir do cpf da {@link TbPessoaFisica}
+	 * @param número do cpf do Locatário
+	 * @return {@link TbPessoa}
+	 */
+	private TbPessoa findPessoaByCpf(String cpf) {
+		return manager
+				.createQuery(
+						"FROM TbPessoa WHERE tbPessoaFisica.nuCpf = :cpf",
+						TbPessoa.class)
+				.setParameter("cpf", cpf)
+				.getSingleResult();
+	}
+
+	/**
+	 * Método responsável por retornar uma pessoa {@link TbPessoa} a partir do CNPJ da {@link TbPessoaJuridica}
+	 * @param número do cnpj do Locatário
+	 * @return {@link TbPessoa}
+	 */
+	private TbPessoa findPessoaByCnpj(String cnpj) {
+		return manager
+				.createQuery(
+						"FROM TbPessoa WHERE tbPessoaJuridica.nuCnpj = :cnpj",
+						TbPessoa.class)
+				.setParameter("cnpj", cnpj)
+				.getSingleResult();
 	}
 
 	/**
