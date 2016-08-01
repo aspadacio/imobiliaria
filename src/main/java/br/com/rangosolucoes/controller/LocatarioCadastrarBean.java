@@ -324,7 +324,17 @@ public class LocatarioCadastrarBean implements Serializable{
 		endereco.setDsEndereco(endCbRua.toUpperCase());
 		endereco.setNuEndereco(Integer.parseInt(endCbNr));
 		endereco.setDsComplemento(endCbComplemento.toUpperCase());
-		endereco.setNuTelefone(new Integer(0)); //Integer.parseInt(endCbTel.replace("-", "").replace("(", "").replace(")", "").replace(" ", "")));
+		
+		//separando o valor inserido em endCbTel = (99) 9999-9999
+		String endCbTelDddAux, endCbTelNrAux, endCbTelAux;
+		endCbTelAux = endCbTel.replace("-", "").replace(" ", "").replace("(", "").replace(")", ""); //9999999999
+		endCbTelDddAux = endCbTelAux.substring(0, 2);
+		endCbTelNrAux = endCbTelAux.substring(2, 10);
+		
+		endereco.setNuTelefone(Integer.valueOf(endCbTelNrAux.trim()));
+		endereco.setNuDdd(endCbTelDddAux);
+		//END-separando o valor inserido em endCbTel = (99) 9999-9999
+		
 		endereco.setTpEndereco('C'); //Cobranca
 		endereco.setTbMunicipio(municipio);
 		endereco.setTbBairro(bairro);
@@ -422,6 +432,7 @@ public class LocatarioCadastrarBean implements Serializable{
 					this.endRua = endereco.getDsEndereco();
 					this.endNr = Integer.toString(endereco.getNuEndereco());
 					this.endMunicipio = endereco.getTbMunicipio().getNoMunicipio();
+					this.endBairro = endereco.getTbBairro().getNoBairro();
 					this.endUf = endereco.getTbMunicipio().getSgUf();
 					this.endComplemento = endereco.getDsComplemento();
 				}else{
@@ -430,9 +441,17 @@ public class LocatarioCadastrarBean implements Serializable{
 					this.endCbRua = endereco.getDsEndereco();
 					this.endCbNr = Integer.toString(endereco.getNuEndereco());
 					this.endCbMunicipio = endereco.getTbMunicipio().getNoMunicipio();
+					this.endCbBairro = endereco.getTbBairro().getNoBairro();
 					this.endCbUf = endereco.getTbMunicipio().getSgUf();
 					this.endCbComplemento = endereco.getDsComplemento();
-					this.endCbTel = Integer.toString(endereco.getNuTelefone());
+					
+					//Formando telefone + DDD vindo do banco para o campo this.endCbTel na tela
+					String endCbTelDddAux, endCbTelNrAux;
+					endCbTelDddAux = endereco.getNuDdd();
+					endCbTelNrAux = endereco.getNuTelefone().toString();
+					
+					this.endCbTel = endCbTelDddAux + endCbTelNrAux;					
+					//END-Formando telefone + DDD vindo do banco para o campo this.endCbTel na tela
 				}
 			}
 	    	this.is2edit = true; //verifica se o usuário está cadastrando ou editando.
