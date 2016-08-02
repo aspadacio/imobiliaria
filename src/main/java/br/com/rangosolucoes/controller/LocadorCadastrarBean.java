@@ -78,6 +78,8 @@ public class LocadorCadastrarBean implements Serializable{
 	    	LocadorFilter filtro = new LocadorFilter();
 	    	filtro.setCnpj(cnpj);
 	    	
+	    	this.cnpj = facesContext.getExternalContext().getRequestParameterMap().get("cnpj");
+	    	
 	    	List<TbPessoa> pessoas = locadorService.buscaPessoas(filtro);
 	    	TbPessoa pessoa = pessoas.get(0);//Haverá apenas uma pessoa com aquele CNPJ
 	    	
