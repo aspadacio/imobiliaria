@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui"
+	template="/WEB-INF/template/LayoutPadrao.xhtml">
+	
+	<ui:define name="titulo">#{cadastroImoveisBean.editando ? 'Edição de Imóvel' : 'Novo Imóvel'}</ui:define>
+	
+	<ui:define name="corpo">
+		
+		<f:metadata>
+			<o:viewParam name="imovel" converter="imovelConverter" value="#{cadastroImoveisBean.imovel}"/>
+			<f:event listener="#{cadastroImoveisBean.alteraImovelSelecionado}" type="preRenderView"></f:event>
+		</f:metadata>
+	
+		<h:form>
+			<h1>#{cadastroImoveisBean.editando ? 'Edição de Imóvel' : 'Nova Imóvel'}</h1>
+			
+			<p:messages id="mensagens" closable="true"/>
+			
+			<p:toolbar style="margin-top: 10px">
+				<p:toolbarGroup>
+					<p:commandButton value="Novo" id="botaoNovo" action="#{cadastroImoveisBean.novoCadastro}" update="@form" immediate="true"/>
+					<p:commandButton value="Salvar" id="botaoSalvar" action="#{cadastroImoveisBean.salvar}" update="mensagens @form"/>
+				</p:toolbarGroup>
+				
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Pesquisa" id="botaoNovaPesquisa" action="#{pesquisaImoveisBean.novaPesquisa}" update="@form" immediate="true"/>
+				</p:toolbarGroup>
+			</p:toolbar>
+			
+			<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+				<p:outputLabel value="Locador" for="locador"/>
+				<p:inputText id="locador" size="80" maxlength="200" value="#{cadastroImoveisBean.locador}"/>
+					
+				<p:outputLabel value="Descrição" for="descricao"/>
+				<p:inputText id="descricao" size="80" maxlength="200" value="#{cadastroImoveisBean.imovel.dsImovel}"/>
+					
+				<p:outputLabel value="CEP" for="inscestadual"/>
+				<p:inputMask id="cep" size="10" maxlength="200" mask="99.999-999" value="#{cadastroImoveisBean.imovel.nuCep}"/>
+					
+			</p:panelGrid>
+			
+			<p:panelGrid columns="4" id="painel2" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+				<p:outputLabel value="Endereço" for="endereco"/>
+				<p:inputText id="endereco" size="80" maxlength="200" value="#{cadastroImoveisBean.imovel.dsEndereco}"/>
+				
+				<p:outputLabel value="Número" for="numero"/>
+				<p:inputText id="numero" size="40" maxlength="200" value="#{cadastroImoveisBean.imovel.nuEndereco}"/>
+			</p:panelGrid>
+			
+			<br/>
+			
+				<h:panelGroup>
+					<p:panel header="Endereço" style="margin-bottom:20px">
+						<p:panelGrid columns="2" id="painel3" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+							<p:outputLabel value="Bairro" for="bairro"/>
+							<p:inputText id="bairro" size="40" maxlength="200" value="#{cadastroImoveisBean.imovel.tbBairro.noBairro}"/>
+							
+							<p:outputLabel value="Complemento" for="complemento"/>
+							<p:inputText id="complemento" size="80" maxlength="200"	value="#{cadastroImoveisBean.imovel.dsComplemento}"/>
+								
+							<p:outputLabel value="UF" for="uf"/>
+							<p:selectOneMenu id="uf" value="#{cadastroImoveisBean.sgUF}">
+				               <f:selectItem itemLabel="Selecione"/>
+				               <f:selectItems value="#{cadastroImoveisBean.estados}" var="estado" itemLabel="#{estado.sigla}" itemValue="#{estado.sigla}"/>
+				            </p:selectOneMenu>
+								
+							<p:outputLabel value="Município" for="municipio"/>
+							<p:inputText id="municipio" size="80" maxlength="200" value="#{cadastroImoveisBean.imovel.tbMunicipio.noMunicipio}"/>
+							
+							<p:outputLabel value="Observações" for="observacoes"/>
+							<p:inputTextarea id="observacoes" rows="10" style="width: 99%" value="#{cadastroImoveisBean.imovel.dsObservacoes}"/>
+						</p:panelGrid>
+					</p:panel>
+				</h:panelGroup>
+		</h:form>
+	</ui:define>
+	
+</ui:composition>
