@@ -39,26 +39,6 @@ public class LocatarioPesquisarBean implements Serializable{
 	@Getter @Setter private List<String> municipios;
 	@Getter @Setter private List<String> ufs;
 	
-	@PostConstruct
-	private void init(){
-		initClean();
-		
-		//Buscando informações inseridas no DB
-		retornarFiltrosDB();
-	}
-	
-	//Método responsável por limpar/inicializar os atributos locais.
-	private void initClean() {
-		locatarioFilter = new LocatarioFilter();
-		locatarioSelecionado = new TbPessoa();
-		locatarios = new ArrayList<TbPessoa>();
-		
-		cpfs = new ArrayList<String>();
-		cnpjs = new ArrayList<String>();
-		municipios = new ArrayList<String>();
-		ufs = new ArrayList<String>();
-	}
-	
 	/**
 	 * Método responsável por cadastrar um novo Locatário
 	 * redireciona para página de cadastro
@@ -69,6 +49,12 @@ public class LocatarioPesquisarBean implements Serializable{
 		return; //to the method's invoking stops
 		//return "/imobiliaria/LocatarioCadastrar?faces-redirect=true";
 	}
+	
+	/**
+	 * Método responsável editar um Locatário.
+	 *  
+	 * */
+	public void enviar2Editar(){ }
 	
 	/**
 	 * Método responsável excluir um Locatário.
@@ -91,13 +77,61 @@ public class LocatarioPesquisarBean implements Serializable{
 	}
 	
 	/**
-	 * Método responsável editar um Locatário.
+	 * Método responsável por carregar combos com os dados do DB.
+	 * É chamado toda vez que é chamada a página, porém só quando é um redirect da página LocatarioCadastrar é válida.
 	 *  
 	 * */
-	public void enviar2Editar(){
-		//TODO
+	public void redirectLoading(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		if(!facesContext.isPostback() &&
+				!facesContext.getResponseComplete() &&
+				!facesContext.isValidationFailed() ){
+			retornarFiltrosDB();
+		}
 	}
 	
+	@PostConstruct
+	private void init(){
+		initClean();
+		
+		//Buscando informações inseridas no DB
+		retornarFiltrosDB();
+	}
+	
+	//Método responsável por limpar/inicializar os atributos locais.
+	private void initClean() {
+		locatarioFilter = new LocatarioFilter();
+		locatarioSelecionado = new TbPessoa();
+		locatarios = new ArrayList<TbPessoa>();
+		
+		cpfs = new ArrayList<String>();
+		cnpjs = new ArrayList<String>();
+		municipios = new ArrayList<String>();
+		ufs = new ArrayList<String>();
+	}
+	
+	/**
+	 * Método responsável por pesquisar um(ns) Locatário(s) conforme filtro {@link LocatarioFilter}
+	 * */
+	public void pesquisar(){
+		validarFiltro();
+		prepararFiltro();
+		locatarios = locatarioService.buscaPessoas(this.locatarioFilter);
+	}
+
+	
+	/**
+	 * Método responsável por alterar {@link String} para lowerCase e tirar caracteres indevidos.
+	 * */
+	private void prepararFiltro() {
+		if(locatarioFilter.getNome() != null && locatarioFilter.getNome() != ""){
+			locatarioFilter.setNome(locatarioFilter.getNome().toLowerCase());			
+		}
+		if(locatarioFilter.getUf() != null && locatarioFilter.getUf() != ""){
+			locatarioFilter.setUf(locatarioFilter.getUf().toLowerCase());			
+		}
+	}
+
 	/**
 	 * Método responsável por buscar no banco de dados
 	 * as informações inseridas pelo usuário que serão usadas
@@ -108,16 +142,6 @@ public class LocatarioPesquisarBean implements Serializable{
 		cnpjs = locatarioService.retornarCnpjs();
 		municipios = locatarioService.retornarMunicipios();
 		ufs = locatarioService.retornarUfs();
-	}
-
-	
-	/**
-	 * Método responsável por pesquisar um(ns) Locatário(s) conforme filtro {@link LocatarioFilter}
-	 * */
-	public void pesquisar(){
-		validarFiltro();
-		prepararFiltro();
-		locatarios = locatarioService.buscaPessoas(this.locatarioFilter);
 	}
 
 	/**
@@ -132,18 +156,6 @@ public class LocatarioPesquisarBean implements Serializable{
 			FacesUtil.addErrorMessage("É necessário informar ao menos um parâmetro para realizar a pesquisa.");
 			locatarios = null;
 			return;
-		}
-	}
-
-	/**
-	 * Método responsável por alterar {@link String} para lowerCase e tirar caracteres indevidos.
-	 * */
-	private void prepararFiltro() {
-		if(locatarioFilter.getNome() != null && locatarioFilter.getNome() != ""){
-			locatarioFilter.setNome(locatarioFilter.getNome().toLowerCase());			
-		}
-		if(locatarioFilter.getUf() != null && locatarioFilter.getUf() != ""){
-			locatarioFilter.setUf(locatarioFilter.getUf().toLowerCase());			
 		}
 	}
 }
