@@ -452,9 +452,19 @@ public class LocatarioCadastrarBean implements Serializable{
 					
 					this.endCbTel = endCbTelDddAux + endCbTelNrAux;					
 					//END-Formando telefone + DDD vindo do banco para o campo this.endCbTel na tela
-				}
+				}	    		
 			}
-	    	this.is2edit = true; //verifica se o usuário está cadastrando ou editando.
+	    	
+	    	//verificar se é o mesmo endereço. *qndo é o mesmo endereço é aproveitado o Município e Bairro
+	    	if( this.endMunicipio.equalsIgnoreCase(this.endCbMunicipio) &&
+	    			this.endBairro.equalsIgnoreCase(this.endCbBairro) ){
+	    		this.isSameAddress = true;
+	    	}else{
+	    		this.isSameAddress = false;
+	    	}
+	    	
+	    	//verifica se o usuário está cadastrando ou editando.
+	    	this.is2edit = true;
 	    }
 	}
 }
