@@ -8,6 +8,12 @@
 	<ui:define name="titulo">Pesquisa de Locador</ui:define>
 	
 	<ui:define name="corpo">
+	
+		<f:metadata>
+			<!-- call methods before rendering -->
+			<f:event listener="#{locadorPesquisarBean.redirectLoading}" type="preRenderView"></f:event>
+		</f:metadata>
+	
 		<h:form id="masterForm" prependId="false">
 			<h1>Pesquisa de Locador</h1>
 			

@@ -40,10 +40,7 @@ public class LocadorPesquisarBean implements Serializable{
 	
 	@PostConstruct
 	private void init(){
-		initClean();
-		
-		//Buscando informações inseridas no DB
-		retornarFiltrosDB();
+		initClean();;
 	}
 	
 	//Método responsável por limpar/inicializar os atributos locais.
@@ -86,8 +83,20 @@ public class LocadorPesquisarBean implements Serializable{
 	 * Método responsável por editar um Locatário. Envia para a tela LocadorCadastar
 	 *  
 	 * */
-	public void editar(){
-		//TODO
+	public void editar(){ }
+	
+	/**
+	 * Método responsável por carregar combos com os dados do DB.
+	 * É chamado toda vez que é chamada a página, porém só quando é um redirect da página LocadorCadastrar é válido.
+	 *  
+	 * */
+	public void redirectLoading(){
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		if(!facesContext.isPostback() &&
+				!facesContext.getResponseComplete() &&
+				!facesContext.isValidationFailed() ){
+			retornarFiltrosDB(); //Buscando informações inseridas no DB
+		}
 	}
 	
 	/**
