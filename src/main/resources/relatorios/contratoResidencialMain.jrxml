@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contratoResidencialMain" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="527" leftMargin="34" rightMargin="34" topMargin="5" bottomMargin="4" uuid="0c24a6d5-f2cd-47a8-ac10-043e72ca8031">
+	<property name="ireport.zoom" value="1.818181818181819"/>
+	<property name="ireport.x" value="55"/>
+	<property name="ireport.y" value="33"/>
+	<parameter name="contrato_numero" class="java.lang.String"/>
+	<parameter name="locador_cnpj" class="java.lang.String"/>
+	<parameter name="locador_endereco_completo" class="java.lang.String"/>
+	<parameter name="locador_razao_social" class="java.lang.String"/>
+	<parameter name="locatario_cpf" class="java.lang.String"/>
+	<parameter name="locatario_endereco_completo" class="java.lang.String"/>
+	<parameter name="locatario_estado_civil" class="java.lang.String"/>
+	<parameter name="locatario_nacionalidade" class="java.lang.String"/>
+	<parameter name="locatario_nome" class="java.lang.String"/>
+	<parameter name="locatario_profissao" class="java.lang.String"/>
+	<parameter name="locatario_rg" class="java.lang.String"/>
+	<parameter name="imovel_endereco_completo" class="java.lang.String"/>
+	<parameter name="contrato_duracao" class="java.lang.String"/>
+	<parameter name="contrato_inicio" class="java.lang.String"/>
+	<parameter name="contrato_fim" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     tb_pessoa_juridica.`NU_CNPJ` AS pj_cnpj,
+     tb_pessoa_juridica.`NO_RAZAO_SOCIAL` AS tb_pessoa_juridica_NO_RAZAO_SOCIAL,
+     tb_pessoa_juridica.`NO_FANTASIA` AS tb_pessoa_juridica_NO_FANTASIA,
+     tb_pessoa_juridica.`NU_INSCRICAO_ESTADUAL` AS tb_pessoa_juridica_NU_INSCRICAO_ESTADUAL,
+     tb_pessoa_juridica.`NO_CONTATO` AS tb_pessoa_juridica_NO_CONTATO,
+     tb_pessoa_fisica.`NU_CPF` AS tb_pessoa_fisica_NU_CPF,
+     tb_pessoa_fisica.`NO_PESSOA_FISICA` AS tb_pessoa_fisica_NO_PESSOA_FISICA,
+     tb_pessoa.`ID_PESSOA` AS tb_pessoa_ID_PESSOA,
+     tb_pessoa.`NU_CNPJ` AS tb_pessoa_NU_CNPJ,
+     tb_pessoa.`NU_CPF` AS tb_pessoa_NU_CPF,
+     tb_pessoa.`DS_EMAIL` AS tb_pessoa_DS_EMAIL,
+     tb_pessoa.`DT_ULTIMA_ALTERACAO` AS tb_pessoa_DT_ULTIMA_ALTERACAO,
+     tb_pessoa.`DS_OBSERVACAO` AS tb_pessoa_DS_OBSERVACAO,
+     tb_municipio.`ID_MUNICIPIO` AS tb_municipio_ID_MUNICIPIO,
+     tb_municipio.`NO_MUNICIPIO` AS tb_municipio_NO_MUNICIPIO,
+     tb_municipio.`SG_UF` AS tb_municipio_SG_UF,
+     tb_locatario.`ID_LOCATARIO` AS tb_locatario_ID_LOCATARIO,
+     tb_locatario.`ID_PESSOA` AS tb_locatario_ID_PESSOA,
+     tb_locatario.`DT_CADASTRO` AS tb_locatario_DT_CADASTRO,
+     tb_locador.`ID_LOCADOR` AS tb_locador_ID_LOCADOR,
+     tb_locador.`ID_PESSOA` AS tb_locador_ID_PESSOA,
+     tb_locador.`DT_CADASTRO` AS tb_locador_DT_CADASTRO,
+     tb_imovel.`ID_IMOVEL` AS tb_imovel_ID_IMOVEL,
+     tb_imovel.`DS_COMPLEMENTO` AS tb_imovel_DS_COMPLEMENTO,
+     tb_imovel.`DS_ENDERECO` AS tb_imovel_DS_ENDERECO,
+     tb_imovel.`DS_IMOVEL` AS tb_imovel_DS_IMOVEL,
+     tb_imovel.`DS_OBSERVACOES` AS tb_imovel_DS_OBSERVACOES,
+     tb_imovel.`NU_CEP` AS tb_imovel_NU_CEP,
+     tb_imovel.`NU_ENDERECO` AS tb_imovel_NU_ENDERECO,
+     tb_imovel.`ID_BAIRRO` AS tb_imovel_ID_BAIRRO,
+     tb_imovel.`ID_LOCATARIO` AS tb_imovel_ID_LOCATARIO,
+     tb_imovel.`ID_MUNICIPIO` AS tb_imovel_ID_MUNICIPIO,
+     tb_endereco_pessoa.`ID_ENDERECO_PESSOA` AS tb_endereco_pessoa_ID_ENDERECO_PESSOA,
+     tb_endereco_pessoa.`ID_PESSOA` AS tb_endereco_pessoa_ID_PESSOA,
+     tb_endereco_pessoa.`ID_MUNICIPIO` AS tb_endereco_pessoa_ID_MUNICIPIO,
+     tb_endereco_pessoa.`ID_BAIRRO` AS tb_endereco_pessoa_ID_BAIRRO,
+     tb_endereco_pessoa.`NU_CEP` AS tb_endereco_pessoa_NU_CEP,
+     tb_endereco_pessoa.`DS_ENDERECO` AS tb_endereco_pessoa_DS_ENDERECO,
+     tb_endereco_pessoa.`NU_ENDERECO` AS tb_endereco_pessoa_NU_ENDERECO,
+     tb_endereco_pessoa.`DS_COMPLEMENTO` AS tb_endereco_pessoa_DS_COMPLEMENTO,
+     tb_endereco_pessoa.`NU_DDD` AS tb_endereco_pessoa_NU_DDD,
+     tb_endereco_pessoa.`NU_TELEFONE` AS tb_endereco_pessoa_NU_TELEFONE,
+     tb_endereco_pessoa.`TP_ENDERECO` AS tb_endereco_pessoa_TP_ENDERECO,
+     tb_contrato.`ID_CONTRATO` AS tb_contrato_ID_CONTRATO,
+     tb_contrato.`ID_LOCATARIO` AS tb_contrato_ID_LOCATARIO,
+     tb_contrato.`ID_LOCADOR` AS tb_contrato_ID_LOCADOR,
+     tb_contrato.`ID_PESSOA_FIADOR` AS tb_contrato_ID_PESSOA_FIADOR,
+     tb_contrato.`DT_INICIO` AS tb_contrato_DT_INICIO,
+     tb_contrato.`NU_DURACAO` AS tb_contrato_NU_DURACAO,
+     tb_contrato.`NU_DIA_VENCIMENTO` AS tb_contrato_NU_DIA_VENCIMENTO,
+     tb_contrato.`TX_MULTA_POR_ATRASO` AS tb_contrato_TX_MULTA_POR_ATRASO,
+     tb_contrato.`NU_PARCELA_ANTERIOR` AS tb_contrato_NU_PARCELA_ANTERIOR,
+     tb_contrato.`TX_COMISSAO` AS tb_contrato_TX_COMISSAO,
+     tb_contrato.`ST_CONTRATO_ATIVO` AS tb_contrato_ST_CONTRATO_ATIVO,
+     tb_bairro.`ID_BAIRRO` AS tb_bairro_ID_BAIRRO,
+     tb_bairro.`ID_MUNICIPIO` AS tb_bairro_ID_MUNICIPIO,
+     tb_bairro.`NO_BAIRRO` AS tb_bairro_NO_BAIRRO
+FROM
+     `tb_pessoa_fisica` tb_pessoa_fisica INNER JOIN `tb_pessoa` tb_pessoa ON tb_pessoa_fisica.`NU_CPF` = tb_pessoa.`NU_CPF`
+     INNER JOIN `tb_pessoa_juridica` tb_pessoa_juridica ON tb_pessoa.`NU_CNPJ` = tb_pessoa_juridica.`NU_CNPJ`
+     INNER JOIN `tb_locatario` tb_locatario ON tb_pessoa.`ID_PESSOA` = tb_locatario.`ID_PESSOA`
+     INNER JOIN `tb_locador` tb_locador ON tb_pessoa.`ID_PESSOA` = tb_locador.`ID_PESSOA`
+     INNER JOIN `tb_endereco_pessoa` tb_endereco_pessoa ON tb_pessoa.`ID_PESSOA` = tb_endereco_pessoa.`ID_PESSOA`
+     INNER JOIN `tb_contrato` tb_contrato ON tb_pessoa.`ID_PESSOA` = tb_contrato.`ID_PESSOA_FIADOR`
+     AND tb_locador.`ID_LOCADOR` = tb_contrato.`ID_LOCADOR`
+     AND tb_locatario.`ID_LOCATARIO` = tb_contrato.`ID_LOCATARIO`
+     INNER JOIN `tb_imovel` tb_imovel ON tb_locatario.`ID_LOCATARIO` = tb_imovel.`ID_LOCATARIO`
+     INNER JOIN `tb_municipio` tb_municipio ON tb_imovel.`ID_MUNICIPIO` = tb_municipio.`ID_MUNICIPIO`
+     INNER JOIN `tb_bairro` tb_bairro ON tb_imovel.`ID_BAIRRO` = tb_bairro.`ID_BAIRRO`
+     AND tb_municipio.`ID_MUNICIPIO` = tb_bairro.`ID_MUNICIPIO`
+     AND tb_bairro.`ID_BAIRRO` = tb_endereco_pessoa.`ID_BAIRRO`
+     AND tb_municipio.`ID_MUNICIPIO` = tb_endereco_pessoa.`ID_MUNICIPIO`]]>
+	</queryString>
+	<title>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="527" height="31" uuid="9eb14596-cedf-40ee-a7ac-2864c8c7320c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTRATO DE LOCAÇÃO RESIDENCIAL DE Nº. ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="380" y="0" width="100" height="31" uuid="11ac8e3d-2a75-4993-affb-b78e9490ce9d"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{contrato_numero}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="393">
+			<textField>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="1" y="0" width="526" height="87" uuid="ea02ab24-ecb4-4ff4-96c6-48e2959abefa"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["   Pelo presente instrumento particular de Locação " + $P{locador_razao_social} + ", inscrita no CNPJ " +
+$P{locador_cnpj} + " localizada na " + $P{locador_endereco_completo} + " ,e " + $P{locatario_nome} +
+", " + $P{locatario_nacionalidade} + ", " + $P{locatario_profissao} + ", " + $P{locatario_estado_civil} +
+" portador do RG " + $P{locatario_rg} + " e CPF Nº. " + $P{locatario_cpf} + " residentes e domiciliando sito, " +
+$P{locador_endereco_completo} + " donominado mais adiante simplesmente LOCATÁRIO o (os), a (as), tem entre si justo e contratado, por este e na melhor forma de direito, a presente locação mediante as cláusulas e condições abaixo discriminadas e disposições legais pertinentes, que voluntariamente aceitam e outorgam:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="87" width="527" height="81" uuid="84187972-f4fc-45ad-b0ee-cd779ea8ed69"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLAUSULA PRIMEIRA</b> - O <b>LOCADOR</b> dá em locação o imóvel sito " + $P{imovel_endereco_completo} + " à pelo prazo de " +
+$P{contrato_duracao} + " (meses), ao iniciar em " + $P{contrato_inicio} + " e terminar em " + $P{contrato_fim} + ". (Renováveis automaticamente por igual, caso não haja manifestação em contrário de uma das partes). Data em que " +
+"<b>LOCATÁRIO</b> o (os, a(as), se abriga a restituir o imóvel locado no perfeito estado de conservação em que o recebeu, salvo as deteriorações decorrentes do uso normal, inteiramente livre e desocupado."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="168" width="527" height="108" uuid="7b151d2b-0971-4d61-9d7b-700c2ed5305f"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo primeiro</u> – Antes do vencimento do prazo ajustado no caput desta cláusula não poderá o <b>LOCADOR</b> retomar o imóvel salvo se motivado por inflação contratual do (os), a (as), LOCATÁRIO. No caso de devolução do imóvel ao <b>LOCADOR</b> antes do prazo, o (os), a (as) <b>LOCATÁRIO</b> pagará a multa prevista na <b>CLAUSULA DÉCIMA SÉTIMA</b>. Estando o contrato vigente por tempo indeterminado, somente ficará isento o (os), a (as) <b>LOCATÁRIO</b>, do pagamento da multa contratual se avisar ao <b>LOCADOR</b>, por escrito, com antecedência mínima de 30 dias, <b>Segundo os termos que o artigo 27 da Lei 8245/9, lei do inquilinato, fica claro que no caso de venda do imóvel, o LOCATÁRIO terá a preferência de compra nos mesmos termos e condições que terceiros, caso não se manifeste no prazo máximo de 30 dias deverá desocupar o mesmo sem nenhum dano as partes.</b>"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<pageFooter>
+		<band height="16"/>
+	</pageFooter>
+</jasperReport>

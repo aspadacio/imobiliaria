@@ -17,6 +17,10 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 
+/**
+ * Classe responsável por gerar o Contrato do tipo Residencial com os campos preenchidos corretamente.
+ * 
+ * */
 public class ContratoResidencialRelatorio implements Work{
 
 	private String caminhoRelatorio;
@@ -26,6 +30,12 @@ public class ContratoResidencialRelatorio implements Work{
 	
 	private boolean relatorioGerado;
 	
+	/**
+	 * Método responsável por preparar corretamente todos os dados necessários para geração do relatório.
+	 * @param caminhoRelatorio em qual path está o .jasper No nosso caso, todos os relatórios ficarão no dir src/main/resources/relatorios/
+	 * @param parametros todos os parâmetros Map<key, value> que estarão previamente mapeados no .jasper
+	 * @param nomeArquivoSaida nome dado ao arquivo gerado
+	 * */
 	public ContratoResidencialRelatorio(String caminhoRelatorio, HttpServletResponse response, Map<String, Object> parametros,
 			String nomeArquivoSaida) {
 		this.caminhoRelatorio = caminhoRelatorio;
