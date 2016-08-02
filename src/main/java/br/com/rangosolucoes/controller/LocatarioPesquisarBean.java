@@ -86,16 +86,13 @@ public class LocatarioPesquisarBean implements Serializable{
 		if(!facesContext.isPostback() &&
 				!facesContext.getResponseComplete() &&
 				!facesContext.isValidationFailed() ){
-			retornarFiltrosDB();
+			retornarFiltrosDB(); //Buscando informações inseridas no DB
 		}
 	}
 	
 	@PostConstruct
 	private void init(){
 		initClean();
-		
-		//Buscando informações inseridas no DB
-		retornarFiltrosDB();
 	}
 	
 	//Método responsável por limpar/inicializar os atributos locais.
