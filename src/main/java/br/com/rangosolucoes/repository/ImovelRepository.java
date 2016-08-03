@@ -49,5 +49,9 @@ public class ImovelRepository implements Serializable{
 		
 		return criteria.list();
 	}
+	
+	public void excluir(TbImovel imovel){
+		
+	}
 
 }

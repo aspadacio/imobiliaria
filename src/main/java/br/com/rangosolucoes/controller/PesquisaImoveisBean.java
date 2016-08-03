@@ -11,6 +11,7 @@ import javax.inject.Named;
 
 import br.com.rangosolucoes.model.TbImovel;
 import br.com.rangosolucoes.service.ImovelService;
+import br.com.rangosolucoes.util.jsf.FacesUtil;
 
 @Named("pesquisaImoveisBean")
 @SessionScoped
@@ -37,7 +38,10 @@ public class PesquisaImoveisBean implements Serializable{
 	}
 	
 	public void excluir(){
+		imovelService.excluir(imovelSelecionado);
+		imoveis.remove(imovelSelecionado);
 		
+		FacesUtil.addInfoMessage("Imóvel " + imovelSelecionado.getDsImovel() + " excluído com sucesso.");
 	}
 	
 	public String novaPesquisa(){

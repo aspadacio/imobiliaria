@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import br.com.rangosolucoes.model.TbImovel;
 import br.com.rangosolucoes.repository.ImovelRepository;
+import br.com.rangosolucoes.util.jpa.Transacional;
 
 public class ImovelService implements Serializable{
 
@@ -17,6 +18,11 @@ public class ImovelService implements Serializable{
 	
 	public List<TbImovel> filtrados(String nomeLocatario, String descricaoImovel){
 		return imovelRepository.filtrados(nomeLocatario, descricaoImovel);
+	}
+	
+	@Transacional
+	public void excluir(TbImovel imovel){
+		imovelRepository.excluir(imovel);
 	}
 
 }

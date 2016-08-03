@@ -16,7 +16,7 @@
 		</f:metadata>
 	
 		<h:form>
-			<h1>#{cadastroImoveisBean.editando ? 'Edição de Imóvel' : 'Nova Imóvel'}</h1>
+			<h1>#{cadastroImoveisBean.editando ? 'Edição de Imóvel' : 'Novo Imóvel'}</h1>
 			
 			<p:messages id="mensagens" closable="true"/>
 			
@@ -38,7 +38,7 @@
 				<p:outputLabel value="Descrição" for="descricao"/>
 				<p:inputText id="descricao" size="80" maxlength="200" value="#{cadastroImoveisBean.imovel.dsImovel}"/>
 					
-				<p:outputLabel value="CEP" for="inscestadual"/>
+				<p:outputLabel value="CEP" for="cep"/>
 				<p:inputMask id="cep" size="10" maxlength="200" mask="99.999-999" value="#{cadastroImoveisBean.imovel.nuCep}"/>
 					
 			</p:panelGrid>
