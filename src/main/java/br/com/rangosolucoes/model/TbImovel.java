@@ -20,6 +20,7 @@ public class TbImovel implements java.io.Serializable {
 
 	private Long idImovel;
 	private TbLocatario tbLocatario;
+	private TbLocador tbLocador;
 	private TbBairro tbBairro;
 	private TbMunicipio tbMunicipio;
 	private String dsImovel;
@@ -52,6 +53,17 @@ public class TbImovel implements java.io.Serializable {
 
 	public void setTbLocatario(TbLocatario tbLocatario) {
 		this.tbLocatario = tbLocatario;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_LOCADOR", nullable = false)
+	@NotNull
+	public TbLocador getTbLocador() {
+		return tbLocador;
+	}
+
+	public void setTbLocador(TbLocador tbLocador) {
+		this.tbLocador = tbLocador;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
