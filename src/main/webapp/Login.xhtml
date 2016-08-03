@@ -9,14 +9,15 @@
 	<h:head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<title>Login</title>
-		
 		<h:outputStylesheet library="css" name="sistema.css"/>
 	</h:head>
 	
 	<f:event listener="#{loginBean.preRender}" type="preRenderView"/>
 	
-	<h:body>
-	
+	<h:body style="background: url('#{facesContext.externalContext.requestContextPath}resources/images/mocasaimoveis.jpg') repeat !important;">
+	<p:layout fullPage="true">
+		<h:graphicImage library="images"  name="mocasaimoveis.jpg">
+		<p:layoutUnit position="center">
 		<div id="login-dialog">
 			<h1>Login</h1>
 			
@@ -35,6 +36,9 @@
 				</h:panelGrid>
 			</h:form>
 		</div>
+		</p:layoutUnit>
+		</h:graphicImage>
+	</p:layout>
 	</h:body>
 	
 </html>
