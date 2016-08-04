@@ -26,7 +26,7 @@ public class TbImovel implements java.io.Serializable {
 	private String dsImovel;
 	private String nuCep;
 	private String dsEndereco;
-	private int nuEndereco;
+	private Integer nuEndereco;
 	private String dsComplemento;
 	private String dsObservacoes;
 
@@ -118,11 +118,11 @@ public class TbImovel implements java.io.Serializable {
 	}
 
 	@Column(name = "NU_ENDERECO", nullable = false)
-	public int getNuEndereco() {
+	public Integer getNuEndereco() {
 		return this.nuEndereco;
 	}
 
-	public void setNuEndereco(int nuEndereco) {
+	public void setNuEndereco(Integer nuEndereco) {
 		this.nuEndereco = nuEndereco;
 	}
 

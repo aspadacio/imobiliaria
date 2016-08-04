@@ -26,6 +26,7 @@ public class CadastroImoveisBean implements Serializable{
 	
 	private String sgUF;
 	private String nuCep;
+	private String nuEndereco;
 	
 	@PostConstruct
 	public void init(){
@@ -119,6 +120,14 @@ public class CadastroImoveisBean implements Serializable{
 
 	public void setNuCep(String nuCep) {
 		this.nuCep = nuCep;
+	}
+
+	public String getNuEndereco() {
+		return nuEndereco;
+	}
+
+	public void setNuEndereco(String nuEndereco) {
+		this.nuEndereco = nuEndereco;
 	}
 
 }

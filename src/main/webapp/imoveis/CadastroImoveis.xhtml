@@ -33,7 +33,15 @@
 			
 			<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
 				<p:outputLabel value="Locador" for="locador"/>
-				<p:inputText id="locador" size="80" maxlength="200" value="#{cadastroImoveisBean.locador}"/>
+				<p:inputText id="locador" size="80" maxlength="200" value="#{cadastroImoveisBean.locador.tbPessoa.tbPessoaFisica.noPessoaFisica}"/>
+				<p:selectOneMenu id="locador" value="#{cadastroImoveisBean.sgUF}">
+					
+				</p:selectOneMenu>
+				
+				<p:selectOneMenu id="uf" value="#{cadastroImoveisBean.sgUF}">
+	               <f:selectItem itemLabel="Selecione"/>
+	               <f:selectItems value="#{cadastroImoveisBean.estados}" var="estado" itemLabel="#{estado.sigla}" itemValue="#{estado.sigla}"/>
+	            </p:selectOneMenu>
 					
 				<p:outputLabel value="Descrição" for="descricao"/>
 				<p:inputText id="descricao" size="80" maxlength="200" value="#{cadastroImoveisBean.imovel.dsImovel}"/>
@@ -48,7 +56,7 @@
 				<p:inputText id="endereco" size="80" maxlength="200" value="#{cadastroImoveisBean.imovel.dsEndereco}"/>
 				
 				<p:outputLabel value="Número" for="numero"/>
-				<p:inputText id="numero" size="40" maxlength="200" value="#{cadastroImoveisBean.imovel.nuEndereco}"/>
+				<p:inputText id="numero" size="40" maxlength="200" value="#{cadastroImoveisBean.nuEndereco}"/>
 			</p:panelGrid>
 			
 			<br/>
