@@ -32,17 +32,14 @@
 			</p:toolbar>
 			
 			<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+			
 				<p:outputLabel value="Locador" for="locador"/>
-				<p:inputText id="locador" size="80" maxlength="200" value="#{cadastroImoveisBean.locador.tbPessoa.tbPessoaFisica.noPessoaFisica}"/>
-				<p:selectOneMenu id="locador" value="#{cadastroImoveisBean.sgUF}">
-					
+				<p:selectOneMenu id="locador" value="#{cadastroImoveisBean.locador}" converter="locadorConverter">
+					<f:selectItem itemLabel="Selecione um locador"/>
+					<f:selectItems value="#{cadastroImoveisBean.locadores}" var="locador" itemValue="#{locador}" 
+						itemLabel="#{locador.tbPessoa.tbPessoaFisica.noPessoaFisica}"/>
 				</p:selectOneMenu>
 				
-				<p:selectOneMenu id="uf" value="#{cadastroImoveisBean.sgUF}">
-	               <f:selectItem itemLabel="Selecione"/>
-	               <f:selectItems value="#{cadastroImoveisBean.estados}" var="estado" itemLabel="#{estado.sigla}" itemValue="#{estado.sigla}"/>
-	            </p:selectOneMenu>
-					
 				<p:outputLabel value="Descrição" for="descricao"/>
 				<p:inputText id="descricao" size="80" maxlength="200" value="#{cadastroImoveisBean.imovel.dsImovel}"/>
 					
@@ -75,7 +72,7 @@
 				               <f:selectItem itemLabel="Selecione"/>
 				               <f:selectItems value="#{cadastroImoveisBean.estados}" var="estado" itemLabel="#{estado.sigla}" itemValue="#{estado.sigla}"/>
 				            </p:selectOneMenu>
-								
+				            
 							<p:outputLabel value="Município" for="municipio"/>
 							<p:inputText id="municipio" size="80" maxlength="200" value="#{cadastroImoveisBean.imovel.tbMunicipio.noMunicipio}"/>
 							

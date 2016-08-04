@@ -1,10 +1,13 @@
 package br.com.rangosolucoes.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.rangosolucoes.enumeration.Estados;
@@ -12,6 +15,8 @@ import br.com.rangosolucoes.model.TbImovel;
 import br.com.rangosolucoes.model.TbLocador;
 import br.com.rangosolucoes.model.TbPessoa;
 import br.com.rangosolucoes.model.TbPessoaFisica;
+import br.com.rangosolucoes.service.LocadorService;
+import br.com.rangosolucoes.util.jsf.FacesUtil;
 
 @Named("cadastroImoveisBean")
 @SessionScoped
@@ -19,10 +24,15 @@ public class CadastroImoveisBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	@Inject
+	private LocadorService locadorService;
+	
 	private TbImovel imovel;
 	private TbLocador locador;
 	private TbPessoa pessoa;
 	private TbPessoaFisica pessoaFisica;
+	
+	private List<TbLocador> locadores;
 	
 	private String sgUF;
 	private String nuCep;
@@ -128,6 +138,22 @@ public class CadastroImoveisBean implements Serializable{
 
 	public void setNuEndereco(String nuEndereco) {
 		this.nuEndereco = nuEndereco;
+	}
+
+	public List<TbLocador> getLocadores() {
+		if(locadores == null){
+			locadores = new ArrayList<>();
+		}
+		if(locadores.size() == 0){
+			if(FacesUtil.isNotPostBack()){
+				locadores = locadorService.consultaTodosLocadores();
+			}
+		}
+		return locadores;
+	}
+
+	public void setLocadores(List<TbLocador> locadores) {
+		this.locadores = locadores;
 	}
 
 }

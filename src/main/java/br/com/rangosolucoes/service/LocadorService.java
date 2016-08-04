@@ -77,4 +77,8 @@ public class LocadorService implements Serializable {
 	public TbEnderecoPessoa findEnderecoById(Long idPessoa){
 		return locadorRepository.findEnderecoById(idPessoa);
 	}
+
+	public List<TbLocador> consultaTodosLocadores() {
+		return locadorRepository.consultaTodosLocadores();
+	}
 }
