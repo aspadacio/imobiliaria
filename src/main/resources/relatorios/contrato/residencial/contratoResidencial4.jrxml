@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contratoResidencial4" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa47cf01-7f4c-46df-9cc3-011ef024a956">
+	<property name="ireport.zoom" value="1.948717100000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="581"/>
+	<parameter name="contrato_numero" class="java.lang.String"/>
+	<parameter name="locador_cnpj" class="java.lang.String"/>
+	<parameter name="locador_endereco_completo" class="java.lang.String"/>
+	<parameter name="locador_razao_social" class="java.lang.String"/>
+	<parameter name="locatario_cpf" class="java.lang.String"/>
+	<parameter name="locatario_endereco_completo" class="java.lang.String"/>
+	<parameter name="locatario_estado_civil" class="java.lang.String"/>
+	<parameter name="locatario_nacionalidade" class="java.lang.String"/>
+	<parameter name="locatario_nome" class="java.lang.String"/>
+	<parameter name="locatario_profissao" class="java.lang.String"/>
+	<parameter name="locatario_rg" class="java.lang.String"/>
+	<parameter name="imovel_endereco_completo" class="java.lang.String"/>
+	<parameter name="contrato_duracao" class="java.lang.String"/>
+	<parameter name="contrato_inicio" class="java.lang.String"/>
+	<parameter name="contrato_fim" class="java.lang.String"/>
+	<parameter name="contrato_valor_aluguel" class="java.lang.String"/>
+	<parameter name="contrato_dia_vencimento" class="java.lang.String"/>
+	<parameter name="contrato_desconto_pontualidade" class="java.lang.String"/>
+	<parameter name="contrato_valor_caucao" class="java.lang.String"/>
+	<title>
+		<band height="22" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="780" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="70" uuid="3c53b208-9d78-4367-b76e-8ef3573b5b83"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo terceiro</u> – Nas hipóteses previstas nos incisos I a VII do Art. 40 da Lei 8.245/91 poderá o <b>LOCADOR</b> exigir novo fiador ou a substituição da modalidade de garantia. Nessas circunstâncias se notificado o (os), a (as) <b>LOCATÁRIO</b>, no prazo de 30 dias, não providenciar novo fiador ou substituir a modalidade da garantia, sujeitará este a responder pela competente cão de despejo por infringir o contrato, que haverá de ser cumulado com a cobrança da multa pecuniária da <b>CLÁUSULA DÉCIMA SÉTIMA</b> qualquer que seja o tempo decorrido deste contrato."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="70" width="555" height="70" uuid="29b620a5-3acb-4d5a-afdd-0fdc628e687a"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA DÉCIMA SÉTIMA<b> – Fica estipulada a multa de 03 meses de aluguel vigente na data da ocorrência, na qual ocorrerá à parte que infringir quaisquer clausulas deste contrato, havendo faculdade para a parte inocente de considerar rescindida a locação, independentemente de qualquer que seja o tempo decorrido do presente contrato, e promover o despejo do imóvel. A mesma penalidade sujeitará o (os), a (as) <b>LOCATÁRIO</b> se não efetuar o pagamento do aluguel no prazo previsto na <b>CLÁUSULA PRIMEIRA</b>, obrigando o <b>LOCADOR</b> propor ação de despejo."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="140" width="555" height="93" uuid="f16c7808-4033-42ff-b066-e1c0eb9064c2"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA DÉCIMA OITAVA</b> – Se o (os), a (as) <b>LOCATÁRIO</b> não for encontrado nos endereços constantes do cadastro que serviu para elaboração deste contrato, desde já e por instrumento, constitui como sua procuradora, o <b>FIADOR</b> da locação, citado na <b>CLÁUSULA DÉCIMA SEXTA</b>, para o fim especifico de, em conjunto ou separadamente, independente da ordem em nomeação, representá-lo em quaisquer ações judiciais relacionadas com este contrato, conferindo-lhes poderes amplos e especiais para receber citações, inclusive a inicial, notificações e intimações, bem como para confessar e reconhecer a procedência do pedido, transigir, desistir o imóvel no caso de abandono ainda que seja necessária a retirada de móveis que ocupam, sendo notificado conforme prevista na <b>CLÁUSULA QUARTA</b>."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="233" width="555" height="38" uuid="d3e9d79a-1999-490f-a89b-600c7470dd52"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA DÉCIMA NONA (CLÁUSULA ESPECIAL)</b> – Este contrato poderá ser rescindido depois de 12 meses de locação, desde que avisado com 30 dias de antecedência por escrito, sem oneração de multa contratual. O locatório terá que prestar conta mensalmente do comprovante de condomínio pago para o administrador."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="271" width="555" height="41" uuid="a6e6ac64-888b-4abb-b3b2-1abbcef36fff"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA VIGÉSIMA</b> – Elegem as partes contratantes o foro da Circunscrição Judiciária do Gama – DF, para dirimir as questões oriundas da interpretação ou aplicação deste contrato, com exclusão dos demais, por mais privilegiados que sejam."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="312" width="555" height="41" uuid="546f5dab-bceb-41cf-8d63-64a8e0ed1811"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["E assim por estarem justas e convencionadas, as partes assinam o presente instrumento particular de CONTRATO DE LOCAÇÃO RESIDENCIAL, em 02 (duas) vias de igual teor, juntamente com os <b>FIADORES</b> e com as duas testemunhas abaixo, a tudo presentes."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="414" width="555" height="20" uuid="b7c883ca-2991-4700-beae-8472ab08f69e"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="38" y="468" width="202" height="1" uuid="a0d63735-d462-4ac8-8f0c-a3d4626e4dc3"/>
+			</line>
+			<line>
+				<reportElement x="318" y="468" width="202" height="1" uuid="0197e6f2-afef-460e-875a-4d212f620820"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="469" width="280" height="25" uuid="d42813f4-6c77-4a46-af4f-3b21a029b73f"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>LOCADOR: </b>" + $P{locador_razao_social}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="469" width="275" height="25" uuid="4ef500de-86ff-4615-be9a-7d7b27050c35"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>LOCATÁRIO: </b>" + $P{locatario_nome}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="38" y="554" width="202" height="1" uuid="807df033-46c3-4362-9260-1317dddcf9e1"/>
+			</line>
+			<line>
+				<reportElement x="318" y="555" width="202" height="1" uuid="44886d8d-4668-49e2-9671-24c82125e564"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="556" width="280" height="25" uuid="5d6b73f5-9a9e-4721-b466-cc0fac74f005"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>TESTEMUNHA: </b>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="556" width="275" height="25" uuid="a30d4a9c-a9d1-4165-809e-7a49910b8767"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>TESTEMUNHA: </b>"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>
