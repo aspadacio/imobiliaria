@@ -1,7 +1,9 @@
 package br.com.rangosolucoes.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
@@ -47,7 +49,13 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		parametros.put("contrato_inicio", "01 de fevereiro de 2016");
 		parametros.put("contrato_fim", "01 de fevereiro de 2017");
 		
-		ContratoResidencialRelatorio executor = new ContratoResidencialRelatorio("/relatorios/contratoResidencialMain.jasper",
+		List<String> filesPaths = new ArrayList<String>();
+		filesPaths.add("/relatorios/contrato/residencial/contratoResidencial1.jasper");
+		filesPaths.add("/relatorios/contrato/residencial/contratoResidencial2.jasper");
+		filesPaths.add("/relatorios/contrato/residencial/contratoResidencial3.jasper");
+		filesPaths.add("/relatorios/contrato/residencial/contratoResidencial4.jasper");
+		
+		ContratoResidencialRelatorio executor = new ContratoResidencialRelatorio(filesPaths,
 			(HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse()
 			, parametros, "Contrato Residencial.pdf");
 		

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contratoResidencial2" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="84ceb42c-11e1-4a0d-8d7c-aa71bd3a0387">
+	<property name="ireport.zoom" value="1.4641000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="355"/>
+	<parameter name="contrato_numero" class="java.lang.String"/>
+	<parameter name="locador_cnpj" class="java.lang.String"/>
+	<parameter name="locador_endereco_completo" class="java.lang.String"/>
+	<parameter name="locador_razao_social" class="java.lang.String"/>
+	<parameter name="locatario_cpf" class="java.lang.String"/>
+	<parameter name="locatario_endereco_completo" class="java.lang.String"/>
+	<parameter name="locatario_estado_civil" class="java.lang.String"/>
+	<parameter name="locatario_nacionalidade" class="java.lang.String"/>
+	<parameter name="locatario_nome" class="java.lang.String"/>
+	<parameter name="locatario_profissao" class="java.lang.String"/>
+	<parameter name="locatario_rg" class="java.lang.String"/>
+	<parameter name="imovel_endereco_completo" class="java.lang.String"/>
+	<parameter name="contrato_duracao" class="java.lang.String"/>
+	<parameter name="contrato_inicio" class="java.lang.String"/>
+	<parameter name="contrato_fim" class="java.lang.String"/>
+	<parameter name="contrato_valor_aluguel" class="java.lang.String"/>
+	<parameter name="contrato_dia_vencimento" class="java.lang.String"/>
+	<parameter name="contrato_desconto_pontualidade" class="java.lang.String"/>
+	<title>
+		<band height="22" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="767" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="74" uuid="a85b81e0-8b63-43d8-aaad-fcf18f169f2d"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo segundo</u> – Decorrido o prazo de 10 (dez) dias do vencimento, será o débito AUTOMATICAMENTE e sem aviso prévio, encaminhado ao Departamento Jurídico do Administrador para cobrança amigável e/ou judicial. Fica desde já estabelecido, que no caso de cobrança amigável, serão devidos honorário advocatício de 10% (dez por cento) sobre o montante devido, contudo, se necessário o procedimento judicial, os honorários serão de 20% (vinte por cento) sobre o valor do débito e/ou 10% (dez por cento) sobre o valor da causa, no caso de ação de despejo, suportando ainda o (os), a (as) <b>LOCATÁRIO</b>, o pagamento das custas do processo."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="74" width="555" height="26" uuid="86e698c5-46e0-4bcd-99a8-5262c4019226"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo terceiro</u> – Os encargos constantes da <b>CLÁUSULA SEXTA</b>, devem ser pagos juntamente com o aluguel, ou antes, se exigido."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="140" width="555" height="59" uuid="0b3714ad-0385-41b7-8fab-633f167f6b2f"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo quinto</u> – O não cumprimento das obrigações pecuniárias expressa neste contrato pelo (os), a (as) <b>LOCATÁRIO</b> e seu (os), a (as) <b>FIADORA</b> faculta ao <b>LOCADOR</b> a inclusão dos seus respectivos nomes do cadastro de devedores do serviço de Proteção ao Crédito – SPC ou entidade com finalidade semelhante. Caberá aos devedores o cancelamento de inscrição, bem como o pagamento de todas as despesas que deste decorrem que se dará somente após a quitação integral dos débitos existentes."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="100" width="555" height="40" uuid="46862c96-e18f-46cd-a9a3-d78cd28f074c"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo quarto</u> – Se o carnê de pagamento de aluguel tipo DOC para pagamento na rede bancária for enviado ao domicilio do (os), a (as) <b>LOCATÁRIO</b> e este não o receberem tempo hábil, deverá comparecer até o dia do vencimento do aluguel do caixa do administrador e efetuar o aludido pagamento."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="296" width="555" height="59" uuid="a645926f-a472-4a1e-8c4d-56fa02263ad7"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA QUARTA</b> – Se necessário à propositura de ações de despejo, consignações em pagamento de aluguéis e assessórios da locação, as citações, intimações e notificações, além das formas previstas no Código de Processo Civil – CPC, poderão ser feitas mediante correspondência com aviso de recebimento (AR). Tratando-se de pessoa jurídica ou firma individual, poderão também ser feitas ás citações, notificações ou intimações, por fac-símile (FAX)."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="199" width="555" height="38" uuid="d0d2eac4-c63f-45cf-b754-3eb5aae948bb"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA TERCEIRA</b> – O aluguel mensal pactuado na <b>CLÁUSULA SEGUNDA</b> será reajustado a cada 12 (doze) meses, pela variação do IGPM/FGV, em conformidade com o que determina a legislação vigente na MP 1.079 de 28/07/95."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="237" width="555" height="59" uuid="01929fb9-3949-41e8-9c56-1872700b34ff"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo único</u> – Na falta do índice contratado, seja por motivo de extinção ou não divulgação, fica desde já estabelecidos que o índice substituto seja sucessivamente o <b>IPC/FIPE, IGP/FGV e o INPC/IBGE</b>, respectivamente pela ordem. Caso estes índices sejam extintos ou não calculados, o reajuste será feito pela média de 03 índices a escolha da administradora que reflita a variação da inflação ocorrida no período."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="355" width="555" height="59" uuid="7fd2d139-0c03-4963-abad-91ed5657fd28"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA QUNTA</b> – o (os), a (as) <b>LOCATÁRIO</b> declara haver visitado e examinado os imóveis locados, que se encontra conforme o termo de vistoria assinado pelas partes, que fará parte integrante do presente contrato, no qual se faz expressa referência aos eventuais defeitos existentes, aceitando-os, obrigando-se, a partir daí, a zelar pelo que nele contiver a fazer de imediato, e por sua conta, todas as reparações dos estragos provenientes do uso normal no curso da locação de modo especial as decorrentes de entupimentos e obstruções na rede de esgoto e água pluvial, sem direito a retenção ou indenização por quaisquer benfeitorias que tenham sido feitas com autorização assumindo juntamente com sua <b>FIADORA</b>, a responsabilidade de devolver o imóvel objeto deste contrato, tal qual o consignado no aludido termo."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="414" width="555" height="52" uuid="91337a92-4d7a-409e-a52c-40d90b9f9613"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo primeiro</u> – Havendo divergência nas vistorias de entrega e recebimento do imóvel, o (os), a (as) <b>LOCATÁRIO</b> autoriza o <b>LOCADOR</b> a efetuar os consertos, pintura, colocação de vidros, etc., e exigir a cobrança tão logo apresente as notas fiscais e recibos de mão-de-obra correspondentes, independente de coleta de preços de material e mão-de-obra"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="465" width="555" height="33" uuid="c8437c59-fb1b-4004-b85f-378f3bc78208"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo segundo</u> – É assegurado ao <b>LOCADOR</b> o direito de vistoriar o imóvel, sempre que julgar conveniente, desde que atento ao disposto no Art. 23, Inciso IX, da Lei 8.245/91."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="498" width="555" height="49" uuid="f66dc3a3-d5cc-4460-a965-892492fcd325"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo terceiro</u> – Deverá o (os, a (as) <b>LOCATÁRIO</b> entregar imediatamente ao <b>LOCADOR</b> ou ao administrador, toda e qualquer correspondência, intimações, documentos de cobrança de tributos, carnês de pagamento de prestações, encargos condominiais, atas e convocações de assembléias do condomínio, ainda que dirigidas o (os), a (as) <b>LOCATÁRIO</b> Art. 23, Inciso VII, da Lei 8.245/91."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="547" width="555" height="64" uuid="64d2bf96-02f5-4017-8e9f-09ad4ac6435f"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA SEXTA</b> – Além do aluguel, compete o (os), a (as) <b>LOCATÁRIO</b> o pagamento das despesas ordinárias de: <b>condomínio, consumo de água, luz, taxas de esgoto. 13° de funcionários, IPTU/TLP, taxa de pintura e saneamento, bem como todos e quaisquer tributos que incidam sobre o imóvel objeto deste contrato</b>; todas as multas pecuniárias provenientes do não pagamento ou do atraso no pagamento de quantias sob sua responsabilidade; todos os emolumentos devidos a órgãos administrativos."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="611" width="555" height="48" uuid="10e9fe91-9b7e-4632-8066-8ddb0cd3ffb4"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo primeiro</u> – Os impostos, taxas e despesas ordinárias de condomínio, que incidam, ou venhas a incidir sobre o imóvel, serão pagos pelo (os), a (as) <b>LOCATÁRIO</b> aos agentes cobradores e/ou órgãos responsáveis pela cobrança, devendo os comprovantes de pagamento ser exibidos ao administrador mensalmente, que não obstante poderão ser feitos por correio ou fax, sempre mencionando o número do contrato de locação."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="660" width="555" height="48" uuid="f8302d97-98ac-471f-bdf3-9494d4378f47"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo segundo</u> – Na hipótese  de serem os encargos pagos pelo <b>LOCADOR</b>, porque não o tinha feito o (os), a (as) <b>LOCATÁRIO</b>, dará ensejo à propositura de ação de despejo por infringir o contrato, sujeitando-se o (os), a (as) <b>LOCATÁRIO</b>, ainda, ao pagamento da multa prevista na <b>CLÁUSULA DÉCIMA SÉTIMA</b>, independentemente do tempo decorrido deste contrato, sem prejuízo do disposto no parágrafo Segundo desta Cláusula."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="708" width="555" height="59" uuid="7c92da24-25c3-409a-baa8-08b557620872"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA SÉTIMA</b> – No ato da devolução do imóvel o (os), a (as) <b>LOCATÁRIO</b> deverá apresentar os últimos pagamentos das contas de <b>água, luz, telefone, taxa de pintura, 13° de funcionários, IPTU/TLP e condomínio do último mês</b>. Não estando, entretanto, o mesmo ainda de posse dos talões de cobrança do último mês, tornar-se-á por base para efeito de recebimento, a média extraída da soma dos talões dos meses anteriores, acrescidos da correção monetária do mês"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>

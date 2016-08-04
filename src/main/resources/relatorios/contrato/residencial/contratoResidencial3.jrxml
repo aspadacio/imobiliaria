@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contratoResidencial3" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ae00faae-0612-43dc-baaf-189ad2b7caab">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="404"/>
+	<parameter name="contrato_numero" class="java.lang.String"/>
+	<parameter name="locador_cnpj" class="java.lang.String"/>
+	<parameter name="locador_endereco_completo" class="java.lang.String"/>
+	<parameter name="locador_razao_social" class="java.lang.String"/>
+	<parameter name="locatario_cpf" class="java.lang.String"/>
+	<parameter name="locatario_endereco_completo" class="java.lang.String"/>
+	<parameter name="locatario_estado_civil" class="java.lang.String"/>
+	<parameter name="locatario_nacionalidade" class="java.lang.String"/>
+	<parameter name="locatario_nome" class="java.lang.String"/>
+	<parameter name="locatario_profissao" class="java.lang.String"/>
+	<parameter name="locatario_rg" class="java.lang.String"/>
+	<parameter name="imovel_endereco_completo" class="java.lang.String"/>
+	<parameter name="contrato_duracao" class="java.lang.String"/>
+	<parameter name="contrato_inicio" class="java.lang.String"/>
+	<parameter name="contrato_fim" class="java.lang.String"/>
+	<parameter name="contrato_valor_aluguel" class="java.lang.String"/>
+	<parameter name="contrato_dia_vencimento" class="java.lang.String"/>
+	<parameter name="contrato_desconto_pontualidade" class="java.lang.String"/>
+	<parameter name="contrato_valor_caucao" class="java.lang.String"/>
+	<title>
+		<band height="22" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="780" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="28" uuid="1c6e21e5-658a-4a0c-a645-5ca860691e0a"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA OITAVA</b> – O (os), a (as) <b>LOCATÁRIO</b> obrigar-se-á a segurar o imóvel locado contra os riscos de fogo em companhia de absoluta idoneidade, mantendo-o segurado até o final do prazo contratual."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="28" width="555" height="39" uuid="9e33051d-a947-497e-a7de-7d5a4dbe28b1"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo primeiro</u> – O seguro incêndio deverá ser renovado anualmente, até 15 dias antes do vencimento de cada período, incumbindo-se o (os), a (as) <b>LOCATÁRIO</b>, nos dias seguintes á efetivação do seguro, entregar ao <b>LOCADOR</b> a apólice respectiva Art.22, Inciso VIII, Lei 8.245/91."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="67" width="555" height="51" uuid="a5763648-d59c-48b7-a661-761c9f7fd8ec"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo segundo</u> – Se o (os), a (as) <b>LOCATÁRIO</b>, no tempo devido, não cumprir a obrigação de segurar o prédio locado, o <b>LOCADOR</b> poderá efetivar o seguro por conta do (os), a (as) <b>LOCATÁRIO</b>, hipótese em que se acrescentará ao custo do prêmio à quantia equivalente ao valor de 01 (um) aluguel vigente à época, a titulo de multa; será cobrado o montante total juntamente com o aluguel que se vencer."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="118" width="555" height="41" uuid="a1fb4e9d-2ee0-4538-b760-1d1f49e28c15"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo terceiro</u> – Se o (os), a (as) <b>LOCATÁRIO</b> vier contratar com a Companhia seguradora o pagamento parcelado do seguro incêndio, obrigar-se-á a apresentar ao <b>LOCADOR</b>, no ato do pagamento do aluguel, o comprovante de quitação da ultima parcela."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="159" width="555" height="29" uuid="268ff7fc-5c59-4b0c-bb05-7164a2a6feed"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo quarto</u> – Constará sempre da apólice de seguro, disposição segundo a qual em caso de sinistro, a indenização será paga pela companhia seguradora, diretamente ao <b>LOCADOR</b>."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="188" width="555" height="29" uuid="bfa4fbf3-1246-4b19-90c5-1447f34ac2e3"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo quinto</u> – Não obstante a feitura do seguro, o (os), a (as) <b>LOCATÁRIO</b> é vedado depositar no imóvel, matérias inflamáveis, explosivos ou corrosivos."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="217" width="555" height="40" uuid="8434a289-9f81-46eb-8c17-c61202dd4c49"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA NONA</b> – No caso de desapropriação do imóvel locado, ficará o <b>LOCADOR</b> desobrigado de todas as cláusulas deste contrato reservando o (os), a (as) <b>LOCATÁRIO</b> tão somente a faculdade de haver do poder desapropriaste, a indenização que porventura tiver direito."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="257" width="555" height="40" uuid="8794059c-bb0d-48bb-8ce9-51930dd69595"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA DÉCIMA</b> – Nenhuma intimação da Saúde publica será motivo para o (os), a (as) <b>LOCATÁRIO</b> abandonar o imóvel locado, ou pedir rescisão do contrato, salvo procedentes vistorias judiciais, que provem estar à construção ameaçada de ruína."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="297" width="555" height="40" uuid="526d3076-e34f-46d8-843b-b50f4a602dd9"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA DÉCIMA PRIMEIRA</b> – Quaisquer tolerâncias ou concessões do <b>LOCADOR</b>, para com o (os), a (as) <b>LOCATÁRIO</b>, quando não manifestadas por escrito, não constituirão procedentes invocáveis por este e não terão a virtude de alterar obrigações contratuais."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="337" width="555" height="52" uuid="6569c1bb-7cb4-4a4c-9b2e-7cd1c7cf7050"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA DÉCIMA SEGUNDA</b> – O LOCADOR não responderá, em nenhum caso, por quaisquer danos que venha a sofrer o (os), a (as) <b>LOCATÁRIO</b> em razão de derramamento de liquido, água de rompimento de canos, de chuvas, de abertura de torneiras, defeitos de esgotos ou fossas, incêndios, arrombamentos, roubos, furtos, de casos fortuitos ou de força maior."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="389" width="555" height="41" uuid="067e2ee5-bb2a-4322-8953-f33fae6808ed"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA DÉCIMA TERCEIRA</b> – O (os), a (as) <b>LOCATÁRIO</b> não terá direito de reter o pagamento do aluguel ou de qualquer outra quantia devida ao <b>LOCADOR</b>, sob a alegação de não terem sido atendidas exigências porventura solicitadas."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="430" width="555" height="49" uuid="c578961d-f053-487c-8abf-76d817ce738d"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA DÉCIMA QUARTA</b> – O imóvel objeto do presente contrato destina-se exclusivamente para fim Residencial, ficando com o os), a (as) <b>LOCATÁRIO</b> proibido de mudar a destinação, ceder ou transferir a locação, sublocar ou emprestar o imóvel, no todo ou em parte, a qualquer título, sob pena de configurar infração contratual e possibilitar ao LOCADOR requerer a rescisão da locação."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="479" width="555" height="49" uuid="e1fc011f-d5a7-470f-8874-18964385ac7e"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo único</u> – A ocupação do imóvel por pessoa não referida neste contrato ou a permanência de qualquer pessoa, a partir do momento em que o (os), a (as) <b>LOCATÁRIO</b> deixar de usá-lo, caracterizará grave infração contratual que acarretará a rescisão da locação em qualquer época de sua vigência, sem prejuízo da aplicação da multa prevista na <b>CLÁUSULA DÉCIMA SÉTIMA</b>."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="528" width="555" height="64" uuid="d4b6c7d0-c06b-4d52-b489-f332be75c514"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA DÉCIMA QUINTA</b> – Em caso de venda do imóvel o (os), a (as) <b>LOCATÁRIO</b> será notificado do Direito de Preferência previsto na Lei do inquilinato, através de carta com aviso de recebimento (AR). Não se manifestando no prazo legal de 30 dias, será considerado como não interessado. Não efetuando a compra do imóvel o (os), a (as) <b>LOCATÁRIO</b> autoriza o <b>LOCADOR</b> ou o administrador mostrar o imóvel aos futuros pretendentes, desde que acompanhado do corretor credenciado."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="592" width="555" height="84" uuid="0b2e1acc-1b5e-4266-8d93-9ad3b4d8c7c8"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CLÁUSULA DÉCIMA SEXTA</b> – Como o <b>LOCATÁRIO</b> não apresentara os <b>FIADORES</b> concorda desde já, em entregar a título de fiança e como caução " + $P{contrato_valor_caucao} + " equivalente aos 12 (doze) meses de aluguel que se propõe a ficar no imóvel objeto deste contrato, conforme Artigo 38 § 2° Lei 8.245 de 18/10/1991 (Lei do inquilinato). Os cheques ficarão sob responsabilidade do escritório onde poderá ser depositado em data correspondente ou resgatados em mãos, deixando claro e acordado que no caso de atraso dos <b>LOCATÁRIOS</b> autorizam desde já a inserir seus respectivos nomes no <b>SPC</b> ou entidades semelhantes, ficando todos os bônus e custas processuais e advocatícias por conta dos <b>LOCATÁRIOS</b>."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="676" width="555" height="41" uuid="7dcb6c51-b510-4d1f-bd1b-5c28abd94ab0"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo primeiro</u> – Na hipótese de ser o <b>FIADOR</b> casado, seu respectivo cônjuge, igualmente assina o presente contrato, na qualidade, também de <b>FIADOR</b> da locação. O consentimento conjugal, portanto, obrigado o cônjuge na solidariedade da garantia fidejussória prestada ao afiançado, até o termo final da locação."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="717" width="555" height="49" uuid="a4ffce37-b009-4eda-bff4-32f823e79384"/>
+				<box bottomPadding="2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u>Parágrafo segundo</u> – O <b>FIADOR</b> declara também solidariamente responsável pelo pagamento das obrigações assumidas pelo o (os), a (as) <b>LOCATÁRIO</b>, se este vier celebrar acordos de reajustes espontâneos de aluguéis, ainda que superior ao estabelecido ou permitido por Lei, assim como os oriundos de sentenças judiciais, conversões compulsórias exigidas pela Lei, aí incluídas as ações revisionais."]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>
