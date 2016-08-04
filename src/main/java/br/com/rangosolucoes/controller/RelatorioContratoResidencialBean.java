@@ -50,8 +50,8 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		parametros.put("contrato_fim", "01 de fevereiro de 2017");
 		
 		List<String> filesPaths = new ArrayList<String>();
-		filesPaths.add("/relatorios/contratoResidencialMain.jasper");
-		filesPaths.add("/relatorios/contratoResidencialSub1.jasper");
+		filesPaths.add("/relatorios/contrato/residencial/contratoResidencial1.jasper");
+		filesPaths.add("/relatorios/contrato/residencial/contratoResidencial2.jasper");
 		
 		ContratoResidencialRelatorio executor = new ContratoResidencialRelatorio(filesPaths,
 			(HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse()
