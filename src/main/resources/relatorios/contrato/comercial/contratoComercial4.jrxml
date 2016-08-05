@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contratoComercial4" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.3310000000000015"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="121"/>
+	<parameter name="locador_cnpj" class="java.lang.String"/>
+	<parameter name="locador_razao_social" class="java.lang.String"/>
+	<parameter name="locatario_cpf" class="java.lang.String"/>
+	<parameter name="locatario_nome" class="java.lang.String"/>
+	<title>
+		<band height="10" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="783" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="108"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u><b>CLÁUSULA 14ª.</u></b> Findo o prazo contratual ora ajustado, se houver prorrogação pôr indeterminação legal ou o Locatário permanecer no imóvel, haverá um reajuste de (10%)DEZ POR CENTO  para cada igual período de <u><b>12 meses</u></b>,  à critério do Locador, prevalecendo todas as demais cláusulas e condições deste.<br><br><u><b>CLÁUSULA 15ª.</u></b> Fica eleito o foro do Gama- DF, para dirimir quaisquer dúvidas oriundas do imóvel e do presente contrato.<br><br>E, para todos os efeitos legais o Locador(a)(s), Locatário(a)(s) e Fiador(a)(es) aceitam em todos os seus termos este contrato, como está regido, depois de lido e achado conforme, assinam juntamente com duas vias de igual teor e forma."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="42" y="194" width="107" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LOCATÁRIO (A):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="288" width="107" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LOCADOR (A):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="301" y="143" width="254" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[---]]></text>
+			</staticText>
+			<line>
+				<reportElement x="142" y="209" width="291" height="1"/>
+			</line>
+			<line>
+				<reportElement x="141" y="303" width="291" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="142" y="209" width="290" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{locatario_nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="229" width="198" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{locatario_cpf}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="181" y="229" width="53" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CPF:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="142" y="303" width="290" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{locador_razao_social}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="323" width="198" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{locador_cnpj}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="181" y="323" width="53" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CNPJ:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+</jasperReport>

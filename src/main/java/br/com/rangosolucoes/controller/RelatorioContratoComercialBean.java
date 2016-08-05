@@ -15,13 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import br.com.rangosolucoes.util.jsf.FacesUtil;
-import br.com.rangosolucoes.util.report.ContratoResidencialRelatorio;
+import br.com.rangosolucoes.util.report.ContratoComercialRelatorio;
 
 /**
- * Classe responsável por gerar relatório do tipo Contrato Residencial
+ * Classe responsável por gerar relatório do tipo Contrato Comercial
  * */
-@Named("relatorioContratoResidencialBean")
-public class RelatorioContratoResidencialBean implements Serializable {
+@Named("relatorioContratoComercialBean")
+public class RelatorioContratoComercialBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,6 @@ public class RelatorioContratoResidencialBean implements Serializable {
 	public void emitir() {
 		parametros = new HashMap<>();
 		
-		parametros.put("contrato_numero", "123456879");
 		parametros.put("locador_cnpj", "21.012.412/0001-11");
 		parametros.put("locador_endereco_completo", "quadra 201 lote C1 sala 06 A 09 comércio local Santa Maria Sul Brasília DF");
 		parametros.put("locador_razao_social", "IMOBILIARIA TAVARES LTDA-EPP");
@@ -48,16 +47,19 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		parametros.put("contrato_duracao", "12");
 		parametros.put("contrato_inicio", "01 de fevereiro de 2016");
 		parametros.put("contrato_fim", "01 de fevereiro de 2017");
+		parametros.put("contrato_valor_aluguel", "R$ 2.300,00 (DOIS MIL E TREZENTOS REAIS)");
+		parametros.put("contrato_dia_vencimento", "10 (DEZ)");
+		parametros.put("contrato_desconto_pontualidade", "500,00 (QUINHENTOS REIAS)");
 		
 		List<String> filesPaths = new ArrayList<String>();
-		filesPaths.add("/relatorios/contrato/residencial/contratoResidencial1.jasper");
-		filesPaths.add("/relatorios/contrato/residencial/contratoResidencial2.jasper");
-		filesPaths.add("/relatorios/contrato/residencial/contratoResidencial3.jasper");
-		filesPaths.add("/relatorios/contrato/residencial/contratoResidencial4.jasper");
+		filesPaths.add("/relatorios/contrato/comercial/contratoComercial1.jasper");
+		filesPaths.add("/relatorios/contrato/comercial/contratoComercial2.jasper");
+		filesPaths.add("/relatorios/contrato/comercial/contratoComercial3.jasper");
+		filesPaths.add("/relatorios/contrato/comercial/contratoComercial4.jasper");
 		
-		ContratoResidencialRelatorio executor = new ContratoResidencialRelatorio(filesPaths,
+		ContratoComercialRelatorio executor = new ContratoComercialRelatorio(filesPaths,
 			(HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse()
-			, parametros, "Contrato Residencial.pdf");
+			, parametros, "Contrato Comercial.pdf");
 		
 		Session session = manager.unwrap(Session.class);
 		session.doWork(executor);
@@ -65,7 +67,7 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		if(executor.isRelatorioGerado()){
 			FacesContext.getCurrentInstance().responseComplete();
 		}else{
-			FacesUtil.addErrorMessage("RelatorioContratoResidencialBean :: A execução do relatório não retornou dados.");
+			FacesUtil.addErrorMessage("relatorioContratoComercialBean :: A execução do relatório não retornou dados.");
 		}
 	}
 }

@@ -20,10 +20,10 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 import org.hibernate.jdbc.Work;
 
 /**
- * Classe responsável por gerar o Contrato do tipo Residencial com os campos preenchidos corretamente.
+ * Classe responsável por gerar o Contrato do tipo Comercial com os campos preenchidos corretamente.
  * @see por conta do tipo de relatório trabalhado aqui, contrato, foi alterada esta classe para receber mas de um .jasper
  * */
-public class ContratoResidencialRelatorio implements Work{
+public class ContratoComercialRelatorio implements Work{
 
 	private HttpServletResponse response;
 	private Map<String, Object> parametros;
@@ -38,7 +38,7 @@ public class ContratoResidencialRelatorio implements Work{
 	 * @param parametros todos os parâmetros Map<key, value> que estarão previamente mapeados no .jasper
 	 * @param nomeArquivoSaida nome dado ao arquivo gerado
 	 * */
-	public ContratoResidencialRelatorio(List<String> caminhosRelatorios, HttpServletResponse response, Map<String, Object> parametros,
+	public ContratoComercialRelatorio(List<String> caminhosRelatorios, HttpServletResponse response, Map<String, Object> parametros,
 			String nomeArquivoSaida) {
 		this.caminhosRelatorios = caminhosRelatorios;
 		this.response = response;
@@ -82,7 +82,7 @@ public class ContratoResidencialRelatorio implements Work{
 				exportador.exportReport();
 			}
 		} catch (Exception e) {
-			throw new SQLException("ContratoResidencialRelatorio :: Erro ao executar relatório ", e);
+			throw new SQLException("ContratoComercialRelatorio :: Erro ao executar relatório ", e);
 		}
 	}
 
