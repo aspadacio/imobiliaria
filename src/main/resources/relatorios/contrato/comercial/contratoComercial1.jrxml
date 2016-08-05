@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contratoComercial1" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.1000000000000005"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="266"/>
+	<parameter name="locador_cnpj" class="java.lang.String"/>
+	<parameter name="locador_endereco_completo" class="java.lang.String"/>
+	<parameter name="locador_razao_social" class="java.lang.String"/>
+	<parameter name="locatario_cpf" class="java.lang.String"/>
+	<parameter name="locatario_endereco_completo" class="java.lang.String"/>
+	<parameter name="locatario_estado_civil" class="java.lang.String"/>
+	<parameter name="locatario_nacionalidade" class="java.lang.String"/>
+	<parameter name="locatario_nome" class="java.lang.String"/>
+	<parameter name="locatario_profissao" class="java.lang.String"/>
+	<parameter name="locatario_rg" class="java.lang.String"/>
+	<parameter name="imovel_endereco_completo" class="java.lang.String"/>
+	<parameter name="contrato_duracao" class="java.lang.String"/>
+	<parameter name="contrato_inicio" class="java.lang.String"/>
+	<parameter name="contrato_fim" class="java.lang.String"/>
+	<parameter name="contrato_valor_aluguel" class="java.lang.String"/>
+	<parameter name="contrato_dia_vencimento" class="java.lang.String"/>
+	<parameter name="contrato_desconto_pontualidade" class="java.lang.String"/>
+	<title>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTRATO DE LOCAÇÃO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="721" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="18" width="555" height="52"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Contrato particular de locação de imóvel. Que entre si fazem: " + $P{locatario_nome} + ", " + $P{locatario_nacionalidade} + " ," + $P{locatario_profissao} + " portador da CI: " + $P{locatario_rg} + " e do CPF: " + $P{locatario_cpf} + ", residente e domiciliado " + $P{locatario_endereco_completo} + ". E " + $P{locador_razao_social} + ", inscrita no CNPJ " + $P{locador_cnpj} + " localizada " + $P{locador_endereco_completo} + "."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="69" width="555" height="51"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u><b>CLAUSUL  A 1ª</u></b>. O aluguel mensal livremente convencionado nesta data é de <u><b>" + $P{contrato_valor_aluguel} + " COM DESCONTO MENSAL DE " + $P{contrato_desconto_pontualidade} + " ATÉ A DATA DO VENCIMENTO.</u></b>" + " Caso o locatário atrase o aluguel, pagará 2% de multa pôr atraso + mora de 0,33% ao dia cobrado sobre o valor do aluguel. Imóvel locado localizado na " + $P{imovel_endereco_completo} + "."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="119" width="555" height="65"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u><b>CLAUSULA 2ª</u></b>. O prazo de locação é de " + $P{contrato_duracao} + ", com vencimento todo dia " + $P{contrato_dia_vencimento} + " de cada mês, ao locador ou onde a mesma indicar, iniciando-se em " + $P{contrato_inicio} + " e a findar-se em " + $P{contrato_fim} + " data em que o LOCATÁRIO se compromete a restituir o imóvel ora locado nas mesmas condições que o recebeu independentemente de qualquer interpelação ou notificação judicial ou extrajudicial, sob pena de despejo, e a responder pelas perdas e danos que causar."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="184" width="555" height="537"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<u><b>Parágrafo Primeiro</u></b>: Caso o Locatário não pague o aluguel no prazo fixado acima, ao locador promoverá a cobrança através de seu Departamento Jurídico, o qual cobrará 20% (vinte por cento) sobre o valor dos aluguéis em atraso através de honorários advocatícios, mesmo que ainda não tenha iniciado procedimento judicial.<br><br><u><b>Parágrafo Segundo</u></b>: Tudo quanto for devido em razão deste contrato e não comporte o processo executivo, será cobrado em ação competente, ficando a cargo do devedor, os honorários do advogado que o credor constituir para a ressalva dos seus direitos.<br><br><u><b>Parágrafo Terceiro</u></b>: Se necessário a propositura de ações de despejo, consignações em pagamento de aluguéis e acessórios da locação; as citações, intimações e notificações, além das formas previstas no CPC (AR ou SEED). Tratando-se de pessoa jurídica ou firma individual, poderão também ser feitas as citações, notificações ou intimações, por telex ou Fac-Simile (FAX).<br><br><u><b>Parágrafo Quarto</u></b>: Deverá o locatário entregar imediatamente ao locador toda e qualquer correspondência, intimações, documentos de cobrança de tributos, carnês de pagamentos de prestações, encargos condominiais, atas e convocações de assembléias do condomínio, ainda que a si dirigidas (Artigo. 23, inciso VII, da Lei 8.245/91).<br><br><u><b>Parágrafo Quinto</u></b>: Findo prazo contratual independente de qualquer aviso ou interpelação judicial ou extrajudicial, não se havendo como presumida falta de oposição do LOCADOR o fato de continuar o LOCATÁRIO na posse do objeto fruto deste contrato, e respeitando o reajuste que trata a <b>15ª deste instrumento</b>, o contrato considerar-se-á renovado pelo mesmo período, permanecendo inalterada as demais cláusulas do mesmo.<br><br><u><b>Parágrafo Sexto</u></b>: Na hipótese do locatário abandonar o imóvel, fica o Locador a emitir-se na sua posse, a fim de evitar a depredação ou invasão do mesmo.<br><br><u><b>Parágrafo Sétimo</u></b>: Em caso de falecimento do locador, a locação transmitir-se-á aos herdeiros. Falecendo o locatário, ficarão sub-rogados nos seus direitos e obrigações, ao cônjuge sobrevivente ou o companheiro e, sucessivamente, aos herdeiros, desde que residentes no imóvel. Em caso de separação judicial ou de fato, a locação prosseguirá automaticamente com o cônjuge ou companheiro que permanecer no imóvel; neste caso deverá a sub-rogação ser comunicada por escrito, ficando o locador e ou administrador, no direito de exigir novas garantias de fiança.<br><br><u><b>CLÁUSULA 3ª.</u></b> Juntamente com o aluguel convencionado fica a cargo do Locatário o pagamento de todos os encargos e tributos que incidirem sobre o imóvel, quer Federais, Estaduais ou Municipais, contas de água, luz, conservação, seguros, despesas decorrentes de lei, e respectivas majorações.<br><br><u><b>Parágrafo Primeiro:</u></b> O(a) LOCATÁRIO(a) obriga-se a transferir para o seu nome, junto as concessionárias, a responsabilidade das contas de luz(CEB) e água(CESB), bem como a pagá-las a quem de direito, autorizando ainda o Locador a fazer a transferência das contas para seu nome.<br><br><u><b>Parágrafo Segundo:</u></b> As despesas mencionadas na cláusula Quarta devem ser pagas juntamente com o aluguel, ou antes, se exigido.<br><br><u><b>Parágrafo Terceiro:</u></b> Os impostos, taxas e despesas citadas na Cláusula 4ª, deste instrumento, que incidem, ou venham a incidir sobre o imóvel, serão pagos pelo locatário aos agentes cobradores e ou órgãos responsáveis pela cobrança, devendo os comprovantes de pagamento serem exibidos a mensalmente. Se residente o locatário em bairro ou cidade diferente da administradora, poderá o mesmo encaminhar os comprovantes (xerox), pelo correio."]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>
