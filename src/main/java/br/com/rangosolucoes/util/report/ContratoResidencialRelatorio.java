@@ -82,7 +82,7 @@ public class ContratoResidencialRelatorio implements Work{
 				exportador.exportReport();
 			}
 		} catch (Exception e) {
-			throw new SQLException("Erro ao executar relatório ", e);
+			throw new SQLException("ContratoResidencialRelatorio :: Erro ao executar relatório ", e);
 		}
 	}
 

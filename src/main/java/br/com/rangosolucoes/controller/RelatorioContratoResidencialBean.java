@@ -65,7 +65,7 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		if(executor.isRelatorioGerado()){
 			FacesContext.getCurrentInstance().responseComplete();
 		}else{
-			FacesUtil.addErrorMessage("A execução do relatório não retornou dados.");
+			FacesUtil.addErrorMessage("RelatorioContratoResidencialBean :: A execução do relatório não retornou dados.");
 		}
 	}
 }
