@@ -22,6 +22,7 @@
 	<parameter name="contrato_dia_vencimento" class="java.lang.String"/>
 	<parameter name="contrato_desconto_pontualidade" class="java.lang.String"/>
 	<parameter name="contrato_valor_caucao" class="java.lang.String"/>
+	<parameter name="cidade_data" class="java.lang.String"/>
 	<title>
 		<band height="22" splitType="Stretch"/>
 	</title>
@@ -75,14 +76,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA["E assim por estarem justas e convencionadas, as partes assinam o presente instrumento particular de CONTRATO DE LOCAÇÃO RESIDENCIAL, em 02 (duas) vias de igual teor, juntamente com os <b>FIADORES</b> e com as duas testemunhas abaixo, a tudo presentes."]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="0" y="414" width="555" height="20" uuid="b7c883ca-2991-4700-beae-8472ab08f69e"/>
-				<box bottomPadding="2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
-					<font fontName="Arial"/>
-				</textElement>
-				<textFieldExpression><![CDATA[""]]></textFieldExpression>
-			</textField>
 			<line>
 				<reportElement x="38" y="468" width="202" height="1" uuid="a0d63735-d462-4ac8-8f0c-a3d4626e4dc3"/>
 			</line>
@@ -126,6 +119,13 @@
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA["<b>TESTEMUNHA: </b>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="414" width="555" height="20" uuid="e172937c-03b5-426c-bd87-5076eea32a69"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cidade_data}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

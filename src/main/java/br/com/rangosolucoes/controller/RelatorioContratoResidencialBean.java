@@ -33,7 +33,10 @@ public class RelatorioContratoResidencialBean implements Serializable {
 	public void emitir() {
 		parametros = new HashMap<>();
 		
-		parametros.put("contrato_numero", "123456879");
+		//Buscar informações para serem inseridas no 'parametros'
+		
+		//Preencher HashMap de parametros
+		
 		parametros.put("locador_cnpj", "21.012.412/0001-11");
 		parametros.put("locador_endereco_completo", "quadra 201 lote C1 sala 06 A 09 comércio local Santa Maria Sul Brasília DF");
 		parametros.put("locador_razao_social", "IMOBILIARIA TAVARES LTDA-EPP");
@@ -44,10 +47,12 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		parametros.put("locatario_nome", "PHYLLIPE DE ACYPRESTE CARVALHO ");
 		parametros.put("locatario_profissao", "auxiliar de manutenção");
 		parametros.put("locatario_rg", "2714393");
-		parametros.put("imovel_endereco_completo", "QUADRA 8 LOTE 19 APARTAMENTO 103 SETOR OESTE GAMA-DF");
+		parametros.put("contrato_numero", "123456879");
 		parametros.put("contrato_duracao", "12");
 		parametros.put("contrato_inicio", "01 de fevereiro de 2016");
 		parametros.put("contrato_fim", "01 de fevereiro de 2017");
+		parametros.put("imovel_endereco_completo", "QUADRA 8 LOTE 19 APARTAMENTO 103 SETOR OESTE GAMA-DF");
+		parametros.put("cidade_data", "Gama, 01 de Fevereiro de 2016");
 		
 		List<String> filesPaths = new ArrayList<String>();
 		filesPaths.add("/relatorios/contrato/residencial/contratoResidencial1.jasper");

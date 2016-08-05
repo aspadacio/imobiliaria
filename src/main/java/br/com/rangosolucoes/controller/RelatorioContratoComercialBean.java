@@ -50,6 +50,7 @@ public class RelatorioContratoComercialBean implements Serializable {
 		parametros.put("contrato_valor_aluguel", "R$ 2.300,00 (DOIS MIL E TREZENTOS REAIS)");
 		parametros.put("contrato_dia_vencimento", "10 (DEZ)");
 		parametros.put("contrato_desconto_pontualidade", "500,00 (QUINHENTOS REIAS)");
+		parametros.put("cidade_data", "Gama, 01 de Fevereiro de 2016");
 		
 		List<String> filesPaths = new ArrayList<String>();
 		filesPaths.add("/relatorios/contrato/comercial/contratoComercial1.jasper");
