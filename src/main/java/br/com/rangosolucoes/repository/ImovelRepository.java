@@ -22,6 +22,10 @@ public class ImovelRepository implements Serializable{
 	@Inject
 	private EntityManager entityManager;
 	
+	public TbImovel salvar(TbImovel imovel){
+		return imovel = entityManager.merge(imovel);
+	}
+	
 	public TbImovel porId(Long id){
 		try {
 			return entityManager.createQuery("from TbImovel where idImovel = :id", TbImovel.class)

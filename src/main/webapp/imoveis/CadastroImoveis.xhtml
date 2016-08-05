@@ -62,7 +62,7 @@
 					<p:panel header="Endereço" style="margin-bottom:20px">
 						<p:panelGrid columns="2" id="painel3" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
 							<p:outputLabel value="Bairro" for="bairro"/>
-							<p:inputText id="bairro" size="40" maxlength="200" value="#{cadastroImoveisBean.imovel.tbBairro.noBairro}"/>
+							<p:inputText id="bairro" size="40" maxlength="200" value="#{cadastroImoveisBean.nomeBairro}"/>
 							
 							<p:outputLabel value="Complemento" for="complemento"/>
 							<p:inputText id="complemento" size="80" maxlength="200"	value="#{cadastroImoveisBean.imovel.dsComplemento}"/>
@@ -74,7 +74,7 @@
 				            </p:selectOneMenu>
 				            
 							<p:outputLabel value="Município" for="municipio"/>
-							<p:inputText id="municipio" size="80" maxlength="200" value="#{cadastroImoveisBean.imovel.tbMunicipio.noMunicipio}"/>
+							<p:inputText id="municipio" size="80" maxlength="200" value="#{cadastroImoveisBean.nomeMunicipio}"/>
 							
 							<p:outputLabel value="Observações" for="observacoes"/>
 							<p:inputTextarea id="observacoes" rows="10" style="width: 99%" value="#{cadastroImoveisBean.imovel.dsObservacoes}"/>

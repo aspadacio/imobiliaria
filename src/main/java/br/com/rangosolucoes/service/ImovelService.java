@@ -16,6 +16,11 @@ public class ImovelService implements Serializable{
 	@Inject
 	private ImovelRepository imovelRepository;
 	
+	@Transacional
+	public TbImovel salvar(TbImovel imovel){
+		return imovelRepository.salvar(imovel);
+	}
+	
 	public List<TbImovel> filtrados(String nomeLocatario, String descricaoImovel){
 		return imovelRepository.filtrados(nomeLocatario, descricaoImovel);
 	}
@@ -23,6 +28,11 @@ public class ImovelService implements Serializable{
 	@Transacional
 	public void excluir(TbImovel imovel){
 		imovelRepository.excluir(imovel);
+	}
+	
+	@Transacional
+	public TbImovel porId(Long id){
+		return imovelRepository.porId(id);
 	}
 
 }
