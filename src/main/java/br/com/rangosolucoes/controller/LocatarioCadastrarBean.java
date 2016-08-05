@@ -441,6 +441,11 @@ public class LocatarioCadastrarBean implements Serializable{
 	    	if(this.isPessoaFisica){ //TbPessoaFisica
 	    		this.nome = pessoa.getTbPessoaFisica().getNoPessoaFisica();
 	    		this.cpf = pessoa.getTbPessoaFisica().getNuCpf();
+	    		this.nuRg = pessoa.getTbPessoaFisica().getNuRg();
+	    		this.rgOrgaoExp = pessoa.getTbPessoaFisica().getOrgExp();
+	    		this.nacionalidade = pessoa.getTbPessoaFisica().getDsNacionalidade();
+	    		this.profissao = pessoa.getTbPessoaFisica().getDsProfissao();
+	    		this.estadoCivil = pessoa.getTbPessoaFisica().getDsEstadoCivil();
 	    	}else{ //TbPessoaJuridica
 	    		//Pessoa Jurídica
 	    		this.nome = pessoa.getTbPessoaJuridica().getNoFantasia();
