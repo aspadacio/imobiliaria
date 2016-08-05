@@ -14,6 +14,11 @@ public class TbPessoaFisica implements java.io.Serializable {
 
 	private String nuCpf;
 	private String noPessoaFisica;
+	private String nuRg;
+	private String orgExp;
+	private String dsNacionalidade;
+	private String dsProfissao;
+	private String dsEstadoCivil;
 
 	public TbPessoaFisica() {
 	}
@@ -37,6 +42,55 @@ public class TbPessoaFisica implements java.io.Serializable {
 
 	public void setNoPessoaFisica(String noPessoaFisica) {
 		this.noPessoaFisica = noPessoaFisica;
+	}
+
+	@Column(name = "NU_RG", nullable = false, length = 200)
+	public String getNuRg() {
+		return nuRg;
+	}
+
+	public void setNuRg(String nuRg) {
+		this.nuRg = nuRg;
+	}
+
+	@Column(name = "ORG_EXP", nullable = false, length = 50)
+	public String getOrgExp() {
+		return orgExp;
+	}
+
+	public void setOrgExp(String orgExp) {
+		this.orgExp = orgExp;
+	}
+
+	@Column(name = "DS_NACIONALIDADE", nullable = false, length = 50)
+	public String getDsNacionalidade() {
+		return dsNacionalidade;
+	}
+
+	public void setDsNacionalidade(String dsNacionalidade) {
+		this.dsNacionalidade = dsNacionalidade;
+	}
+
+	@Column(name = "DS_PROFISSAO", nullable = false, length = 100)
+	public String getDsProfissao() {
+		return dsProfissao;
+	}
+
+	public void setDsProfissao(String dsProfissao) {
+		this.dsProfissao = dsProfissao;
+	}
+
+	@Column(name = "DS_ESTADO_CIVIL", nullable = false, length = 50)
+	public String getDsEstadoCivil() {
+		return dsEstadoCivil;
+	}
+
+	public void setDsEstadoCivil(String dsEstadoCivil) {
+		this.dsEstadoCivil = dsEstadoCivil;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	@Override

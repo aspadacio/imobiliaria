@@ -58,9 +58,10 @@
 			            <!-- Tipo de telefone -->
 			            <h:outputLabel value="Tipo: " />
 			            <h:selectOneMenu value="#{locatarioCadastrarBean.tpTelefone}">
-			               <f:selectItem itemValue="C" itemLabel="Celular"/>
-			               <f:selectItem itemValue="P" itemLabel="Principal"/>
-			               <f:selectItem itemValue="F" itemLabel="Fax"/>
+			            	<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+			               	<f:selectItem itemValue="C" itemLabel="Celular"/>
+			               	<f:selectItem itemValue="P" itemLabel="Principal"/>
+			               	<f:selectItem itemValue="F" itemLabel="Fax"/>
 			            </h:selectOneMenu>
 			            <p:commandButton action="#{locatarioCadastrarBean.addTelefone}" value="Adicionar" update="panelPhones insertPhone"
 			            	style="background-color: #fff; margin-left: 10px"/>
@@ -107,6 +108,17 @@
 			      <h:panelGrid columns="2" rendered="#{locatarioCadastrarBean.isPessoaFisica eq true}">
 			      	<p:outputLabel value="CPF:"/>
 			       	<p:inputMask value="#{locatarioCadastrarBean.cpf}" mask="999.999.999-99" />
+			       	<p:outputLabel value="RG:"/>
+			       	<p:inputMask value="#{locatarioCadastrarBean.nuRg}" mask="99.999.999-9" />
+			       	<p:outputLabel value="Profissão:"/>
+			        <p:inputText size="60" id="dsProfissao" value="#{locatarioCadastrarBean.profissao}" style="margin-right: 10px"/>
+			       	<p:outputLabel value="Estado Civil:"/>
+			       	<h:selectOneMenu value="#{locatarioCadastrarBean.estadoCivil}">
+			       		<f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
+			            <f:selectItem itemValue="Solteiro" itemLabel="Solteiro (a)"/>
+			        	<f:selectItem itemValue="Casado" itemLabel="Casado (a)"/>
+			            <f:selectItem itemValue="Divorciado" itemLabel="Divorciado (a)"/>
+			        </h:selectOneMenu>
 			      </h:panelGrid>
 			      <!-- Pessoa Jurídica -->
 			      <h:panelGrid columns="6" rendered="#{locatarioCadastrarBean.isPessoaFisica eq false}">

@@ -37,12 +37,22 @@ public class LocatarioCadastrarBean implements Serializable{
 	@Inject
 	LocatarioService locatarioService;
 	
+	//Atributos Pessoa Física
 	@Getter @Setter private String nome;
 	@Getter @Setter private String email;
+	@Getter @Setter private String cpf;
+	@Getter @Setter private String estadoCivil;
+	@Getter @Setter private String nuRg;
+	@Getter @Setter private String rgOrgaoExp;
+	@Getter @Setter private String nacionalidade;
+	@Getter @Setter private String profissao;
+	
+	//Atributos Pessoa Jurídica
 	@Getter @Setter private String nmFantasia;
 	@Getter @Setter private String cnpj;
-	@Getter @Setter private String cpf;
 	@Getter @Setter private String inscEstadual;
+	
+	//Atributos compartilhados
 	@Getter @Setter private String nuTelefoneDdd;
 	@Getter @Setter private String nuTelefone;
 	@Getter @Setter private String tpTelefone;
@@ -113,6 +123,11 @@ public class LocatarioCadastrarBean implements Serializable{
 		nmFantasia			= "";
 		cnpj				= "";
 		cpf					= "";
+		estadoCivil			= "";
+		nuRg				= "";
+		rgOrgaoExp			= "";
+		nacionalidade		= "";
+		profissao			= "";
 		inscEstadual		= "";
 		nuTelefoneDdd		= "";
 		nuTelefone			= "";
@@ -260,6 +275,14 @@ public class LocatarioCadastrarBean implements Serializable{
 					FacesUtil.addErrorMessage("É necessário informar o CPF.");
 					isAddError = true;
 				}
+				if(nuRg == "" || nuRg.isEmpty()){
+					FacesUtil.addErrorMessage("É necessário informar o RG.");
+					isAddError = true;
+				}
+				if(profissao == "" || profissao.isEmpty()){
+					FacesUtil.addErrorMessage("É necessário informar a profissão.");
+					isAddError = true;
+				}
 			}else{
 				if(cnpj == "" || cnpj.isEmpty()){
 					FacesUtil.addErrorMessage("É necessário informar o CNPJ.");
@@ -277,6 +300,11 @@ public class LocatarioCadastrarBean implements Serializable{
 		if(isPessoaFisica){
 			locatPesFisica.setNuCpf(cpf.replace(".", "").replace("-", ""));
 			locatPesFisica.setNoPessoaFisica(nome.toUpperCase());
+			locatPesFisica.setDsEstadoCivil(estadoCivil.toUpperCase());
+			locatPesFisica.setDsNacionalidade("Brasileiro".toUpperCase());
+			locatPesFisica.setDsProfissao(profissao.toUpperCase());
+			locatPesFisica.setNuRg(nuRg.replace(".", "").replace("-", ""));
+			locatPesFisica.setOrgExp(rgOrgaoExp.toUpperCase());
 			pessoa.setTbPessoaFisica(locatPesFisica);
 		}else{
 			locatPesJuridica.setNuCnpj(cnpj.replace(".", "").replace("-", "").replace("/", ""));
@@ -413,6 +441,11 @@ public class LocatarioCadastrarBean implements Serializable{
 	    	if(this.isPessoaFisica){ //TbPessoaFisica
 	    		this.nome = pessoa.getTbPessoaFisica().getNoPessoaFisica();
 	    		this.cpf = pessoa.getTbPessoaFisica().getNuCpf();
+	    		this.nuRg = pessoa.getTbPessoaFisica().getNuRg();
+	    		this.rgOrgaoExp = pessoa.getTbPessoaFisica().getOrgExp();
+	    		this.nacionalidade = pessoa.getTbPessoaFisica().getDsNacionalidade();
+	    		this.profissao = pessoa.getTbPessoaFisica().getDsProfissao();
+	    		this.estadoCivil = pessoa.getTbPessoaFisica().getDsEstadoCivil();
 	    	}else{ //TbPessoaJuridica
 	    		//Pessoa Jurídica
 	    		this.nome = pessoa.getTbPessoaJuridica().getNoFantasia();
