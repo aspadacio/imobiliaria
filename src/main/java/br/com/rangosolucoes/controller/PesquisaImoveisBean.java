@@ -23,7 +23,7 @@ public class PesquisaImoveisBean implements Serializable{
 	private ImovelService imovelService;
 	
 	private List<TbImovel> imoveis;
-	private String nomeLocatario;
+	private String nomeLocador;
 	private String descricaoImovel;
 	
 	private TbImovel imovelSelecionado;
@@ -34,7 +34,7 @@ public class PesquisaImoveisBean implements Serializable{
 	}
 	
 	public void pesquisar(){
-		imoveis = imovelService.filtrados(this.nomeLocatario, this.descricaoImovel);
+		imoveis = imovelService.filtrados(this.nomeLocador, this.descricaoImovel);
 	}
 	
 	public void excluir(){
@@ -64,20 +64,20 @@ public class PesquisaImoveisBean implements Serializable{
 		this.imovelSelecionado = imovelSelecionado;
 	}
 
-	public String getNomeLocatario() {
-		return nomeLocatario;
-	}
-
-	public void setNomeLocatario(String nomeLocatario) {
-		this.nomeLocatario = nomeLocatario;
-	}
-
 	public String getDescricaoImovel() {
 		return descricaoImovel;
 	}
 
 	public void setDescricaoImovel(String descricaoImovel) {
 		this.descricaoImovel = descricaoImovel;
+	}
+
+	public String getNomeLocador() {
+		return nomeLocador;
+	}
+
+	public void setNomeLocador(String nomeLocador) {
+		this.nomeLocador = nomeLocador;
 	}
 
 }

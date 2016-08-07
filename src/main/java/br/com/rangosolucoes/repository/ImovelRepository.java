@@ -36,15 +36,15 @@ public class ImovelRepository implements Serializable{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TbImovel> filtrados(String nomeLocatario, String descricaoImovel) {
+	public List<TbImovel> filtrados(String nomeLocador, String descricaoImovel) {
 		Session session = entityManager.unwrap(Session.class);
 		Criteria criteria = session.createCriteria(TbImovel.class, "imovel");
-		criteria.createAlias("imovel.tbLocatario", "locatario");
-		criteria.createAlias("locatario.tbPessoa", "pessoa");
-		criteria.createAlias("pessoa.tbPessoaFisica", "pessoafisica");
+		criteria.createAlias("imovel.tbLocador", "locador");
+		criteria.createAlias("locador.tbPessoa", "pessoa");
+		criteria.createAlias("pessoa.tbPessoaJuridica", "pessoajuridica");
 		
-		if(StringUtils.isNotBlank(nomeLocatario)){
-			criteria.add(Restrictions.ilike("pessoafisica.noPessoaFisica", nomeLocatario, MatchMode.ANYWHERE));
+		if(StringUtils.isNotBlank(nomeLocador)){
+			criteria.add(Restrictions.ilike("pessoajuridica.noRazaoSocial", nomeLocador, MatchMode.ANYWHERE));
 		}
 		
 		if(StringUtils.isNotBlank(descricaoImovel)){

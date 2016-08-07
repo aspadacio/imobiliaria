@@ -307,4 +307,9 @@ public class LocadorRepository implements Serializable {
 	public List<TbLocador> consultaTodosLocadores() {
 		return manager.createQuery("from TbLocador", TbLocador.class).getResultList();
 	}
+	
+	public TbLocador locadorPorId(Long id){
+		return manager.createQuery("from TbLocador where idLocador = :idLocador", TbLocador.class)
+				.setParameter("idLocador", id).getSingleResult();
+	}
 }

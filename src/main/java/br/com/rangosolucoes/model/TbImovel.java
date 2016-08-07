@@ -45,8 +45,7 @@ public class TbImovel implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_LOCATARIO", nullable = false)
-	@NotNull
+	@JoinColumn(name = "ID_LOCATARIO")
 	public TbLocatario getTbLocatario() {
 		return this.tbLocatario;
 	}

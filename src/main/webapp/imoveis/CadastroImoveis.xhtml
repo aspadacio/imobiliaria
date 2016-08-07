@@ -34,17 +34,17 @@
 			<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
 			
 				<p:outputLabel value="Locador" for="locador"/>
-				<p:selectOneMenu id="locador" value="#{cadastroImoveisBean.locador}" converter="locadorConverter">
+				<p:selectOneMenu id="locador" value="#{cadastroImoveisBean.idLocador}">
 					<f:selectItem itemLabel="Selecione um locador"/>
-					<f:selectItems value="#{cadastroImoveisBean.locadores}" var="locador" itemValue="#{locador}" 
-						itemLabel="#{locador.tbPessoa.tbPessoaFisica.noPessoaFisica}"/>
+					<f:selectItems value="#{cadastroImoveisBean.locadores}" var="locador" itemValue="#{locador.idLocador}" 
+						itemLabel="#{locador.tbPessoa.tbPessoaJuridica.noRazaoSocial}"/>
 				</p:selectOneMenu>
 				
 				<p:outputLabel value="Descrição" for="descricao"/>
 				<p:inputText id="descricao" size="80" maxlength="200" value="#{cadastroImoveisBean.imovel.dsImovel}"/>
 					
 				<p:outputLabel value="CEP" for="cep"/>
-				<p:inputMask id="cep" size="10" maxlength="200" mask="99.999-999" value="#{cadastroImoveisBean.imovel.nuCep}"/>
+				<p:inputMask id="cep" size="10" maxlength="200" mask="99.999-999" value="#{cadastroImoveisBean.nuCep}"/>
 					
 			</p:panelGrid>
 			

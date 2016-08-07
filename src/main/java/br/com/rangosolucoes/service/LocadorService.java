@@ -81,4 +81,9 @@ public class LocadorService implements Serializable {
 	public List<TbLocador> consultaTodosLocadores() {
 		return locadorRepository.consultaTodosLocadores();
 	}
+	
+	@Transacional
+	public TbLocador locadorPorId(Long id){
+		return locadorRepository.locadorPorId(id);
+	}
 }

@@ -55,6 +55,7 @@ public class CadastroImoveisBean implements Serializable{
 	private String nuEndereco;
 	private String nomeBairro;
 	private String nomeMunicipio;
+	private Long idLocador;
 	
 	@PostConstruct
 	public void init(){
@@ -88,7 +89,8 @@ public class CadastroImoveisBean implements Serializable{
 				FacesUtil.addInfoMessage("Imóvel cadastrado com sucesso!");
 			}
 			
-			imovel.setTbLocador(locador);
+			imovel.setNuCep(this.nuCep.replace(".", "").replace("-", ""));
+			imovel.setTbLocador(locadorService.locadorPorId(idLocador));
 			imovel.setNuEndereco(Integer.parseInt(nuEndereco));
 			imovel.setTbBairro(bairro);
 			imovel.setTbMunicipio(municipio);
@@ -103,18 +105,21 @@ public class CadastroImoveisBean implements Serializable{
 		locador = new TbLocador();
 		pessoa = new TbPessoa();
 		pessoaFisica = new TbPessoaFisica();
+		bairro = new TbBairro();
+		municipio = new TbMunicipio();
 		
 		sgUF = "";
 		nuCep = "";
 		nuEndereco = "";
 		nomeBairro = "";
 		nomeMunicipio = "";
+		idLocador = null;
 	}
 	
 	public boolean camposPreenchidos(){
 		boolean preenchido = true;
 		
-		if(locador == null){
+		if(idLocador == null){
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo Locador é obrigatório.");
 		}
@@ -124,7 +129,7 @@ public class CadastroImoveisBean implements Serializable{
 			FacesUtil.addErrorMessage("O campo Descrição é obrigatório.");
 		}
 		
-		if(imovel.getNuCep() == null || imovel.getNuCep() == ""){
+		if(nuCep == null || nuCep == ""){
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo CEP é obrigatório.");
 		}
@@ -270,6 +275,14 @@ public class CadastroImoveisBean implements Serializable{
 
 	public void setMunicipio(TbMunicipio municipio) {
 		this.municipio = municipio;
+	}
+
+	public Long getIdLocador() {
+		return idLocador;
+	}
+
+	public void setIdLocador(Long idLocador) {
+		this.idLocador = idLocador;
 	}
 
 }

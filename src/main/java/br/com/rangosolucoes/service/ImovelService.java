@@ -21,8 +21,8 @@ public class ImovelService implements Serializable{
 		return imovelRepository.salvar(imovel);
 	}
 	
-	public List<TbImovel> filtrados(String nomeLocatario, String descricaoImovel){
-		return imovelRepository.filtrados(nomeLocatario, descricaoImovel);
+	public List<TbImovel> filtrados(String nomeLocador, String descricaoImovel){
+		return imovelRepository.filtrados(nomeLocador, descricaoImovel);
 	}
 	
 	@Transacional
