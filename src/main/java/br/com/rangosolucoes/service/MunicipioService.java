@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.inject.Inject;
 
+import br.com.rangosolucoes.model.TbEnderecoPessoa;
 import br.com.rangosolucoes.model.TbMunicipio;
 import br.com.rangosolucoes.repository.MunicipioRepository;
 import br.com.rangosolucoes.util.jpa.Transacional;
@@ -26,4 +27,11 @@ public class MunicipioService implements Serializable{
 		}
 	}
 
+	/**
+	 * Método responsável por retornar o objeto {@link TbMunicipio} a partir da FK do objeto {@link TbEnderecoPessoa}
+	 * */
+	@Transacional
+	public TbMunicipio findByEnderecoPessoaId(Long id){
+		return municipioRepository.findByEnderecoPessoaId(id);
+	}
 }

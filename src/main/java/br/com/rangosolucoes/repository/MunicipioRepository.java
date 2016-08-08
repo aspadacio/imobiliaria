@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
+import br.com.rangosolucoes.model.TbEnderecoPessoa;
 import br.com.rangosolucoes.model.TbMunicipio;
 
 public class MunicipioRepository implements Serializable{
@@ -33,6 +34,16 @@ public class MunicipioRepository implements Serializable{
 			return null;
 		}
 		return null;
+	}
+
+	/**
+	 * Método responsável por retornar o objeto {@link TbMunicipio} a partir da FK do objeto {@link TbEnderecoPessoa}
+	 * */
+	public TbMunicipio findByEnderecoPessoaId(Long id) {
+		return manager.createQuery("FROM TbMunicipio WHERE idMunicipio = :idMunicipio", 
+				TbMunicipio.class)
+				.setParameter("idMunicipio", id)
+				.getSingleResult();
 	}
 
 }
