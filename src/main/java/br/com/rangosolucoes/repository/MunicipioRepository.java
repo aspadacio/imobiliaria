@@ -1,6 +1,8 @@
 package br.com.rangosolucoes.repository;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -21,11 +23,16 @@ public class MunicipioRepository implements Serializable{
 	
 	public TbMunicipio porNomeDoMunicipio(String nome){
 		try {
-			return manager.createQuery("from TbMunicipio where upper(noMunicipio) = :nome", TbMunicipio.class)
-					.setParameter("nome", nome.toUpperCase()).getSingleResult();
+			List<TbMunicipio> municipios = new ArrayList<>();
+			municipios = manager.createQuery("from TbMunicipio where upper(noMunicipio) = :nome", TbMunicipio.class)
+					.setParameter("nome", nome.toUpperCase()).getResultList();
+			for (TbMunicipio tbMunicipio : municipios) {
+				return tbMunicipio;
+			}
 		} catch (NoResultException e) {
 			return null;
 		}
+		return null;
 	}
 
 }

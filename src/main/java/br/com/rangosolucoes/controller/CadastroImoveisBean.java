@@ -165,7 +165,12 @@ public class CadastroImoveisBean implements Serializable{
 		
 		if(!facesContext.isPostback() && !facesContext.isValidationFailed() &&
 				facesContext.getExternalContext().getRequestParameterMap().get("imovel") != null){
-			
+			idLocador = imovel.getTbLocador().getIdLocador();
+			nuCep = imovel.getNuCep();
+			nuEndereco = imovel.getNuEndereco().toString();
+			nomeBairro = imovel.getTbBairro().getNoBairro();
+			nomeMunicipio = imovel.getTbMunicipio().getNoMunicipio();
+			sgUF = imovel.getTbMunicipio().getSgUf();
 		}
 	}
 	

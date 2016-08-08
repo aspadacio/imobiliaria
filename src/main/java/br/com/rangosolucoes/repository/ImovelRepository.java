@@ -14,6 +14,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.rangosolucoes.model.TbImovel;
+import br.com.rangosolucoes.service.NegocioException;
 
 public class ImovelRepository implements Serializable{
 	
@@ -55,7 +56,13 @@ public class ImovelRepository implements Serializable{
 	}
 	
 	public void excluir(TbImovel imovel){
-		
+		try {
+			entityManager.remove(entityManager.contains(imovel) ? imovel : entityManager.merge(imovel));
+			entityManager.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new NegocioException("O imóvel não pode ser excluido.");
+		}
 	}
 
 }
