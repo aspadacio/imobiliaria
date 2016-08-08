@@ -1,6 +1,7 @@
 package br.com.rangosolucoes.repository;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -26,6 +27,10 @@ public class PessoaRepository implements Serializable{
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+	
+	public List<TbPessoa> consultaTodosFiadores(){
+		return manager.createQuery("from TbPessoa", TbPessoa.class).getResultList();
 	}
 
 }

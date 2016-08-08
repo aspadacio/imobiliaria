@@ -82,4 +82,8 @@ public class LocatarioService implements Serializable {
 	public List<TbPessoaTelefone> findPhonesById(Long idPessoa) {
 		return locatarioRepository.findPhonesById(idPessoa);
 	}
+	
+	public List<TbLocatario> consultaTodosLocatarios(){
+		return locatarioRepository.consultaTodosLocatarios();
+	}
 }

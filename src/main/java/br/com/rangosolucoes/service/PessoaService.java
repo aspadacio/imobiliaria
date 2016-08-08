@@ -1,6 +1,7 @@
 package br.com.rangosolucoes.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -18,6 +19,10 @@ public class PessoaService implements Serializable{
 	@Transacional
 	public TbPessoa salvar(TbPessoa pessoa){
 		return pessoaRepository.salvar(pessoa);
+	}
+	
+	public List<TbPessoa> consultaTodosFiadores(){
+		return pessoaRepository.consultaTodosFiadores();
 	}
 
 }

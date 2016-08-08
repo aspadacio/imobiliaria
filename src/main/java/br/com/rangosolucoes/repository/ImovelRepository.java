@@ -64,5 +64,9 @@ public class ImovelRepository implements Serializable{
 			throw new NegocioException("O imóvel não pode ser excluido.");
 		}
 	}
+	
+	public List<TbImovel> consultaTodosImoveis() {
+		return entityManager.createQuery("from TbImovel", TbImovel.class).getResultList();
+	}
 
 }

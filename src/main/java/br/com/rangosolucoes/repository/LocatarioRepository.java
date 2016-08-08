@@ -16,7 +16,6 @@ import org.hibernate.criterion.Restrictions;
 
 import br.com.rangosolucoes.model.TbBairro;
 import br.com.rangosolucoes.model.TbEnderecoPessoa;
-import br.com.rangosolucoes.model.TbLocador;
 import br.com.rangosolucoes.model.TbLocatario;
 import br.com.rangosolucoes.model.TbMunicipio;
 import br.com.rangosolucoes.model.TbPessoa;
@@ -497,4 +496,9 @@ public class LocatarioRepository implements Serializable {
 		
 		return criteria.list();
 	}
+	
+	public List<TbLocatario> consultaTodosLocatarios(){
+		return manager.createQuery("from TbLocatario", TbLocatario.class).getResultList();
+	}
+	
 }

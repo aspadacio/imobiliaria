@@ -34,5 +34,9 @@ public class ImovelService implements Serializable{
 	public TbImovel porId(Long id){
 		return imovelRepository.porId(id);
 	}
+	
+	public List<TbImovel> consultaTodosImoveis() {
+		return imovelRepository.consultaTodosImoveis();
+	}
 
 }

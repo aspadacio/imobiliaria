@@ -11,7 +11,7 @@
 	<ui:define name="corpo">
 		
 		<f:metadata>
-			<o:viewParam name="contrato" converter="contratoConverter" value="#{cadastroImoveisBean.imovel}"/>
+			<o:viewParam name="contrato" converter="contratoConverter" value="#{cadastroContratosBean.contrato}"/>
 			<f:event listener="#{cadastroContratosBean.alteraContratoSelecionado}" type="preRenderView"></f:event>
 		</f:metadata>
 	
@@ -22,65 +22,132 @@
 			
 			<p:toolbar style="margin-top: 10px">
 				<p:toolbarGroup>
-					<p:commandButton value="Novo" id="botaoNovo" action="#{cadastroImoveisBean.novoCadastro}" update="@form" immediate="true"/>
-					<p:commandButton value="Salvar" id="botaoSalvar" action="#{cadastroImoveisBean.salvar}" update="mensagens @form"/>
+					<p:commandButton value="Novo" id="botaoNovo" action="#{cadastroContratosBean.novoCadastro}" update="@form" immediate="true"/>
+					<p:commandButton value="Salvar" id="botaoSalvar" action="#{cadastroContratosBean.salvar}" update="mensagens @form"/>
 				</p:toolbarGroup>
 				
 				<p:toolbarGroup align="right">
-					<p:commandButton value="Pesquisa" id="botaoNovaPesquisa" action="#{pesquisaImoveisBean.novaPesquisa}" update="@form" immediate="true"/>
+					<p:commandButton value="Pesquisa" id="botaoNovaPesquisa" action="#{pesquisaContratosBean.novaPesquisa}" update="@form" immediate="true"/>
 				</p:toolbarGroup>
 			</p:toolbar>
 			
 			<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
 			
-				<p:outputLabel value="Locador" for="locador"/>
-				<p:selectOneMenu id="locador" value="#{cadastroImoveisBean.idLocador}">
-					<f:selectItem itemLabel="Selecione um locador"/>
-					<f:selectItems value="#{cadastroImoveisBean.locadores}" var="locador" itemValue="#{locador.idLocador}" 
-						itemLabel="#{locador.tbPessoa.tbPessoaJuridica.noRazaoSocial}"/>
+				<p:outputLabel value="Locatário" for="locatario"/>
+				<p:selectOneMenu id="locatario" value="#{cadastroContratosBean.idLocatario}">
+					<f:selectItem itemLabel="Selecione um locatário"/>
+					<f:selectItems value="#{cadastroContratosBean.locatarios}" var="locatario" itemValue="#{locatario.idLocador}" 
+						itemLabel="#{locatario.tbPessoa.TbPessoaFisica.noPessoaFisica}"/>
 				</p:selectOneMenu>
 				
-				<p:outputLabel value="Descrição" for="descricao"/>
-				<p:inputText id="descricao" size="80" maxlength="200" value="#{cadastroImoveisBean.imovel.dsImovel}"/>
-					
-				<p:outputLabel value="CEP" for="cep"/>
-				<p:inputMask id="cep" size="10" maxlength="200" mask="99.999-999" value="#{cadastroImoveisBean.nuCep}"/>
+				<p:outputLabel value="Imóvel" for="imovel"/>
+				<p:selectOneMenu id="imovel" value="#{cadastroContratosBean.idContrato}">
+					<f:selectItem itemLabel="Selecione um imóvel"/>
+					<f:selectItems value="#{cadastroContratosBean.imoveis}" var="imovel" itemValue="#{imovel.idImovel}" 
+						itemLabel="#{imovel.dsImovel}"/>
+				</p:selectOneMenu>
 					
 			</p:panelGrid>
 			
 			<p:panelGrid columns="4" id="painel2" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
-				<p:outputLabel value="Endereço" for="endereco"/>
-				<p:inputText id="endereco" size="80" maxlength="200" value="#{cadastroImoveisBean.imovel.dsEndereco}"/>
+				<p:outputLabel value="Fiador" for="fiador"/>
+				<p:selectOneMenu id="fiador" value="#{cadastroContratosBean.idPessoaFiador}">
+					<f:selectItem itemLabel="Selecione um fiador"/>
+					<f:selectItems value="#{cadastroContratosBean.fiadores}" var="fiador" itemValue="#{fiador.idPessoa}" 
+						itemLabel="#{fiador.tbPessoaFisica.noPessoaFisica}"/>
+				</p:selectOneMenu>
 				
-				<p:outputLabel value="Número" for="numero"/>
-				<p:inputText id="numero" size="40" maxlength="200" value="#{cadastroImoveisBean.nuEndereco}"/>
+				<p:outputLabel value="Inicio" for="inicio"/>
+				<p:calendar id="inicio" size="10" value="#{cadastroContratosBean.contrato.dtInicio}" locale="pt" pattern="dd-MM-yyyy" mask="true" navigator="true"/>
+			
+				<p:outputLabel value="Duração(Meses)" for="duracao"/>
+				<p:inputText id="duracao" size="5" maxlength="2" value="#{cadastroContratosBean.contrato.nuDuracao}"/>
+				
+				<p:outputLabel value="Dia vencimento" for="diavencimento"/>
+				<p:inputText id="diavencimento" size="40" maxlength="2" value="#{cadastroContratosBean.contrato.nuDiaVencimento}"/>
 			</p:panelGrid>
 			
-			<br/>
+			<p:panelGrid columns="4" id="painel3" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+				<p:outputLabel value="Multa por atraso(%)" for="multaatraso"/>
+				<p:inputText id="multaatraso" size="40" maxlength="3" value="#{cadastroContratosBean.contrato.txMultaPorAtraso}"/>
+				
+				<p:outputLabel value="Nº da parcela anterior" for="parcelaanterior"/>
+				<p:inputText id="parcelaanterior" size="40" maxlength="2" value="#{cadastroContratosBean.contrato.nuParcelaAnterior}"/>
+				
+				<p:outputLabel value="Comissão(%)" for="comissao"/>
+				<p:inputText id="comissao" size="40" maxlength="3" value="#{cadastroContratosBean.contrato.txComissao}"/>
+				
+				<p:outputLabel value="Ativar contrato?" for="ativar"/>
+        		<p:selectBooleanButton id="ativar" value="#{cadastroContratosBean.contrato.stContratoAtivo}" onLabel="Sim" offLabel="Não" style="width:60px" />
+			</p:panelGrid>
 			
-				<h:panelGroup>
-					<p:panel header="Endereço" style="margin-bottom:20px">
-						<p:panelGrid columns="2" id="painel3" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
-							<p:outputLabel value="Bairro" for="bairro"/>
-							<p:inputText id="bairro" size="40" maxlength="200" value="#{cadastroImoveisBean.nomeBairro}"/>
-							
-							<p:outputLabel value="Complemento" for="complemento"/>
-							<p:inputText id="complemento" size="80" maxlength="200"	value="#{cadastroImoveisBean.imovel.dsComplemento}"/>
-								
-							<p:outputLabel value="UF" for="uf"/>
-							<p:selectOneMenu id="uf" value="#{cadastroImoveisBean.sgUF}">
-				               <f:selectItem itemLabel="Selecione"/>
-				               <f:selectItems value="#{cadastroImoveisBean.estados}" var="estado" itemLabel="#{estado.sigla}" itemValue="#{estado.sigla}"/>
-				            </p:selectOneMenu>
-				            
-							<p:outputLabel value="Município" for="municipio"/>
-							<p:inputText id="municipio" size="80" maxlength="200" value="#{cadastroImoveisBean.nomeMunicipio}"/>
-							
-							<p:outputLabel value="Observações" for="observacoes"/>
-							<p:inputTextarea id="observacoes" rows="10" style="width: 99%" value="#{cadastroImoveisBean.imovel.dsObservacoes}"/>
-						</p:panelGrid>
-					</p:panel>
-				</h:panelGroup>
+			<p:tabView style="margin-top: 20px">
+				<p:tab title="Receitas do Contrato">
+					<p:panelGrid columns="4" id="painelReceitas" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">	
+						<p:outputLabel value="Receita" for="receita"/>
+						<p:inputText id="receita" size="40" maxlength="100" value="#{cadastroContratosBean.nomeModificador}"/>
+						
+						<p:outputLabel value="Período Inicial" for="perInicial"/>
+						<p:calendar id="perInicial" size="10" value="#{cadastroContratosBean.contratoModificador.nuMesAnoInicial}" locale="pt" pattern="dd-MM-yyyy" mask="true" navigator="true"/>
+						
+						<p:outputLabel value="Período Final" for="perFinal"/>
+						<p:calendar id="perFinal" size="10" value="#{cadastroContratosBean.contratoModificador.nuMesAnoFinal}" locale="pt" pattern="dd-MM-yyyy" mask="true" navigator="true"/>
+						
+						<p:outputLabel value="Reajuste(%)" for="reajuste"/>
+						<p:inputText id="reajuste" size="10" maxlength="100" value="#{cadastroContratosBean.contratoModificador.txReajuste}"/>
+						
+						<p:outputLabel value="Valor" for="valor"/>
+						<p:inputText id="valor" size="10" maxlength="100" value="#{cadastroContratosBean.contratoModificador.vlValor}"/>
+				    </p:panelGrid>
+				    
+				    <p:outputLabel value="Descrição da receita" for="descreceita"/>
+					<p:inputTextarea id="descreceita" rows="3" style="width: 99%" value="#{cadastroContratosBean.descricaoModificador}"/>
+					
+					<p:dataTable id="receitasDataTable" value="#{cadastroContratosBean.contratosModificador}" var="imovel" style="margin-top: 20px"
+						emptyMessage="Nenhuma receita encontrada." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+						<p:column headerText="Receita">
+						</p:column>
+						<p:column headerText="Período Início">
+						</p:column>
+						<p:column headerText="Período Fim">
+						</p:column>
+						<p:column headerText="Reajuste(%)">
+						</p:column>
+						<p:column headerText="Valor">
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+				<p:tab title="Despesas do Contrato">
+					<p:panelGrid columns="4" id="painelDespesas" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">	
+						<p:outputLabel value="Despesa" for="despesa"/>
+						<p:inputText id="despesa" size="40" maxlength="100" value="#{cadastroContratosBean.nomeModificadorDespesas}"/>
+						
+						<p:outputLabel value="Período Inicial" for="perInicialDespesa"/>
+						<p:calendar id="perInicialDespesa" value="#{cadastroContratosBean.contratoModificadorDespesas.nuMesAnoInicial}" locale="pt" pattern="dd-MM-yyyy" mask="true" navigator="true"/>
+						
+						<p:outputLabel value="Período Final" for="perFinalDespesa"/>
+						<p:calendar id="perFinalDespesa" value="#{cadastroContratosBean.contratoModificadorDespesas.nuMesAnoFinal}" locale="pt" pattern="dd-MM-yyyy" mask="true" navigator="true"/>
+						
+						<p:outputLabel value="Valor" for="valordespesa"/>
+						<p:inputText id="valordespesa" size="40" maxlength="100" value="#{cadastroContratosBean.contratoModificadorDespesas.vlValor}"/>
+				    </p:panelGrid>
+				    
+				    <p:outputLabel value="Descrição da despesa" for="descdespesa"/>
+					<p:inputTextarea id="descdespesa" rows="3" style="width: 99%" value="#{cadastroContratosBean.descricaoModificadorDespesas}"/>
+					
+					<p:dataTable id="despesasDataTable" value="#{cadastroContratosBean.contratosModificadorDespesas}" var="imovel" style="margin-top: 20px"
+						emptyMessage="Nenhuma despesa encontrada." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+						<p:column headerText="Receita">
+						</p:column>
+						<p:column headerText="Período Início">
+						</p:column>
+						<p:column headerText="Período Fim">
+						</p:column>
+						<p:column headerText="Valor">
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+			</p:tabView>
 		</h:form>
 	</ui:define>
 	
