@@ -161,7 +161,7 @@ public class CadastroImoveisBean implements Serializable{
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		
 		/*Valida se é um postBack ou um ValidationFailed. Só entra se for uma requisição.
-		 * Valisa também se está enviando o atributo 'imovel' */
+		 * Valida também se está enviando o atributo 'imovel' */
 		
 		if(!facesContext.isPostback() && !facesContext.isValidationFailed() &&
 				facesContext.getExternalContext().getRequestParameterMap().get("imovel") != null){
