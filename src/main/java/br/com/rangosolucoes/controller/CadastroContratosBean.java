@@ -46,6 +46,7 @@ public class CadastroContratosBean implements Serializable{
 	private String descricaoModificador;
 	private String nomeModificadorDespesas;
 	private String descricaoModificadorDespesas;
+	private boolean stContratoAtivo;
 	
 	private List<TbLocatario> locatarios;
 	private List<TbImovel> imoveis;
@@ -69,12 +70,31 @@ public class CadastroContratosBean implements Serializable{
 	
 	public void salvar(){
 		if(camposPreenchidos()){
-			
+			if(stContratoAtivo){
+				contrato.setStContratoAtivo('S');
+			}else{
+				contrato.setStContratoAtivo('N');
+			}
 		}
 	}
 	
 	public void limpar(){
+		idLocatario = null;
+		idContrato = null;
+		idPessoaFiador = null;
+		nomeModificador = "";
+		nomeModificadorDespesas = "";
+		descricaoModificador = "";
+		descricaoModificadorDespesas = "";
+		contrato = new TbContrato();
+		contratoModificador = new TbContratoModificador();
+		contratoModificadorDespesas = new TbContratoModificador();
 		
+		locatarios = new ArrayList<>();
+		imoveis = new ArrayList<>();
+		fiadores = new ArrayList<>();
+		contratosModificador = new ArrayList<>();
+		contratosModificadorDespesas = new ArrayList<>();
 	}
 	
 	public boolean camposPreenchidos(){
@@ -119,12 +139,20 @@ public class CadastroContratosBean implements Serializable{
 	}
 	
 	public List<TbPessoa> getFiadores() {
+		List<TbPessoa> pessoas = new ArrayList<>();
 		if(fiadores == null){
 			fiadores = new ArrayList<>();
 		}
 		if(fiadores.size() == 0){
 			if(FacesUtil.isNotPostBack()){
 				fiadores = pessoaService.consultaTodosFiadores();
+				for (TbPessoa pessoa : fiadores) {
+					if(pessoa.getTbPessoaFisica() != null){
+						pessoas.add(pessoa);
+					}
+				}
+				fiadores.clear();
+				fiadores = pessoas;
 			}
 		}
 		return fiadores;
@@ -236,6 +264,14 @@ public class CadastroContratosBean implements Serializable{
 
 	public void setLocatarios(List<TbLocatario> locatarios) {
 		this.locatarios = locatarios;
+	}
+
+	public boolean isStContratoAtivo() {
+		return stContratoAtivo;
+	}
+
+	public void setStContratoAtivo(boolean stContratoAtivo) {
+		this.stContratoAtivo = stContratoAtivo;
 	}
 
 }

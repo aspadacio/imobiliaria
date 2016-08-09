@@ -36,8 +36,8 @@
 				<p:outputLabel value="Locatário" for="locatario"/>
 				<p:selectOneMenu id="locatario" value="#{cadastroContratosBean.idLocatario}">
 					<f:selectItem itemLabel="Selecione um locatário"/>
-					<f:selectItems value="#{cadastroContratosBean.locatarios}" var="locatario" itemValue="#{locatario.idLocador}" 
-						itemLabel="#{locatario.tbPessoa.TbPessoaFisica.noPessoaFisica}"/>
+					<f:selectItems value="#{cadastroContratosBean.locatarios}" var="locatario" itemValue="#{locatario.idLocatario}" 
+						itemLabel="#{locatario.tbPessoa.tbPessoaFisica.noPessoaFisica}"/>
 				</p:selectOneMenu>
 				
 				<p:outputLabel value="Imóvel" for="imovel"/>
@@ -78,8 +78,9 @@
 				<p:inputText id="comissao" size="40" maxlength="3" value="#{cadastroContratosBean.contrato.txComissao}"/>
 				
 				<p:outputLabel value="Ativar contrato?" for="ativar"/>
-        		<p:selectBooleanButton id="ativar" value="#{cadastroContratosBean.contrato.stContratoAtivo}" onLabel="Sim" offLabel="Não" style="width:60px" />
+        		<p:selectBooleanButton id="ativar" value="#{cadastroContratosBean.stContratoAtivo}" onLabel="Sim" offLabel="Não" style="width:60px" />
 			</p:panelGrid>
+			
 			
 			<p:tabView style="margin-top: 20px">
 				<p:tab title="Receitas do Contrato">
@@ -137,7 +138,7 @@
 					
 					<p:dataTable id="despesasDataTable" value="#{cadastroContratosBean.contratosModificadorDespesas}" var="imovel" style="margin-top: 20px"
 						emptyMessage="Nenhuma despesa encontrada." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
-						<p:column headerText="Receita">
+						<p:column headerText="Despesa">
 						</p:column>
 						<p:column headerText="Período Início">
 						</p:column>
