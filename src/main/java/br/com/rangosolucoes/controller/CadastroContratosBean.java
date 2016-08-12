@@ -15,6 +15,8 @@ import br.com.rangosolucoes.model.TbContratoModificador;
 import br.com.rangosolucoes.model.TbImovel;
 import br.com.rangosolucoes.model.TbLocatario;
 import br.com.rangosolucoes.model.TbPessoa;
+import br.com.rangosolucoes.model.vo.DespesasContratoVO;
+import br.com.rangosolucoes.model.vo.ReceitasContratoVO;
 import br.com.rangosolucoes.service.ImovelService;
 import br.com.rangosolucoes.service.LocatarioService;
 import br.com.rangosolucoes.service.PessoaService;
@@ -48,15 +50,20 @@ public class CadastroContratosBean implements Serializable{
 	private String descricaoModificadorDespesas;
 	private boolean stContratoAtivo;
 	
+	private ReceitasContratoVO receitasContratoSelecionado;
+	private DespesasContratoVO despesasContratoSelecionado;
+	
 	private List<TbLocatario> locatarios;
 	private List<TbImovel> imoveis;
 	private List<TbPessoa> fiadores;
 	private List<TbContratoModificador> contratosModificador;
-	private List<TbContratoModificador> contratosModificadorDespesas; 
+	private List<TbContratoModificador> contratosModificadorDespesas;
+	private List<ReceitasContratoVO> receitasContratoVOs;
+	private List<DespesasContratoVO> despesasContratoVOs;
 	
 	@PostConstruct
 	public void init(){
-		
+		limpar();
 	}
 	
 	public boolean isEditando(){
@@ -95,6 +102,8 @@ public class CadastroContratosBean implements Serializable{
 		fiadores = new ArrayList<>();
 		contratosModificador = new ArrayList<>();
 		contratosModificadorDespesas = new ArrayList<>();
+		receitasContratoVOs = new ArrayList<>();
+		despesasContratoVOs = new ArrayList<>();
 	}
 	
 	public boolean camposPreenchidos(){
@@ -112,6 +121,112 @@ public class CadastroContratosBean implements Serializable{
 				facesContext.getExternalContext().getRequestParameterMap().get("contrato") != null){
 			
 		}
+	}
+	
+	public void adicionarReceita(){
+		if(camposPreenchidosReceita()){
+			receitasContratoSelecionado.setNomeModificadorReceita(nomeModificador);
+			receitasContratoSelecionado.setDescModificadorReceita(descricaoModificador);
+			receitasContratoSelecionado.setNuMesAnoInicial(contratoModificador.getNuMesAnoInicial());
+			receitasContratoSelecionado.setNuMesAnoFinal(contratoModificador.getNuMesAnoFinal());
+			receitasContratoSelecionado.setTxReajuste(contratoModificador.getTxReajuste());
+			receitasContratoSelecionado.setVlValor(contratoModificador.getVlValor());
+			
+			receitasContratoVOs.add(receitasContratoSelecionado);
+			receitasContratoSelecionado = new ReceitasContratoVO();
+		}
+	}
+	
+	public void excluirReceita(){
+		receitasContratoVOs.remove(receitasContratoSelecionado);
+		
+		FacesUtil.addInfoMessage("Receita " + receitasContratoSelecionado.getNomeModificadorReceita() + " excluída com sucesso.");
+	}
+	
+	public void adicionarDespesa(){
+		if(camposPreenchidosDespesa()){
+			despesasContratoSelecionado.setNomeModificadorDespesa(nomeModificador);
+			despesasContratoSelecionado.setDescModificadorDespesa(descricaoModificador);
+			despesasContratoSelecionado.setNuMesAnoInicial(contratoModificador.getNuMesAnoInicial());
+			despesasContratoSelecionado.setNuMesAnoFinal(contratoModificador.getNuMesAnoFinal());
+			despesasContratoSelecionado.setVlValor(contratoModificador.getVlValor());
+			
+			despesasContratoVOs.add(despesasContratoSelecionado);
+			despesasContratoSelecionado = new DespesasContratoVO();
+		}
+	}
+	
+	public void excluirDespesa(){
+		despesasContratoVOs.remove(despesasContratoSelecionado);
+		
+		FacesUtil.addInfoMessage("Despesa " + despesasContratoSelecionado.getNomeModificadorDespesa() + " excluída com sucesso.");
+	}
+	
+	public boolean camposPreenchidosReceita(){
+		boolean preenchido = true;
+		
+		if(nomeModificador == null || nomeModificador == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Receita é obrigatório.");
+		}
+		
+		if(descricaoModificador == null || descricaoModificador == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Descrição da receita é obrigatório.");
+		}
+		
+		if(contratoModificador.getNuMesAnoInicial() == null || contratoModificador.getNuMesAnoInicial() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Período Inicial é obrigatório.");
+		}
+		
+		if(contratoModificador.getNuMesAnoFinal() == null || contratoModificador.getNuMesAnoFinal() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Período Final é obrigatório.");
+		}
+		
+		if(contratoModificador.getTxReajuste() == null){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Reajuste(%) é obrigatório.");
+		}
+		
+		if(contratoModificador.getVlValor() == null){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Valor é obrigatório.");
+		}
+		
+		return preenchido;
+	}
+	
+	public boolean camposPreenchidosDespesa(){
+		boolean preenchido = true;
+		
+		if(nomeModificadorDespesas == null || nomeModificadorDespesas == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Despesa é obrigatório.");
+		}
+		
+		if(descricaoModificadorDespesas == null || descricaoModificadorDespesas == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Descrição da despesa é obrigatório.");
+		}
+		
+		if(contratoModificadorDespesas.getNuMesAnoInicial() == null || contratoModificadorDespesas.getNuMesAnoInicial() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Período Inicial é obrigatório.");
+		}
+		
+		if(contratoModificadorDespesas.getNuMesAnoFinal() == null || contratoModificadorDespesas.getNuMesAnoFinal() == ""){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Período Final é obrigatório.");
+		}
+		
+		if(contratoModificadorDespesas.getVlValor() == null){
+			preenchido = false;
+			FacesUtil.addErrorMessage("O campo Valor é obrigatório.");
+		}
+		
+		return preenchido;
 	}
 
 	public Long getIdContrato() {
@@ -272,6 +387,38 @@ public class CadastroContratosBean implements Serializable{
 
 	public void setStContratoAtivo(boolean stContratoAtivo) {
 		this.stContratoAtivo = stContratoAtivo;
+	}
+
+	public List<ReceitasContratoVO> getReceitasContratoVOs() {
+		return receitasContratoVOs;
+	}
+
+	public void setReceitasContratoVOs(List<ReceitasContratoVO> receitasContratoVOs) {
+		this.receitasContratoVOs = receitasContratoVOs;
+	}
+
+	public List<DespesasContratoVO> getDespesasContratoVOs() {
+		return despesasContratoVOs;
+	}
+
+	public void setDespesasContratoVOs(List<DespesasContratoVO> despesasContratoVOs) {
+		this.despesasContratoVOs = despesasContratoVOs;
+	}
+
+	public ReceitasContratoVO getReceitasContratoSelecionado() {
+		return receitasContratoSelecionado;
+	}
+
+	public void setReceitasContratoSelecionado(ReceitasContratoVO receitasContratoSelecionado) {
+		this.receitasContratoSelecionado = receitasContratoSelecionado;
+	}
+
+	public DespesasContratoVO getDespesasContratoSelecionado() {
+		return despesasContratoSelecionado;
+	}
+
+	public void setDespesasContratoSelecionado(DespesasContratoVO despesasContratoSelecionado) {
+		this.despesasContratoSelecionado = despesasContratoSelecionado;
 	}
 
 }

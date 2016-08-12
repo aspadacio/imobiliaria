@@ -15,7 +15,7 @@
 			<f:event listener="#{cadastroContratosBean.alteraContratoSelecionado}" type="preRenderView"></f:event>
 		</f:metadata>
 	
-		<h:form>
+		<h:form id="frmContratos" prependId="false">
 			<h1>#{cadastroContratosBean.editando ? 'Edição de Contrato' : 'Novo Contrato'}</h1>
 			
 			<p:messages id="mensagens" closable="true"/>
@@ -88,6 +88,9 @@
 						<p:outputLabel value="Receita" for="receita"/>
 						<p:inputText id="receita" size="40" maxlength="100" value="#{cadastroContratosBean.nomeModificador}"/>
 						
+						<p:outputLabel value="Descrição da receita" for="descreceita"/>
+						<p:inputTextarea id="descreceita" rows="3" style="width: 99%" value="#{cadastroContratosBean.descricaoModificador}"/>
+						
 						<p:outputLabel value="Período Inicial" for="perInicial"/>
 						<p:calendar id="perInicial" size="10" value="#{cadastroContratosBean.contratoModificador.nuMesAnoInicial}" locale="pt" pattern="dd-MM-yyyy" mask="true" navigator="true"/>
 						
@@ -99,22 +102,41 @@
 						
 						<p:outputLabel value="Valor" for="valor"/>
 						<p:inputText id="valor" size="10" maxlength="100" value="#{cadastroContratosBean.contratoModificador.vlValor}"/>
+						
+						<p:commandButton icon="ui-icon-plus" title="Adicionar" update="receitasDataTable"
+							action="#{cadastroContratosBean.adicionarReceita()}"/>
 				    </p:panelGrid>
-				    
-				    <p:outputLabel value="Descrição da receita" for="descreceita"/>
-					<p:inputTextarea id="descreceita" rows="3" style="width: 99%" value="#{cadastroContratosBean.descricaoModificador}"/>
 					
-					<p:dataTable id="receitasDataTable" value="#{cadastroContratosBean.contratosModificador}" var="imovel" style="margin-top: 20px"
-						emptyMessage="Nenhuma receita encontrada." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+					<p:dataTable id="receitasDataTable" value="#{cadastroContratosBean.receitasContratoVOs}" var="contrato" style="margin-top: 20px"
+						emptyMessage="Nenhuma receita encontrada." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+						rendered="#{cadastroContratosBean.contratosModificador.size() > 0}">
+						
 						<p:column headerText="Receita">
+							<h:outputText value="#{contrato.nomeModificadorReceita}" />
 						</p:column>
+						
 						<p:column headerText="Período Início">
+							<h:outputText value="#{contrato.nuMesAnoInicial}"/>
 						</p:column>
+						
 						<p:column headerText="Período Fim">
+							<h:outputText value="#{contrato.nuMesAnoFinal}"/>
 						</p:column>
+						
 						<p:column headerText="Reajuste(%)">
+							<h:outputText value="#{contrato.txReajuste}"/>
 						</p:column>
+						
 						<p:column headerText="Valor">
+							<h:outputText value="#{contrato.vlValor}"/>
+						</p:column>
+						
+						<p:column headerText="Ações" style="text-align: center; width: 100px">
+							<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusaoReceita.show();"
+									process="@this" update=":frmContratos:confirmacaoExclusaoDialogReceita">
+								<f:setPropertyActionListener target="#{cadastroContratosBean.receitasContratoSelecionado}" 
+									value="#{contrato}"/>
+							</p:commandButton>
 						</p:column>
 					</p:dataTable>
 				</p:tab>
@@ -122,6 +144,9 @@
 					<p:panelGrid columns="4" id="painelDespesas" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">	
 						<p:outputLabel value="Despesa" for="despesa"/>
 						<p:inputText id="despesa" size="40" maxlength="100" value="#{cadastroContratosBean.nomeModificadorDespesas}"/>
+						
+						<p:outputLabel value="Descrição da despesa" for="descdespesa"/>
+						<p:inputTextarea id="descdespesa" rows="3" style="width: 99%" value="#{cadastroContratosBean.descricaoModificadorDespesas}"/>
 						
 						<p:outputLabel value="Período Inicial" for="perInicialDespesa"/>
 						<p:calendar id="perInicialDespesa" value="#{cadastroContratosBean.contratoModificadorDespesas.nuMesAnoInicial}" locale="pt" pattern="dd-MM-yyyy" mask="true" navigator="true"/>
@@ -131,24 +156,59 @@
 						
 						<p:outputLabel value="Valor" for="valordespesa"/>
 						<p:inputText id="valordespesa" size="40" maxlength="100" value="#{cadastroContratosBean.contratoModificadorDespesas.vlValor}"/>
+						
+						<p:commandButton icon="ui-icon-plus" title="Adicionar" update="despesasDataTable"
+							action="#{cadastroContratosBean.adicionarDespesa()}"/>
+						
 				    </p:panelGrid>
 				    
-				    <p:outputLabel value="Descrição da despesa" for="descdespesa"/>
-					<p:inputTextarea id="descdespesa" rows="3" style="width: 99%" value="#{cadastroContratosBean.descricaoModificadorDespesas}"/>
-					
-					<p:dataTable id="despesasDataTable" value="#{cadastroContratosBean.contratosModificadorDespesas}" var="imovel" style="margin-top: 20px"
-						emptyMessage="Nenhuma despesa encontrada." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+					<p:dataTable id="despesasDataTable" value="#{cadastroContratosBean.despesasContratoVOs}" var="contrato" style="margin-top: 20px"
+						emptyMessage="Nenhuma despesa encontrada." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+						rendered="#{cadastroContratosBean.contratosModificadorDespesas.size() > 0}">
+						
 						<p:column headerText="Despesa">
+							<h:outputText value="#{contrato.nomeModificadorDespesa}"/>
 						</p:column>
+						
 						<p:column headerText="Período Início">
+							<h:outputText value="#{contrato.nuMesAnoInicial}"/>
 						</p:column>
+						
 						<p:column headerText="Período Fim">
+							<h:outputText value="#{contrato.nuMesAnoFinal}"/>
 						</p:column>
+						
 						<p:column headerText="Valor">
+							<h:outputText value="#{contrato.vlValor}"/>
+						</p:column>
+						
+						<p:column headerText="Ações" style="text-align: center; width: 100px">
+							<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusaoDespesa.show();"
+									process="@this" update=":frmContratos:confirmacaoExclusaoDialogDespesa">
+								<f:setPropertyActionListener target="#{cadastroContratosBean.despesasContratoSelecionado}" 
+									value="#{contrato}"/>
+							</p:commandButton>
 						</p:column>
 					</p:dataTable>
 				</p:tab>
 			</p:tabView>
+			
+			<p:confirmDialog header="Exclusão de Receita" 
+				message="Tem certeza que deseja excluir #{cadastroContratosBean.receitasContratoSelecionado.nomeModificadorReceita}?"
+				widgetVar="confirmacaoExclusaoReceita" id="confirmacaoExclusaoDialogReceita">
+				<p:button value="Não" onclick="confirmacaoExclusaoReceita.hide(); return false;"/>
+				<p:commandButton value="Sim" oncomplete="confirmacaoExclusaoReceita.hide();"
+					action="#{cadastroContratosBean.excluirReceita()}" process="@this" update="receitasDataTable"/>
+			</p:confirmDialog>
+			
+			<p:confirmDialog header="Exclusão de Despesa" 
+				message="Tem certeza que deseja excluir #{cadastroContratosBean.despesasContratoSelecionado.nomeModificadorDespesa}?"
+				widgetVar="confirmacaoExclusaoDespesa" id="confirmacaoExclusaoDialogDespesa">
+				<p:button value="Não" onclick="confirmacaoExclusaoDespesa.hide(); return false;"/>
+				<p:commandButton value="Sim" oncomplete="confirmacaoExclusaoDespesa.hide();"
+					action="#{cadastroContratosBean.excluirDespesa()}" process="@this" update="despesasDataTable"/>
+			</p:confirmDialog>
+			
 		</h:form>
 	</ui:define>
 	
