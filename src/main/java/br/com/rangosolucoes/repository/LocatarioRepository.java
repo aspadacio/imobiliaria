@@ -468,7 +468,7 @@ public class LocatarioRepository implements Serializable {
 	/**
 	 * Método responsável por retornar a Pessoa Física {@link TbPessoaFisica} a partir do cpf NU_CPF
 	 * */
-	private TbPessoaFisica findPessoaFisicaById(String nuCpf) {
+	public TbPessoaFisica findPessoaFisicaById(String nuCpf) {
 		Session session = manager.unwrap(Session.class);
 		Criteria criteria = session.createCriteria(TbPessoaFisica.class);
 		

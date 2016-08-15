@@ -25,12 +25,18 @@ import org.hibernate.Session;
 import br.com.rangosolucoes.model.TbContrato;
 import br.com.rangosolucoes.model.TbEnderecoPessoa;
 import br.com.rangosolucoes.model.TbImovel;
+import br.com.rangosolucoes.model.TbLocador;
+import br.com.rangosolucoes.model.TbLocatario;
 import br.com.rangosolucoes.model.TbPessoa;
+import br.com.rangosolucoes.model.TbPessoaFisica;
+import br.com.rangosolucoes.model.TbPessoaJuridica;
 import br.com.rangosolucoes.repository.filter.LocadorFilter;
 import br.com.rangosolucoes.repository.filter.LocatarioFilter;
+import br.com.rangosolucoes.service.ImovelService;
 import br.com.rangosolucoes.service.LocadorService;
 import br.com.rangosolucoes.service.LocatarioService;
 import br.com.rangosolucoes.service.MunicipioService;
+import br.com.rangosolucoes.service.PessoaService;
 import br.com.rangosolucoes.util.jsf.FacesUtil;
 import br.com.rangosolucoes.util.report.ContratoResidencialRelatorio;
 
@@ -54,8 +60,14 @@ public class RelatorioContratoResidencialBean implements Serializable {
 	@Inject
 	private MunicipioService municipioService;
 	
+	@Inject
+	private ImovelService imovelService;
+	
+	@Inject
+	private PessoaService pessoaService;
+	
 	//Atributos que serão usados para retornar dados das tabelas
-	@Getter @Setter @NonNull private String locadorId; //Número do CNPJ
+	@Getter @Setter @NonNull private String locadorId; //ID_LOCADOR
 	@Getter @Setter @NonNull private String locatarioId; //Poderá ser o número do CNPJ ou do CPF
 	@Getter @Setter @NonNull private String imovelId; //id do imóvel
 
@@ -63,33 +75,34 @@ public class RelatorioContratoResidencialBean implements Serializable {
 	private Map<String, Object> parametros;
 	private TbPessoa locador;
 	private TbPessoa locatario;
-	private TbContrato contrato;
 	private TbImovel imovel;
 	
-	public void emitir() {
+
+	/**
+	 * Método responsável por gerar o relatório.
+	 * @param contrato objeto vindo da tela 'PesquisaContratos'
+	 * */
+	public void emitir(TbContrato contrato) {
 		parametros = new HashMap<>();
+		
+		//Preparando IDs
+		locadorId = String.valueOf(contrato.getTbLocador().getIdLocador());
+		locatarioId = String.valueOf(contrato.getTbLocatario().getIdLocatario());
 		
 		//Buscar informações para serem inseridas no 'parametros'
 		//Locador
-		LocadorFilter locadorFiltro = new LocadorFilter();
-		locadorFiltro.setCnpj(locadorId);
-		locador = (TbPessoa) locadorService.buscaPessoas(locadorFiltro);
+		TbPessoaJuridica locadorPJ = null;
+		TbLocador locadorAux = locadorService.locadorPorId(Long.parseLong(locadorId));
+		
+		locador = pessoaService.porId(locadorAux.getTbPessoa().getIdPessoa());
+		locadorPJ = locadorService.findPessoaJuridicaById(locador.getTbPessoaJuridica().getNuCnpj());
 		
 		//Locatário
-		LocatarioFilter locatarioFiltro = new LocatarioFilter();
-		Boolean isPessoaFisica = false;
-		if(!locatarioId.trim().isEmpty()){
-			if(locatarioId.trim().length() <= 11){
-				//CPF
-				locatarioFiltro.setCpf(locatarioId);
-				isPessoaFisica = true;
-			}else{
-				//CNPJ
-				locatarioFiltro.setCnpj(locatarioId);
-			}
-		}
-		locatario = (TbPessoa) locatarioService.buscaPessoas(locatarioFiltro);
+		TbPessoaFisica locatarioPF = null;
+		TbLocatario locatarioAux = locatarioService.porId(Long.parseLong(locatarioId));
 		
+		locatario = pessoaService.porId(locatarioAux.getTbPessoa().getIdPessoa());
+		locatarioPF = locatarioService.findPessoaFisicaById(locatario.getTbPessoaFisica().getNuCpf());
 		
 		//Preencher HashMap de parametros
 		//Locador
@@ -98,7 +111,7 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		try {
 			maskCnpj = new MaskFormatter("##.###.###/####-##");
 			maskCnpj.setValueContainsLiteralCharacters(false);
-			parametros.put("locador_cnpj", maskCnpj.valueToString(locador.getTbPessoaJuridica().getNuCnpj()));
+			parametros.put("locador_cnpj", maskCnpj.valueToString(locadorPJ.getNuCnpj()));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -115,26 +128,26 @@ public class RelatorioContratoResidencialBean implements Serializable {
 				(locadorEndereco.getDsComplemento() != "" ? ", " + locadorEndereco.getDsComplemento() : ", ") //Complemento
 				+ ( locadorEndereco.getTbBairro().getNoBairro() != "" ? ", " + locadorEndereco.getTbBairro().getNoBairro() : ", " )  
 				+ locadorEndereco.getTbMunicipio().getNoMunicipio() + " - " + locadorEndereco.getTbMunicipio().getSgUf()); //Cidade + UF
-		parametros.put("locador_razao_social", locador.getTbPessoaJuridica().getNoRazaoSocial());
+		parametros.put("locador_razao_social", locadorPJ.getNoRazaoSocial());
 		
 		//Locatário
 		try {
 			MaskFormatter maskCpf = new MaskFormatter("###.###.###-##");
-			parametros.put("locatario_cpf", maskCpf.valueToString(locatario.getTbPessoaFisica().getNuCpf())); //"036.751.351-01"
+			parametros.put("locatario_cpf", maskCpf.valueToString(locatarioPF.getNuCpf())); //"036.751.351-01"
 		} catch (ParseException e) {
 			e.getStackTrace();
 		}
 		try {
 			MaskFormatter maskRg = new MaskFormatter("##.###.###-#");
-			parametros.put("locatario_rg", maskRg.valueToString(locatario.getTbPessoaFisica().getNuRg()));
+			parametros.put("locatario_rg", maskRg.valueToString(locatarioPF.getNuRg()));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		parametros.put("locatario_endereco_completo", "QUADRA 8 LOTE 19 APARTAMENTO 103 SETOR OESTE GAMA-DF");
-		parametros.put("locatario_estado_civil", locatario.getTbPessoaFisica().getDsEstadoCivil());
-		parametros.put("locatario_nacionalidade", locatario.getTbPessoaFisica().getDsNacionalidade());
-		parametros.put("locatario_nome", locatario.getTbPessoaFisica().getNoPessoaFisica());
-		parametros.put("locatario_profissao", locatario.getTbPessoaFisica().getDsProfissao());
+		parametros.put("locatario_estado_civil", locatarioPF.getDsEstadoCivil());
+		parametros.put("locatario_nacionalidade", locatarioPF.getDsNacionalidade());
+		parametros.put("locatario_nome", locatarioPF.getNoPessoaFisica());
+		parametros.put("locatario_profissao", locatarioPF.getDsProfissao());
 		
 		//Contrato
 		parametros.put("contrato_numero", contrato.getIdContrato());
@@ -144,6 +157,9 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		
 		//Imovel & Data
 		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+		
+		imovel = imovelService.findByLocatarioId(locatarioId);
+		
 		parametros.put("imovel_endereco_completo", imovel.getDsEndereco() 
 				+ ", " + imovel.getNuEndereco()
 				+ imovel.getDsComplemento() != "" ? ", " + imovel.getDsComplemento() : ""
