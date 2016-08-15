@@ -208,6 +208,18 @@ public class LocatarioRepository implements Serializable {
 				.setParameter("idPessoa", idPessoa)
 				.getSingleResult();
 	}
+	
+	/**
+	 * Metodo responsavel por retornar o Locatario {@link TbLocatario} a partir do id ID_LOCATARIO
+	 * */
+	public TbLocatario porId(Long idLocatario) {
+		return manager
+				.createQuery(
+						"FROM TbLocatario WHERE idLocatario = :idLocatario",
+						TbLocatario.class)
+				.setParameter("idLocatario", idLocatario)
+				.getSingleResult();
+	}
 
 	/**
 	 * Método responsável por retornar o Endereco {@link TbEnderecoPessoa} a partir dos parâmetros abaixo.

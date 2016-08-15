@@ -14,13 +14,18 @@ import javax.inject.Named;
 
 import br.com.rangosolucoes.model.TbContrato;
 import br.com.rangosolucoes.model.TbContratoModificador;
+import br.com.rangosolucoes.model.TbContratoModificadorId;
 import br.com.rangosolucoes.model.TbImovel;
 import br.com.rangosolucoes.model.TbLocatario;
+import br.com.rangosolucoes.model.TbModificador;
 import br.com.rangosolucoes.model.TbPessoa;
 import br.com.rangosolucoes.model.vo.DespesasContratoVO;
 import br.com.rangosolucoes.model.vo.ReceitasContratoVO;
+import br.com.rangosolucoes.service.ContratoModificadorService;
+import br.com.rangosolucoes.service.ContratoService;
 import br.com.rangosolucoes.service.ImovelService;
 import br.com.rangosolucoes.service.LocatarioService;
+import br.com.rangosolucoes.service.ModificadorService;
 import br.com.rangosolucoes.service.PessoaService;
 import br.com.rangosolucoes.util.jsf.FacesUtil;
 
@@ -38,6 +43,15 @@ public class CadastroContratosBean implements Serializable {
 
 	@Inject
 	private PessoaService pessoaService;
+	
+	@Inject
+	private ContratoService contratoService;
+	
+	@Inject
+	private ModificadorService modificadorService;
+	
+	@Inject
+	private ContratoModificadorService contratoModificadorService;
 
 	private TbContrato contrato;
 	private TbContratoModificador contratoModificador;
@@ -49,7 +63,7 @@ public class CadastroContratosBean implements Serializable {
 	private BigDecimal comissao;
 
 	private Long idLocatario;
-	private Long idContrato;
+	private Long idImovel;
 	private Long idPessoaFiador;
 	private String nomeModificador;
 	private String descricaoModificador;
@@ -96,12 +110,76 @@ public class CadastroContratosBean implements Serializable {
 			} else {
 				contrato.setStContratoAtivo('N');
 			}
+			contrato.setTbLocatario(locatarioService.porId(idLocatario));
+			TbImovel imovel = imovelService.porId(idImovel);
+			contrato.setTbLocador(imovel.getTbLocador());
+			contrato.setTbPessoa(pessoaService.porId(idPessoaFiador));
+			contrato.setDtInicio(dtInicio);
+			contrato.setTxMultaPorAtraso(multaPorAtraso);
+			contrato.setTxComissao(comissao);
+			
+			contrato = contratoService.salvar(contrato);
+			
+			//Receitas
+			if(receitasContratoVOs.size() > 0){
+				for(ReceitasContratoVO receitasContratoVO : receitasContratoVOs){
+					TbModificador modificador = new TbModificador();
+					modificador.setNoModificador(receitasContratoVO.getNomeModificadorReceita());
+					modificador.setDsModificador(receitasContratoVO.getDescModificadorReceita());
+					
+					modificador = modificadorService.salvar(modificador);
+					
+					TbContratoModificador contratoModificador = new TbContratoModificador();
+					TbContratoModificadorId contratoModificadorId = new TbContratoModificadorId();
+					
+					contratoModificadorId.setIdContrato(contrato.getIdContrato());
+					contratoModificadorId.setIdModificador(modificador.getIdModificador());
+					
+					contratoModificador.setId(contratoModificadorId);
+					contratoModificador.setTbContrato(contrato);
+					contratoModificador.setTbModificador(modificador);
+					contratoModificador.setNuMesAnoInicial(receitasContratoVO.getNuMesAnoInicial());
+					contratoModificador.setNuMesAnoFinal(receitasContratoVO.getNuMesAnoFinal());
+					contratoModificador.setTxReajuste(receitasContratoVO.getTxReajuste());
+					contratoModificador.setVlValor(receitasContratoVO.getVlValor());
+					
+					contratoModificador = contratoModificadorService.salvar(contratoModificador);
+				}
+			}
+			
+			//Despesas
+			if(despesasContratoVOs.size() > 0){
+				for(DespesasContratoVO despesasContratoVO : despesasContratoVOs){
+					TbModificador modificador = new TbModificador();
+					modificador.setNoModificador(despesasContratoVO.getNomeModificadorDespesa());
+					modificador.setDsModificador(despesasContratoVO.getDescModificadorDespesa());
+					
+					modificador = modificadorService.salvar(modificador);
+					
+					TbContratoModificador contratoModificador = new TbContratoModificador();
+					contratoModificador.setTbContrato(contrato);
+					contratoModificador.setTbModificador(modificador);
+					contratoModificador.setNuMesAnoInicial(despesasContratoVO.getNuMesAnoInicial());
+					contratoModificador.setNuMesAnoFinal(despesasContratoVO.getNuMesAnoFinal());
+					contratoModificador.setVlValor(despesasContratoVO.getVlValor());
+					
+					contratoModificador = contratoModificadorService.salvar(contratoModificador);
+				}
+			}
+			limpar();
+			
+			locatarios.clear();
+			locatarios = getLocatarios();
+			imoveis.clear();
+			imoveis = getImoveis();
+			fiadores.clear();
+			fiadores = getFiadores();
 		}
 	}
 
 	public void limpar() {
 		idLocatario = null;
-		idContrato = null;
+		idImovel = null;
 		idPessoaFiador = null;
 		nomeModificador = "";
 		nomeModificadorDespesas = "";
@@ -113,9 +191,10 @@ public class CadastroContratosBean implements Serializable {
 		receitasContratoSelecionado = new ReceitasContratoVO();
 		despesasContratoSelecionado = new DespesasContratoVO();
 
-		locatarios = new ArrayList<>();
-		imoveis = new ArrayList<>();
-		fiadores = new ArrayList<>();
+		dtInicio = null;
+		multaPorAtraso = null;
+		comissao = null;
+		stContratoAtivo = false;
 		contratosModificador = new ArrayList<>();
 		contratosModificadorDespesas = new ArrayList<>();
 		receitasContratoVOs = new ArrayList<>();
@@ -145,8 +224,8 @@ public class CadastroContratosBean implements Serializable {
 		if (camposPreenchidosReceita()) {
 			receitasContratoSelecionado.setNomeModificadorReceita(nomeModificador);
 			receitasContratoSelecionado.setDescModificadorReceita(descricaoModificador);
-			receitasContratoSelecionado.setNuMesAnoInicial(periodoInicial.toString());
-			receitasContratoSelecionado.setNuMesAnoFinal(periodoFinal.toString());
+			receitasContratoSelecionado.setNuMesAnoInicial(periodoInicial);
+			receitasContratoSelecionado.setNuMesAnoFinal(periodoFinal);
 			receitasContratoSelecionado.setTxReajuste(contratoModificador.getTxReajuste());
 			receitasContratoSelecionado.setVlValor(valor);
 
@@ -174,8 +253,8 @@ public class CadastroContratosBean implements Serializable {
 		if (camposPreenchidosDespesa()) {
 			despesasContratoSelecionado.setNomeModificadorDespesa(nomeModificadorDespesas);
 			despesasContratoSelecionado.setDescModificadorDespesa(descricaoModificadorDespesas);
-			despesasContratoSelecionado.setNuMesAnoInicial(periodoInicialDespesas.toString());
-			despesasContratoSelecionado.setNuMesAnoFinal(periodoFinalDespesas.toString());
+			despesasContratoSelecionado.setNuMesAnoInicial(periodoInicialDespesas);
+			despesasContratoSelecionado.setNuMesAnoFinal(periodoFinalDespesas);
 			despesasContratoSelecionado.setVlValor(valorDespesas);
 
 			despesasContratoVOs.add(despesasContratoSelecionado);
@@ -262,14 +341,6 @@ public class CadastroContratosBean implements Serializable {
 		}
 
 		return preenchido;
-	}
-
-	public Long getIdContrato() {
-		return idContrato;
-	}
-
-	public void setIdContrato(Long idContrato) {
-		this.idContrato = idContrato;
 	}
 
 	public List<TbImovel> getImoveis() {
@@ -526,6 +597,14 @@ public class CadastroContratosBean implements Serializable {
 
 	public void setValorDespesas(BigDecimal valorDespesas) {
 		this.valorDespesas = valorDespesas;
+	}
+
+	public Long getIdImovel() {
+		return idImovel;
+	}
+
+	public void setIdImovel(Long idImovel) {
+		this.idImovel = idImovel;
 	}
 
 }

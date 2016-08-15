@@ -1,6 +1,7 @@
 package br.com.rangosolucoes.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -11,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -22,8 +25,8 @@ public class TbContratoModificador implements java.io.Serializable {
 	private TbContratoModificadorId id;
 	private TbContrato tbContrato;
 	private TbModificador tbModificador;
-	private String nuMesAnoInicial;
-	private String nuMesAnoFinal;
+	private Date nuMesAnoInicial;
+	private Date nuMesAnoFinal;
 	private BigDecimal txReajuste;
 	private BigDecimal vlValor;
 	private char tpModificador;
@@ -66,23 +69,25 @@ public class TbContratoModificador implements java.io.Serializable {
 		this.tbModificador = tbModificador;
 	}
 
-	@Column(name = "NU_MES_ANO_INICIAL", nullable = false, length = 6)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "NU_MES_ANO_INICIAL", nullable = false, length = 19)
 	@NotNull
-	public String getNuMesAnoInicial() {
+	public Date getNuMesAnoInicial() {
 		return this.nuMesAnoInicial;
 	}
 
-	public void setNuMesAnoInicial(String nuMesAnoInicial) {
+	public void setNuMesAnoInicial(Date nuMesAnoInicial) {
 		this.nuMesAnoInicial = nuMesAnoInicial;
 	}
 
-	@Column(name = "NU_MES_ANO_FINAL", nullable = false, length = 6)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "NU_MES_ANO_FINAL", nullable = false, length = 19)
 	@NotNull
-	public String getNuMesAnoFinal() {
+	public Date getNuMesAnoFinal() {
 		return this.nuMesAnoFinal;
 	}
 
-	public void setNuMesAnoFinal(String nuMesAnoFinal) {
+	public void setNuMesAnoFinal(Date nuMesAnoFinal) {
 		this.nuMesAnoFinal = nuMesAnoFinal;
 	}
 

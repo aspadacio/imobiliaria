@@ -41,7 +41,7 @@
 				</p:selectOneMenu>
 				
 				<p:outputLabel value="Imóvel" for="imovel"/>
-				<p:selectOneMenu id="imovel" value="#{cadastroContratosBean.idContrato}">
+				<p:selectOneMenu id="imovel" value="#{cadastroContratosBean.idImovel}">
 					<f:selectItem itemLabel="Selecione um imóvel"/>
 					<f:selectItems value="#{cadastroContratosBean.imoveis}" var="imovel" itemValue="#{imovel.idImovel}" 
 						itemLabel="#{imovel.dsImovel}"/>

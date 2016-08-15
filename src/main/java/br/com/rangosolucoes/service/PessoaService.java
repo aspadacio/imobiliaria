@@ -24,5 +24,10 @@ public class PessoaService implements Serializable{
 	public List<TbPessoa> consultaTodosFiadores(){
 		return pessoaRepository.consultaTodosFiadores();
 	}
+	
+	@Transacional
+	public TbPessoa porId(Long idPessoa){
+		return pessoaRepository.porId(idPessoa);
+	}
 
 }

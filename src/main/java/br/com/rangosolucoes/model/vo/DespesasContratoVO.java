@@ -2,6 +2,7 @@ package br.com.rangosolucoes.model.vo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class DespesasContratoVO implements Serializable{
 
@@ -9,8 +10,8 @@ public class DespesasContratoVO implements Serializable{
 	
 	private String nomeModificadorDespesa;
 	private String descModificadorDespesa;
-	private String nuMesAnoInicial;
-	private String nuMesAnoFinal;
+	private Date nuMesAnoInicial;
+	private Date nuMesAnoFinal;
 	private BigDecimal vlValor;
 
 	public String getNomeModificadorDespesa() {
@@ -29,19 +30,19 @@ public class DespesasContratoVO implements Serializable{
 		this.descModificadorDespesa = descModificadorDespesa;
 	}
 
-	public String getNuMesAnoInicial() {
+	public Date getNuMesAnoInicial() {
 		return nuMesAnoInicial;
 	}
 
-	public void setNuMesAnoInicial(String nuMesAnoInicial) {
+	public void setNuMesAnoInicial(Date nuMesAnoInicial) {
 		this.nuMesAnoInicial = nuMesAnoInicial;
 	}
 
-	public String getNuMesAnoFinal() {
+	public Date getNuMesAnoFinal() {
 		return nuMesAnoFinal;
 	}
 
-	public void setNuMesAnoFinal(String nuMesAnoFinal) {
+	public void setNuMesAnoFinal(Date nuMesAnoFinal) {
 		this.nuMesAnoFinal = nuMesAnoFinal;
 	}
 

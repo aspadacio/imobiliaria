@@ -29,6 +29,15 @@ public class PessoaRepository implements Serializable{
 		}
 	}
 	
+	public TbPessoa porId(Long idPessoa){
+		try {
+			return manager.createQuery("from TbPessoa where idPessoa = :id", TbPessoa.class)
+					.setParameter("id", idPessoa).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
 	public List<TbPessoa> consultaTodosFiadores(){
 		return manager.createQuery("from TbPessoa", TbPessoa.class).getResultList();
 	}
