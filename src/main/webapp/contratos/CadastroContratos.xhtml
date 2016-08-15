@@ -58,7 +58,7 @@
 				</p:selectOneMenu>
 				
 				<p:outputLabel value="Inicio" for="inicio"/>
-				<p:calendar id="inicio" size="10" value="#{cadastroContratosBean.dtInicio}" locale="pt" pattern="dd-MM-yyyy" mask="true" navigator="true"/>
+				<p:calendar id="inicio" size="10" value="#{cadastroContratosBean.dtInicio}" locale="pt" pattern="dd/MM/yyyy" mask="true" navigator="true"/>
 			
 				<p:outputLabel value="Duração(Meses)" for="duracao"/>
 				<p:inputText id="duracao" size="5" maxlength="2" value="#{cadastroContratosBean.contrato.nuDuracao}"/>
@@ -117,11 +117,15 @@
 							</p:column>
 							
 							<p:column headerText="Período Início">
-								<h:outputText value="#{contrato.nuMesAnoInicial}"/>
+								<h:outputFormat value="{0, date, dd/MM/yyyy}">
+									<f:param value="#{contrato.nuMesAnoInicial}"/>
+								</h:outputFormat>
 							</p:column>
 							
 							<p:column headerText="Período Fim">
-								<h:outputText value="#{contrato.nuMesAnoFinal}"/>
+								<h:outputFormat value="{0, date, dd/MM/yyyy}">
+									<f:param value="#{contrato.nuMesAnoFinal}"/>
+								</h:outputFormat>
 							</p:column>
 							
 							<p:column headerText="Reajuste(%)">
@@ -157,10 +161,10 @@
 						<p:inputText id="despesa" size="40" maxlength="100" value="#{cadastroContratosBean.nomeModificadorDespesas}"/>
 						
 						<p:outputLabel value="Período Inicial" for="perInicialDespesa"/>
-						<p:calendar id="perInicialDespesa" value="#{cadastroContratosBean.periodoInicialDespesas}" locale="pt" pattern="dd-MM-yyyy" mask="true" navigator="true"/>
+						<p:calendar id="perInicialDespesa" value="#{cadastroContratosBean.periodoInicialDespesas}" locale="pt" pattern="dd/MM/yyyy" mask="true" navigator="true"/>
 						
 						<p:outputLabel value="Período Final" for="perFinalDespesa"/>
-						<p:calendar id="perFinalDespesa" value="#{cadastroContratosBean.periodoFinalDespesas}" locale="pt" pattern="dd-MM-yyyy" mask="true" navigator="true"/>
+						<p:calendar id="perFinalDespesa" value="#{cadastroContratosBean.periodoFinalDespesas}" locale="pt" pattern="dd/MM/yyyy" mask="true" navigator="true"/>
 						
 						<p:outputLabel value="Valor" for="valordespesa"/>
 						<p:inputText id="valordespesa" size="40" maxlength="100" value="#{cadastroContratosBean.valorDespesas}"/>
@@ -183,11 +187,15 @@
 							</p:column>
 							
 							<p:column headerText="Período Início">
-								<h:outputText value="#{contrato.nuMesAnoInicial}"/>
+								<h:outputFormat value="{0, date, dd/MM/yyyy}">
+									<f:param value="#{contrato.nuMesAnoInicial}"/>
+								</h:outputFormat>
 							</p:column>
 							
 							<p:column headerText="Período Fim">
-								<h:outputText value="#{contrato.nuMesAnoFinal}"/>
+								<h:outputFormat value="{0, date, dd/MM/yyyy}">
+									<f:param value="#{contrato.nuMesAnoFinal}"/>
+								</h:outputFormat>
 							</p:column>
 							
 							<p:column headerText="Valor">
