@@ -1,7 +1,9 @@
 package br.com.rangosolucoes.controller;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -24,35 +26,47 @@ import br.com.rangosolucoes.util.jsf.FacesUtil;
 
 @Named("cadastroContratosBean")
 @SessionScoped
-public class CadastroContratosBean implements Serializable{
+public class CadastroContratosBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private LocatarioService locatarioService;
-	
+
 	@Inject
 	private ImovelService imovelService;
-	
+
 	@Inject
 	private PessoaService pessoaService;
-	
+
 	private TbContrato contrato;
 	private TbContratoModificador contratoModificador;
 	private TbContratoModificador contratoModificadorDespesas;
-	
+
+	// Informacoes Contrato
+	private Date dtInicio;
+	private BigDecimal multaPorAtraso;
+	private BigDecimal comissao;
+
 	private Long idLocatario;
 	private Long idContrato;
 	private Long idPessoaFiador;
 	private String nomeModificador;
 	private String descricaoModificador;
+	private Date periodoInicial;
+	private Date periodoFinal;
+	private BigDecimal valor;
+
 	private String nomeModificadorDespesas;
 	private String descricaoModificadorDespesas;
+	private Date periodoInicialDespesas;
+	private Date periodoFinalDespesas;
+	private BigDecimal valorDespesas;
 	private boolean stContratoAtivo;
-	
+
 	private ReceitasContratoVO receitasContratoSelecionado;
 	private DespesasContratoVO despesasContratoSelecionado;
-	
+
 	private List<TbLocatario> locatarios;
 	private List<TbImovel> imoveis;
 	private List<TbPessoa> fiadores;
@@ -60,32 +74,32 @@ public class CadastroContratosBean implements Serializable{
 	private List<TbContratoModificador> contratosModificadorDespesas;
 	private List<ReceitasContratoVO> receitasContratoVOs;
 	private List<DespesasContratoVO> despesasContratoVOs;
-	
+
 	@PostConstruct
-	public void init(){
+	public void init() {
 		limpar();
 	}
-	
-	public boolean isEditando(){
+
+	public boolean isEditando() {
 		return false;
 	}
-	
-	public String novoCadastro(){
+
+	public String novoCadastro() {
 		limpar();
 		return "/contratos/CadastroContratos?faces-redirect=true";
 	}
-	
-	public void salvar(){
-		if(camposPreenchidos()){
-			if(stContratoAtivo){
+
+	public void salvar() {
+		if (camposPreenchidos()) {
+			if (stContratoAtivo) {
 				contrato.setStContratoAtivo('S');
-			}else{
+			} else {
 				contrato.setStContratoAtivo('N');
 			}
 		}
 	}
-	
-	public void limpar(){
+
+	public void limpar() {
 		idLocatario = null;
 		idContrato = null;
 		idPessoaFiador = null;
@@ -96,7 +110,9 @@ public class CadastroContratosBean implements Serializable{
 		contrato = new TbContrato();
 		contratoModificador = new TbContratoModificador();
 		contratoModificadorDespesas = new TbContratoModificador();
-		
+		receitasContratoSelecionado = new ReceitasContratoVO();
+		despesasContratoSelecionado = new DespesasContratoVO();
+
 		locatarios = new ArrayList<>();
 		imoveis = new ArrayList<>();
 		fiadores = new ArrayList<>();
@@ -105,127 +121,146 @@ public class CadastroContratosBean implements Serializable{
 		receitasContratoVOs = new ArrayList<>();
 		despesasContratoVOs = new ArrayList<>();
 	}
-	
-	public boolean camposPreenchidos(){
+
+	public boolean camposPreenchidos() {
 		boolean preenchido = true;
 		return preenchido;
 	}
-	
-	public void alteraContratoSelecionado(){
+
+	public void alteraContratoSelecionado() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		
-		/*Valida se é um postBack ou um ValidationFailed. Só entra se for uma requisição.
-		  Valida também se está enviando o atributo 'contrato'*/
-		
-		if(!facesContext.isPostback() && !facesContext.isValidationFailed() &&
-				facesContext.getExternalContext().getRequestParameterMap().get("contrato") != null){
-			
+
+		/*
+		 * Valida se é um postBack ou um ValidationFailed. Só entra se for uma
+		 * requisição. Valida também se está enviando o atributo 'contrato'
+		 */
+
+		if (!facesContext.isPostback() && !facesContext.isValidationFailed()
+				&& facesContext.getExternalContext().getRequestParameterMap().get("contrato") != null) {
+
 		}
 	}
-	
-	public void adicionarReceita(){
-		if(camposPreenchidosReceita()){
+
+	public void adicionarReceita() {
+		if (camposPreenchidosReceita()) {
 			receitasContratoSelecionado.setNomeModificadorReceita(nomeModificador);
 			receitasContratoSelecionado.setDescModificadorReceita(descricaoModificador);
-			receitasContratoSelecionado.setNuMesAnoInicial(contratoModificador.getNuMesAnoInicial());
-			receitasContratoSelecionado.setNuMesAnoFinal(contratoModificador.getNuMesAnoFinal());
+			receitasContratoSelecionado.setNuMesAnoInicial(periodoInicial.toString());
+			receitasContratoSelecionado.setNuMesAnoFinal(periodoFinal.toString());
 			receitasContratoSelecionado.setTxReajuste(contratoModificador.getTxReajuste());
-			receitasContratoSelecionado.setVlValor(contratoModificador.getVlValor());
-			
+			receitasContratoSelecionado.setVlValor(valor);
+
 			receitasContratoVOs.add(receitasContratoSelecionado);
 			receitasContratoSelecionado = new ReceitasContratoVO();
+			nomeModificador = "";
+			descricaoModificador = "";
+			periodoInicial = null;
+			periodoFinal = null;
+			contratoModificador.setTxReajuste(null);
+			valor = null;
 		}
 	}
-	
-	public void excluirReceita(){
+
+	public void excluirReceita() {
 		receitasContratoVOs.remove(receitasContratoSelecionado);
-		
-		FacesUtil.addInfoMessage("Receita " + receitasContratoSelecionado.getNomeModificadorReceita() + " excluída com sucesso.");
+		if(receitasContratoVOs.size() == 0){
+			receitasContratoVOs = new ArrayList<>();
+		}
+		FacesUtil.addInfoMessage(
+				"Receita " + receitasContratoSelecionado.getNomeModificadorReceita() + " excluída com sucesso.");
 	}
-	
-	public void adicionarDespesa(){
-		if(camposPreenchidosDespesa()){
-			despesasContratoSelecionado.setNomeModificadorDespesa(nomeModificador);
-			despesasContratoSelecionado.setDescModificadorDespesa(descricaoModificador);
-			despesasContratoSelecionado.setNuMesAnoInicial(contratoModificador.getNuMesAnoInicial());
-			despesasContratoSelecionado.setNuMesAnoFinal(contratoModificador.getNuMesAnoFinal());
-			despesasContratoSelecionado.setVlValor(contratoModificador.getVlValor());
-			
+
+	public void adicionarDespesa() {
+		if (camposPreenchidosDespesa()) {
+			despesasContratoSelecionado.setNomeModificadorDespesa(nomeModificadorDespesas);
+			despesasContratoSelecionado.setDescModificadorDespesa(descricaoModificadorDespesas);
+			despesasContratoSelecionado.setNuMesAnoInicial(periodoInicialDespesas.toString());
+			despesasContratoSelecionado.setNuMesAnoFinal(periodoFinalDespesas.toString());
+			despesasContratoSelecionado.setVlValor(valorDespesas);
+
 			despesasContratoVOs.add(despesasContratoSelecionado);
 			despesasContratoSelecionado = new DespesasContratoVO();
+			nomeModificadorDespesas = "";
+			descricaoModificadorDespesas = "";
+			periodoInicialDespesas = null;
+			periodoFinalDespesas = null;
+			valorDespesas = null;
 		}
 	}
-	
-	public void excluirDespesa(){
+
+	public void excluirDespesa() {
 		despesasContratoVOs.remove(despesasContratoSelecionado);
-		
-		FacesUtil.addInfoMessage("Despesa " + despesasContratoSelecionado.getNomeModificadorDespesa() + " excluída com sucesso.");
+		if(despesasContratoVOs.size() == 0){
+			despesasContratoVOs = new ArrayList<>();
+		}
+		FacesUtil.addInfoMessage(
+				"Despesa " + despesasContratoSelecionado.getNomeModificadorDespesa() + " excluída com sucesso.");
 	}
-	
-	public boolean camposPreenchidosReceita(){
+
+	public boolean camposPreenchidosReceita() {
 		boolean preenchido = true;
-		
-		if(nomeModificador == null || nomeModificador == ""){
+
+		if (nomeModificador == null || nomeModificador == "") {
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo Receita é obrigatório.");
 		}
-		
-		if(descricaoModificador == null || descricaoModificador == ""){
+
+		if (descricaoModificador == null || descricaoModificador == "") {
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo Descrição da receita é obrigatório.");
 		}
-		
-		if(contratoModificador.getNuMesAnoInicial() == null || contratoModificador.getNuMesAnoInicial() == ""){
+
+		if (periodoInicial == null || periodoInicial.toString() == "") {
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo Período Inicial é obrigatório.");
 		}
-		
-		if(contratoModificador.getNuMesAnoFinal() == null || contratoModificador.getNuMesAnoFinal() == ""){
+
+		if (periodoFinal == null || periodoFinal.toString() == "") {
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo Período Final é obrigatório.");
 		}
-		
-		if(contratoModificador.getTxReajuste() == null){
+
+		if (contratoModificador.getTxReajuste() == null) {
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo Reajuste(%) é obrigatório.");
 		}
-		
-		if(contratoModificador.getVlValor() == null){
+
+		if (valor == null) {
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo Valor é obrigatório.");
 		}
-		
+
 		return preenchido;
 	}
-	
-	public boolean camposPreenchidosDespesa(){
+
+	public boolean camposPreenchidosDespesa() {
 		boolean preenchido = true;
-		
-		if(nomeModificadorDespesas == null || nomeModificadorDespesas == ""){
+
+		if (nomeModificadorDespesas == null || nomeModificadorDespesas == "") {
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo Despesa é obrigatório.");
 		}
-		
-		if(descricaoModificadorDespesas == null || descricaoModificadorDespesas == ""){
+
+		if (descricaoModificadorDespesas == null || descricaoModificadorDespesas == "") {
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo Descrição da despesa é obrigatório.");
 		}
-		
-		if(contratoModificadorDespesas.getNuMesAnoInicial() == null || contratoModificadorDespesas.getNuMesAnoInicial() == ""){
+
+		if (periodoInicialDespesas == null || periodoInicialDespesas.toString() == "") {
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo Período Inicial é obrigatório.");
 		}
-		
-		if(contratoModificadorDespesas.getNuMesAnoFinal() == null || contratoModificadorDespesas.getNuMesAnoFinal() == ""){
+
+		if (periodoFinalDespesas == null || periodoFinalDespesas.toString() == "") {
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo Período Final é obrigatório.");
 		}
-		
-		if(contratoModificadorDespesas.getVlValor() == null){
+
+		if (valorDespesas == null) {
 			preenchido = false;
 			FacesUtil.addErrorMessage("O campo Valor é obrigatório.");
 		}
-		
+
 		return preenchido;
 	}
 
@@ -238,11 +273,11 @@ public class CadastroContratosBean implements Serializable{
 	}
 
 	public List<TbImovel> getImoveis() {
-		if(imoveis == null){
+		if (imoveis == null) {
 			imoveis = new ArrayList<>();
 		}
-		if(imoveis.size() == 0){
-			if(FacesUtil.isNotPostBack()){
+		if (imoveis.size() == 0) {
+			if (FacesUtil.isNotPostBack()) {
 				imoveis = imovelService.consultaTodosImoveis();
 			}
 		}
@@ -252,17 +287,17 @@ public class CadastroContratosBean implements Serializable{
 	public void setImoveis(List<TbImovel> imoveis) {
 		this.imoveis = imoveis;
 	}
-	
+
 	public List<TbPessoa> getFiadores() {
 		List<TbPessoa> pessoas = new ArrayList<>();
-		if(fiadores == null){
+		if (fiadores == null) {
 			fiadores = new ArrayList<>();
 		}
-		if(fiadores.size() == 0){
-			if(FacesUtil.isNotPostBack()){
+		if (fiadores.size() == 0) {
+			if (FacesUtil.isNotPostBack()) {
 				fiadores = pessoaService.consultaTodosFiadores();
 				for (TbPessoa pessoa : fiadores) {
-					if(pessoa.getTbPessoaFisica() != null){
+					if (pessoa.getTbPessoaFisica() != null) {
 						pessoas.add(pessoa);
 					}
 				}
@@ -366,11 +401,11 @@ public class CadastroContratosBean implements Serializable{
 	}
 
 	public List<TbLocatario> getLocatarios() {
-		if(locatarios == null){
+		if (locatarios == null) {
 			locatarios = new ArrayList<>();
 		}
-		if(locatarios.size() == 0){
-			if(FacesUtil.isNotPostBack()){
+		if (locatarios.size() == 0) {
+			if (FacesUtil.isNotPostBack()) {
 				locatarios = locatarioService.consultaTodosLocatarios();
 			}
 		}
@@ -419,6 +454,78 @@ public class CadastroContratosBean implements Serializable{
 
 	public void setDespesasContratoSelecionado(DespesasContratoVO despesasContratoSelecionado) {
 		this.despesasContratoSelecionado = despesasContratoSelecionado;
+	}
+
+	public Date getDtInicio() {
+		return dtInicio;
+	}
+
+	public void setDtInicio(Date dtInicio) {
+		this.dtInicio = dtInicio;
+	}
+
+	public BigDecimal getMultaPorAtraso() {
+		return multaPorAtraso;
+	}
+
+	public void setMultaPorAtraso(BigDecimal multaPorAtraso) {
+		this.multaPorAtraso = multaPorAtraso;
+	}
+
+	public BigDecimal getComissao() {
+		return comissao;
+	}
+
+	public void setComissao(BigDecimal comissao) {
+		this.comissao = comissao;
+	}
+
+	public Date getPeriodoInicial() {
+		return periodoInicial;
+	}
+
+	public void setPeriodoInicial(Date periodoInicial) {
+		this.periodoInicial = periodoInicial;
+	}
+
+	public Date getPeriodoFinal() {
+		return periodoFinal;
+	}
+
+	public void setPeriodoFinal(Date periodoFinal) {
+		this.periodoFinal = periodoFinal;
+	}
+
+	public Date getPeriodoInicialDespesas() {
+		return periodoInicialDespesas;
+	}
+
+	public void setPeriodoInicialDespesas(Date periodoInicialDespesas) {
+		this.periodoInicialDespesas = periodoInicialDespesas;
+	}
+
+	public Date getPeriodoFinalDespesas() {
+		return periodoFinalDespesas;
+	}
+
+	public void setPeriodoFinalDespesas(Date periodoFinalDespesas) {
+		this.periodoFinalDespesas = periodoFinalDespesas;
+	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
+	}
+
+	public BigDecimal getValorDespesas() {
+		return valorDespesas;
+	}
+
+	public void setValorDespesas(BigDecimal valorDespesas) {
+		this.valorDespesas = valorDespesas;
 	}
 
 }
