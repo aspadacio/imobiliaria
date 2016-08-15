@@ -44,7 +44,7 @@ public class ImovelService implements Serializable{
 	 * @param locatarioId ID_LOCATARIO
 	 * */
 	@Transacional
-	public TbImovel findByLocatarioId(String locatarioId) {
+	public TbImovel findByLocatarioId(Long locatarioId) {
 		return imovelRepository.findByLocatarioId(locatarioId);
 	}
 

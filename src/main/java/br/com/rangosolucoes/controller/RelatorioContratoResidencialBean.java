@@ -150,15 +150,16 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		parametros.put("locatario_profissao", locatarioPF.getDsProfissao());
 		
 		//Contrato
-		parametros.put("contrato_numero", contrato.getIdContrato());
-		parametros.put("contrato_duracao", contrato.getNuDuracao());
-		parametros.put("contrato_inicio", contrato.getDtInicio()); //"01 de fevereiro de 2016"
+		parametros.put("contrato_numero", contrato.getIdContrato().toString());
+		parametros.put("contrato_duracao", String.valueOf(contrato.getNuDuracao()));
+		parametros.put("contrato_inicio", contrato.getDtInicio().toString()); //"01 de fevereiro de 2016"
 		parametros.put("contrato_fim", "01 de fevereiro de 2017");
+		parametros.put("contrato_valor_aluguel", "R$ 2.300,00 (DOIS MIL E TREZENTOS REAIS)");
 		
 		//Imovel & Data
 		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 		
-		imovel = imovelService.findByLocatarioId(locatarioId);
+		imovel = imovelService.findByLocatarioId(Long.parseLong(locatarioId));
 		
 		parametros.put("imovel_endereco_completo", imovel.getDsEndereco() 
 				+ ", " + imovel.getNuEndereco()
