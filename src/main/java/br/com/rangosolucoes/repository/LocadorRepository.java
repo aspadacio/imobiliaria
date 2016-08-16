@@ -283,7 +283,7 @@ public class LocadorRepository implements Serializable {
 	/**
 	 * Método responsável por retornar a pessoa {@link TbPessoa} a partir do id ID_PESSOA
 	 * */
-	private TbPessoa findPessoaById(Long idLocatarioSelecionada) {
+	public TbPessoa findPessoaById(Long idLocatarioSelecionada) {
 		return manager
 				.createQuery(
 						"FROM TbPessoa WHERE idPessoa = :idLocatarioSelecionada",
@@ -295,7 +295,7 @@ public class LocadorRepository implements Serializable {
 	/**
 	 * Método responsável por retornar a Pessoa Jurídica {@link TbPessoaJuridica} a partir do cnpj NU_CNPJ
 	 * */
-	private TbPessoaJuridica findPessoaJuridicaById(String nuCnpj) {
+	public TbPessoaJuridica findPessoaJuridicaById(String nuCnpj) {
 		return manager
 				.createQuery(
 						"FROM TbPessoaJuridica WHERE nuCnpj = :cnpj",

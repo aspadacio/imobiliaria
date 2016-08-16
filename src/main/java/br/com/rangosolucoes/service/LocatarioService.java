@@ -91,4 +91,12 @@ public class LocatarioService implements Serializable {
 	public TbLocatario porId(Long idLocatario) {
 		return locatarioRepository.porId(idLocatario);
 	}
+	
+	/**
+	 * Método responsável por retornar a Pessoa Física {@link TbPessoaFisica} a partir do cpf NU_CPF
+	 * */
+	@Transacional
+	public TbPessoaFisica findPessoaFisicaById(String nuCpf) {
+		return locatarioRepository.findPessoaFisicaById(nuCpf);
+	}
 }

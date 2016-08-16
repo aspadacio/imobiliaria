@@ -14,6 +14,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.rangosolucoes.model.TbImovel;
+import br.com.rangosolucoes.model.TbLocatario;
 import br.com.rangosolucoes.service.NegocioException;
 
 public class ImovelRepository implements Serializable{
@@ -67,6 +68,19 @@ public class ImovelRepository implements Serializable{
 	
 	public List<TbImovel> consultaTodosImoveis() {
 		return entityManager.createQuery("from TbImovel", TbImovel.class).getResultList();
+	}
+
+	/**
+	 * Método responsável por retornar o objeto {@link TbImovel} a partir do parâmetro
+	 * @param locatarioId ID_LOCATARIO
+	 * */
+	public TbImovel findByLocatarioId(Long locatarioId) {
+		return entityManager
+				.createQuery(
+						"FROM TbImovel WHERE tbLocatario.idLocatario = :idLocatario",
+						TbImovel.class)
+				.setParameter("idLocatario", locatarioId)
+				.getSingleResult();
 	}
 
 }

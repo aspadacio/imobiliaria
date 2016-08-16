@@ -78,6 +78,14 @@ public class LocadorService implements Serializable {
 		return locadorRepository.findEnderecoById(idPessoa);
 	}
 
+	/**
+	 * Método responsável por retornar a pessoa {@link TbPessoa} a partir do id ID_PESSOA
+	 * */
+	@Transacional
+	public TbPessoa findPessoaById(Long idLocatarioSelecionada) {
+		return locadorRepository.findPessoaById(idLocatarioSelecionada);
+	}
+	
 	public List<TbLocador> consultaTodosLocadores() {
 		return locadorRepository.consultaTodosLocadores();
 	}
@@ -85,5 +93,13 @@ public class LocadorService implements Serializable {
 	@Transacional
 	public TbLocador locadorPorId(Long id){
 		return locadorRepository.locadorPorId(id);
+	}
+	
+	/**
+	 * Método responsável por retornar a Pessoa Jurídica {@link TbPessoaJuridica} a partir do cnpj NU_CNPJ
+	 * */
+	@Transacional
+	public TbPessoaJuridica findPessoaJuridicaById(String nuCnpj) {
+		return locadorRepository.findPessoaJuridicaById(nuCnpj);
 	}
 }

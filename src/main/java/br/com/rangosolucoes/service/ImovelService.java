@@ -39,4 +39,13 @@ public class ImovelService implements Serializable{
 		return imovelRepository.consultaTodosImoveis();
 	}
 
+	/**
+	 * Método responsável por retornar o objeto {@link TbImovel} a partir do parâmetro
+	 * @param locatarioId ID_LOCATARIO
+	 * */
+	@Transacional
+	public TbImovel findByLocatarioId(Long locatarioId) {
+		return imovelRepository.findByLocatarioId(locatarioId);
+	}
+
 }
