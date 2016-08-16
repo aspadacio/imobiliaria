@@ -116,6 +116,7 @@ public class CadastroContratosBean implements Serializable {
 			contrato.setTbLocatario(locatarioService.porId(idLocatario));
 			TbImovel imovel = imovelService.porId(idImovel);
 			contrato.setTbLocador(imovel.getTbLocador());
+			contrato.setTbImovel(imovel);
 			contrato.setTbPessoa(pessoaService.porId(idPessoaFiador));
 			contrato.setDtInicio(dtInicio);
 			contrato.setTxMultaPorAtraso(multaPorAtraso);

@@ -25,9 +25,6 @@
 			<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
 				<p:outputLabel value="Locatário" for="locatario"/>
 				<p:inputText id="locatario" size="60" value="#{pesquisaContratosBean.nomeLocatario}"/>
-				
-				<!-- <p:outputLabel value="Imóvel" for="imovel"/>
-				<p:inputText id="imovel" size="60" value="#{pesquisaContratosBean.descImovel}"/> -->
 			</p:panelGrid>
 		
 			<p:dataTable id="contratosTable" value="#{pesquisaContratosBean.contratos}" var="contrato" style="margin-top: 20px"
