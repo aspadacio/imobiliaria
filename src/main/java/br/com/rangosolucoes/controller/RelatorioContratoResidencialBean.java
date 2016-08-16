@@ -23,6 +23,7 @@ import lombok.Setter;
 import org.hibernate.Session;
 
 import br.com.rangosolucoes.model.TbContrato;
+import br.com.rangosolucoes.model.TbContratoModificador;
 import br.com.rangosolucoes.model.TbEnderecoPessoa;
 import br.com.rangosolucoes.model.TbImovel;
 import br.com.rangosolucoes.model.TbLocador;
@@ -30,12 +31,10 @@ import br.com.rangosolucoes.model.TbLocatario;
 import br.com.rangosolucoes.model.TbPessoa;
 import br.com.rangosolucoes.model.TbPessoaFisica;
 import br.com.rangosolucoes.model.TbPessoaJuridica;
-import br.com.rangosolucoes.repository.filter.LocadorFilter;
-import br.com.rangosolucoes.repository.filter.LocatarioFilter;
+import br.com.rangosolucoes.service.ContratoModificadorService;
 import br.com.rangosolucoes.service.ImovelService;
 import br.com.rangosolucoes.service.LocadorService;
 import br.com.rangosolucoes.service.LocatarioService;
-import br.com.rangosolucoes.service.MunicipioService;
 import br.com.rangosolucoes.service.PessoaService;
 import br.com.rangosolucoes.util.jsf.FacesUtil;
 import br.com.rangosolucoes.util.report.ContratoResidencialRelatorio;
@@ -58,13 +57,13 @@ public class RelatorioContratoResidencialBean implements Serializable {
 	private LocatarioService locatarioService;
 	
 	@Inject
-	private MunicipioService municipioService;
-	
-	@Inject
 	private ImovelService imovelService;
 	
 	@Inject
 	private PessoaService pessoaService;
+	
+	@Inject
+	private ContratoModificadorService contratoModificadorService;
 	
 	//Atributos que serão usados para retornar dados das tabelas
 	@Getter @Setter @NonNull private String locadorId; //ID_LOCADOR
@@ -73,6 +72,7 @@ public class RelatorioContratoResidencialBean implements Serializable {
 
 	//Objetos usados para transmissão de dados.
 	private Map<String, Object> parametros;
+	private TbContratoModificador contratoModificador;
 	private TbPessoa locador;
 	private TbPessoa locatario;
 	private TbImovel imovel;
@@ -150,16 +150,29 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		parametros.put("locatario_profissao", locatarioPF.getDsProfissao());
 		
 		//Contrato
+		try{
+			contratoModificador = contratoModificadorService.findByContratoId(contrato.getIdContrato());			
+		}catch(Exception e){
+			FacesUtil.addErrorMessage("Não foi possível gerar o relatório. Não há Contrato Modificador.");
+			e.getStackTrace();
+		}
+		
+		parametros.put("contrato_valor_aluguel", contratoModificador.getVlValor().toString()); //TB_CONTRATO_MODIFICADOR - VL_VALOR
+		//TODO conversão por extenso: http://respostas.guj.com.br/611-como-escrever-numeros-por-extenso-em-java
+		
 		parametros.put("contrato_numero", contrato.getIdContrato().toString());
 		parametros.put("contrato_duracao", String.valueOf(contrato.getNuDuracao()));
 		parametros.put("contrato_inicio", contrato.getDtInicio().toString()); //"01 de fevereiro de 2016"
-		parametros.put("contrato_fim", "01 de fevereiro de 2017");
-		parametros.put("contrato_valor_aluguel", "R$ 2.300,00 (DOIS MIL E TREZENTOS REAIS)");
 		
 		//Imovel & Data
 		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 		
-		imovel = imovelService.findByLocatarioId(Long.parseLong(locatarioId));
+		try{
+			imovel = imovelService.findByLocatarioId(Long.parseLong(locatarioId));			
+		}catch(Exception e){
+			FacesUtil.addErrorMessage("Não foi possível gerar o relatório. Não há Imóvel.");
+			e.getStackTrace();
+		}
 		
 		parametros.put("imovel_endereco_completo", imovel.getDsEndereco() 
 				+ ", " + imovel.getNuEndereco()
