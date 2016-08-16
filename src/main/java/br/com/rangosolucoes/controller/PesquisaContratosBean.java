@@ -11,6 +11,7 @@ import javax.inject.Named;
 
 import br.com.rangosolucoes.model.TbContrato;
 import br.com.rangosolucoes.service.ContratoService;
+import br.com.rangosolucoes.util.jsf.FacesUtil;
 
 @Named("pesquisaContratosBean")
 @SessionScoped
@@ -38,10 +39,12 @@ public class PesquisaContratosBean implements Serializable{
 	
 	public void excluir(){
 		
+		
+		FacesUtil.addInfoMessage("Contrato de número " + contratoSelecionado.getIdContrato() + " excluído com sucesso.");
 	}
 	
 	public String novaPesquisa(){
-		return "";
+		return "/contratos/PesquisaContratos?faces-redirect=true";
 	}
 
 	public List<TbContrato> getContratos() {

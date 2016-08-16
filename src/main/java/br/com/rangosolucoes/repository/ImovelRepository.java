@@ -14,7 +14,6 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.rangosolucoes.model.TbImovel;
-import br.com.rangosolucoes.model.TbLocatario;
 import br.com.rangosolucoes.service.NegocioException;
 
 public class ImovelRepository implements Serializable{
