@@ -27,6 +27,7 @@ public class TbContrato implements java.io.Serializable {
 	private TbPessoa tbPessoa;
 	private TbLocatario tbLocatario;
 	private TbLocador tbLocador;
+	private TbImovel tbImovel;
 	private Date dtInicio;
 	private int nuDuracao;
 	private int nuDiaVencimento;
@@ -80,6 +81,17 @@ public class TbContrato implements java.io.Serializable {
 
 	public void setTbLocador(TbLocador tbLocador) {
 		this.tbLocador = tbLocador;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_IMOVEL", nullable = false)
+	@NotNull
+	public TbImovel getTbImovel() {
+		return tbImovel;
+	}
+
+	public void setTbImovel(TbImovel tbImovel) {
+		this.tbImovel = tbImovel;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
