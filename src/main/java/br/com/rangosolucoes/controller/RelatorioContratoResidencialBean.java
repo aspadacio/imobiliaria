@@ -193,7 +193,7 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		dataAno = new SimpleDateFormat("yyyy").format(new Date());
 		
 		try{
-			imovel = imovelService.findByLocatarioId(Long.parseLong(locatarioId));			
+			imovel = imovelService.porId(contrato.getTbImovel().getIdImovel());			
 		}catch(Exception e){
 			FacesUtil.addErrorMessage("Não foi possível gerar o relatório. Não há Imóvel.");
 			e.getStackTrace();
@@ -201,9 +201,9 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		
 		parametros.put("imovel_endereco_completo", imovel.getDsEndereco() + ", " 
 				+ imovel.getNuEndereco()
-				+ imovel.getDsComplemento() != "" ? ", " + imovel.getDsComplemento() : ""
-				+ imovel.getTbBairro().getNoBairro() != "" ? ", " + imovel.getTbBairro().getNoBairro() : ""
-				+ imovel.getTbMunicipio().getNoMunicipio() != "" ? ", " + imovel.getTbMunicipio().getNoMunicipio() : "" ); //"QUADRA 8 LOTE 19 APARTAMENTO 103 SETOR OESTE GAMA-DF"
+				+ (imovel.getDsComplemento() != "" ? ", " + imovel.getDsComplemento() : "")
+				+ (imovel.getTbBairro().getNoBairro() != "" ? ", " + imovel.getTbBairro().getNoBairro() : "")
+				+ (imovel.getTbMunicipio().getNoMunicipio() != "" ? ", " + imovel.getTbMunicipio().getNoMunicipio() : "") ); //"QUADRA 8 LOTE 19 APARTAMENTO 103 SETOR OESTE GAMA-DF"
 		parametros.put("cidade_data", "Gama, " + dataDia + " de " + dataMes + " de " + dataAno); //"Gama, 01 de Fevereiro de 2016"
 		
 		//Apicando os paths dos relatorios
