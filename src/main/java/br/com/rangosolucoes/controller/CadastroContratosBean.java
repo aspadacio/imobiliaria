@@ -70,6 +70,9 @@ public class CadastroContratosBean implements Serializable {
 	private Date periodoInicial;
 	private Date periodoFinal;
 	private BigDecimal valor;
+	private Integer duracaoContrato;
+	private Integer diaVencimentoContrato;
+	private Integer nuParcelaAnterior;
 
 	private String nomeModificadorDespesas;
 	private String descricaoModificadorDespesas;
@@ -117,6 +120,9 @@ public class CadastroContratosBean implements Serializable {
 			contrato.setDtInicio(dtInicio);
 			contrato.setTxMultaPorAtraso(multaPorAtraso);
 			contrato.setTxComissao(comissao);
+			contrato.setNuDuracao(duracaoContrato);
+			contrato.setNuDiaVencimento(diaVencimentoContrato);
+			contrato.setNuParcelaAnterior(nuParcelaAnterior);
 			
 			contrato = contratoService.salvar(contrato);
 			
@@ -142,6 +148,7 @@ public class CadastroContratosBean implements Serializable {
 					contratoModificador.setNuMesAnoFinal(receitasContratoVO.getNuMesAnoFinal());
 					contratoModificador.setTxReajuste(receitasContratoVO.getTxReajuste());
 					contratoModificador.setVlValor(receitasContratoVO.getVlValor());
+					contratoModificador.setTpModificador('R');
 					
 					contratoModificador = contratoModificadorService.salvar(contratoModificador);
 				}
@@ -157,11 +164,18 @@ public class CadastroContratosBean implements Serializable {
 					modificador = modificadorService.salvar(modificador);
 					
 					TbContratoModificador contratoModificador = new TbContratoModificador();
+					TbContratoModificadorId contratoModificadorId = new TbContratoModificadorId();
+					
+					contratoModificadorId.setIdContrato(contrato.getIdContrato());
+					contratoModificadorId.setIdModificador(modificador.getIdModificador());
+					
+					contratoModificador.setId(contratoModificadorId);
 					contratoModificador.setTbContrato(contrato);
 					contratoModificador.setTbModificador(modificador);
 					contratoModificador.setNuMesAnoInicial(despesasContratoVO.getNuMesAnoInicial());
 					contratoModificador.setNuMesAnoFinal(despesasContratoVO.getNuMesAnoFinal());
 					contratoModificador.setVlValor(despesasContratoVO.getVlValor());
+					contratoModificador.setTpModificador('D');
 					
 					contratoModificador = contratoModificadorService.salvar(contratoModificador);
 				}
@@ -178,6 +192,9 @@ public class CadastroContratosBean implements Serializable {
 	}
 
 	public void limpar() {
+		duracaoContrato = null;
+		diaVencimentoContrato = null;
+		nuParcelaAnterior = null;
 		idLocatario = null;
 		idImovel = null;
 		idPessoaFiador = null;
@@ -605,6 +622,30 @@ public class CadastroContratosBean implements Serializable {
 
 	public void setIdImovel(Long idImovel) {
 		this.idImovel = idImovel;
+	}
+
+	public Integer getDuracaoContrato() {
+		return duracaoContrato;
+	}
+
+	public void setDuracaoContrato(Integer duracaoContrato) {
+		this.duracaoContrato = duracaoContrato;
+	}
+
+	public Integer getDiaVencimentoContrato() {
+		return diaVencimentoContrato;
+	}
+
+	public void setDiaVencimentoContrato(Integer diaVencimentoContrato) {
+		this.diaVencimentoContrato = diaVencimentoContrato;
+	}
+
+	public Integer getNuParcelaAnterior() {
+		return nuParcelaAnterior;
+	}
+
+	public void setNuParcelaAnterior(Integer nuParcelaAnterior) {
+		this.nuParcelaAnterior = nuParcelaAnterior;
 	}
 
 }

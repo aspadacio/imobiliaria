@@ -298,6 +298,12 @@ create table IMOBILIARIA.TB_PESSOA_TELEFONE
 
 alter table IMOBILIARIA.TB_PESSOA_TELEFONE comment 'Tabela que contem os telefones da pessoa.';
 
+alter table IMOBILIARIA.TB_CONTRATO
+      add ID_IMOVEL bigint(20) not null comment 'FK que identifica o imovel na tabela TB_IMOVEL.';
+      
+alter table IMOBILIARIA.TB_CONTRATO add constraint FK_CONTRATO_IMOVEL foreign key (ID_IMOVEL)
+      references IMOBILIARIA.TB_IMOVEL (ID_IMOVEL) on delete restrict on update restrict;
+
 alter table IMOBILIARIA.TB_BAIRRO add constraint FK_BAIRRO_MUNICIPIO foreign key (ID_MUNICIPIO)
       references IMOBILIARIA.TB_MUNICIPIO (ID_MUNICIPIO) on delete restrict on update restrict;
 

@@ -61,10 +61,10 @@
 				<p:calendar id="inicio" size="10" value="#{cadastroContratosBean.dtInicio}" locale="pt" pattern="dd/MM/yyyy" mask="true" navigator="true"/>
 			
 				<p:outputLabel value="Duração(Meses)" for="duracao"/>
-				<p:inputText id="duracao" size="5" maxlength="2" value="#{cadastroContratosBean.contrato.nuDuracao}"/>
+				<p:inputText id="duracao" size="5" maxlength="2" value="#{cadastroContratosBean.duracaoContrato}"/>
 				
 				<p:outputLabel value="Dia vencimento" for="diavencimento"/>
-				<p:inputText id="diavencimento" size="40" maxlength="2" value="#{cadastroContratosBean.contrato.nuDiaVencimento}"/>
+				<p:inputText id="diavencimento" size="40" maxlength="2" value="#{cadastroContratosBean.diaVencimentoContrato}"/>
 			</p:panelGrid>
 			
 			<p:panelGrid columns="4" id="painel3" style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
@@ -72,7 +72,7 @@
 				<p:inputText id="multaatraso" size="40" maxlength="3" value="#{cadastroContratosBean.multaPorAtraso}"/>
 				
 				<p:outputLabel value="Nº da parcela anterior" for="parcelaanterior"/>
-				<p:inputText id="parcelaanterior" size="40" maxlength="2" value="#{cadastroContratosBean.contrato.nuParcelaAnterior}"/>
+				<p:inputText id="parcelaanterior" size="40" maxlength="2" value="#{cadastroContratosBean.nuParcelaAnterior}"/>
 				
 				<p:outputLabel value="Comissão(%)" for="comissao"/>
 				<p:inputText id="comissao" size="40" maxlength="3" value="#{cadastroContratosBean.comissao}"/>
@@ -180,7 +180,7 @@
 				    <h:panelGroup id="panelDespesasDataTable">
 						<p:dataTable id="despesasDataTable" value="#{cadastroContratosBean.despesasContratoVOs}" var="contrato" style="margin-top: 20px"
 							emptyMessage="Nenhuma despesa encontrada." rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
-							rendered="#{cadastroContratosBean.contratosModificadorDespesas.size() > 0}">
+							rendered="#{cadastroContratosBean.despesasContratoVOs.size() > 0}">
 							
 							<p:column headerText="Despesa">
 								<h:outputText value="#{contrato.nomeModificadorDespesa}"/>
@@ -204,7 +204,7 @@
 							
 							<p:column headerText="Ações" style="text-align: center; width: 100px">
 								<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusaoDespesa.show();"
-										process="@this" update=":frmContratos:confirmacaoExclusaoDialogDespesa">
+										process="@this" update=":frmContratos:receitasEDespesas:confirmacaoExclusaoDialogDespesa">
 									<f:setPropertyActionListener target="#{cadastroContratosBean.despesasContratoSelecionado}" 
 										value="#{contrato}"/>
 								</p:commandButton>
