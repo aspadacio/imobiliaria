@@ -83,6 +83,10 @@ public class RelatorioContratoResidencialBean implements Serializable {
 	 * @param contrato objeto vindo da tela 'PesquisaContratos'
 	 * */
 	public void emitir(TbContrato contrato) {
+		String dataDia;
+		String dataMes;
+		String dataAno;
+		
 		parametros = new HashMap<>();
 		
 		//Preparando IDs
@@ -118,10 +122,8 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		
 		//Endereco -> "quadra 201 lote C1 sala 06 A 09 comércio local Santa Maria Sul Brasília DF"
 		TbEnderecoPessoa locadorEndereco = null;
-		//TbMunicipio locadorMunicipio = null;
 		
 		locadorEndereco = locadorService.findEnderecoById(locador.getIdPessoa());
-		//locadorMunicipio = municipioService.findByEnderecoPessoaId(locadorEndereco.getTbMunicipio().getIdMunicipio());
 		
 		parametros.put("locador_endereco_completo", locadorEndereco.getDsEndereco() + ", " //Rua, Avenida, Quadra, etc. 
 				+ locadorEndereco.getNuEndereco() +  //Número
@@ -143,11 +145,26 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		parametros.put("locatario_endereco_completo", "QUADRA 8 LOTE 19 APARTAMENTO 103 SETOR OESTE GAMA-DF");
 		parametros.put("locatario_estado_civil", locatarioPF.getDsEstadoCivil());
 		parametros.put("locatario_nacionalidade", locatarioPF.getDsNacionalidade());
 		parametros.put("locatario_nome", locatarioPF.getNoPessoaFisica());
 		parametros.put("locatario_profissao", locatarioPF.getDsProfissao());
+		
+		//Endereço -> "QUADRA 8 LOTE 19 APARTAMENTO 103 SETOR OESTE GAMA-DF"
+		TbEnderecoPessoa locatarioEndereco = null;
+		
+		try {
+			locatarioEndereco = locatarioService.findEnderecosById(locatario.getIdPessoa()).get(0);			
+		}catch(Exception e){
+			FacesUtil.addErrorMessage("Não foi possível gerar o relatório. Não há Endereço do Locatário.");
+			e.getStackTrace();
+		}
+		
+		parametros.put("locatario_endereco_completo", locatarioEndereco.getDsEndereco() + ", "
+				+ locatarioEndereco.getNuEndereco()
+				+ (locatarioEndereco.getDsComplemento() != "" ? ", " + locatarioEndereco.getDsComplemento() : "")
+				+ (locatarioEndereco.getTbBairro().getNoBairro() != "" ? ", " + locatarioEndereco.getTbBairro().getNoBairro() : "")
+				+ (locatarioEndereco.getTbMunicipio().getNoMunicipio() != "" ? ", " + locatarioEndereco.getTbMunicipio().getNoMunicipio() : "") );
 		
 		//Contrato
 		try{
@@ -161,11 +178,18 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		//TODO conversão por extenso: http://respostas.guj.com.br/611-como-escrever-numeros-por-extenso-em-java
 		
 		parametros.put("contrato_numero", contrato.getIdContrato().toString());
+		
+		dataDia = new SimpleDateFormat("dd").format(contrato.getDtInicio());
+		dataMes = new SimpleDateFormat("MMMM").format(contrato.getDtInicio());
+		dataAno = new SimpleDateFormat("yyyy").format(contrato.getDtInicio());
+		
+		parametros.put("contrato_inicio", dataDia + " de " + dataMes + " de " + dataAno); //"01 de fevereiro de 2016"
 		parametros.put("contrato_duracao", String.valueOf(contrato.getNuDuracao()));
-		parametros.put("contrato_inicio", contrato.getDtInicio().toString()); //"01 de fevereiro de 2016"
 		
 		//Imovel & Data
-		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+		dataDia = new SimpleDateFormat("dd").format(new Date());
+		dataMes = new SimpleDateFormat("MMMM").format(new Date());
+		dataAno = new SimpleDateFormat("yyyy").format(new Date());
 		
 		try{
 			imovel = imovelService.findByLocatarioId(Long.parseLong(locatarioId));			
@@ -174,12 +198,12 @@ public class RelatorioContratoResidencialBean implements Serializable {
 			e.getStackTrace();
 		}
 		
-		parametros.put("imovel_endereco_completo", imovel.getDsEndereco() 
-				+ ", " + imovel.getNuEndereco()
+		parametros.put("imovel_endereco_completo", imovel.getDsEndereco() + ", " 
+				+ imovel.getNuEndereco()
 				+ imovel.getDsComplemento() != "" ? ", " + imovel.getDsComplemento() : ""
 				+ imovel.getTbBairro().getNoBairro() != "" ? ", " + imovel.getTbBairro().getNoBairro() : ""
 				+ imovel.getTbMunicipio().getNoMunicipio() != "" ? ", " + imovel.getTbMunicipio().getNoMunicipio() : "" ); //"QUADRA 8 LOTE 19 APARTAMENTO 103 SETOR OESTE GAMA-DF"
-		parametros.put("cidade_data", "Gama, " + dataFormatada); //"Gama, 01 de Fevereiro de 2016"
+		parametros.put("cidade_data", "Gama, " + dataDia + " de " + dataMes + " de " + dataAno); //"Gama, 01 de Fevereiro de 2016"
 		
 		//Apicando os paths dos relatorios
 		List<String> filesPaths = new ArrayList<String>();
