@@ -185,6 +185,7 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		
 		parametros.put("contrato_inicio", dataDia + " de " + dataMes + " de " + dataAno); //"01 de fevereiro de 2016"
 		parametros.put("contrato_duracao", String.valueOf(contrato.getNuDuracao()));
+		parametros.put("contrato_valor_caucao", "onze cheques no valor de R$ 500.00 (quinhentos reais)"); //TODO caucao
 		
 		//Imovel & Data
 		dataDia = new SimpleDateFormat("dd").format(new Date());
