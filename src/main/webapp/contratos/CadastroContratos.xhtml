@@ -98,7 +98,9 @@
 						<p:inputText id="reajuste" size="10" maxlength="100" value="#{cadastroContratosBean.contratoModificador.txReajuste}"/>
 						
 						<p:outputLabel value="Valor" for="valor"/>
-						<p:inputText id="valor" size="10" maxlength="100" value="#{cadastroContratosBean.valor}"/>
+						<p:inputText id="valor" size="10" maxlength="100" value="#{cadastroContratosBean.valor}" styleClass="moeda">
+							<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+						</p:inputText>
 						
 						<p:outputLabel value="Descrição da receita" for="descreceita"/>
 						<p:inputTextarea id="descreceita" rows="3" style="width: 99%" value="#{cadastroContratosBean.descricaoModificador}"/>
@@ -133,7 +135,9 @@
 							</p:column>
 							
 							<p:column headerText="Valor">
-								<h:outputText value="#{contrato.vlValor}"/>
+								<h:outputText value="#{contrato.vlValor}">
+									<f:convertNumber type="currency"/>
+								</h:outputText>
 							</p:column>
 							
 							<p:column headerText="Ações" style="text-align: center; width: 100px">
@@ -167,7 +171,9 @@
 						<p:calendar id="perFinalDespesa" value="#{cadastroContratosBean.periodoFinalDespesas}" locale="pt" pattern="dd/MM/yyyy" mask="true" navigator="true"/>
 						
 						<p:outputLabel value="Valor" for="valordespesa"/>
-						<p:inputText id="valordespesa" size="40" maxlength="100" value="#{cadastroContratosBean.valorDespesas}"/>
+						<p:inputText id="valordespesa" size="10" maxlength="100" value="#{cadastroContratosBean.valorDespesas}" styleClass="moeda">
+							<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+						</p:inputText>
 						
 						<p:outputLabel value="Descrição da despesa" for="descdespesa"/>
 						<p:inputTextarea id="descdespesa" rows="3" style="width: 99%" value="#{cadastroContratosBean.descricaoModificadorDespesas}"/>
@@ -199,7 +205,9 @@
 							</p:column>
 							
 							<p:column headerText="Valor">
-								<h:outputText value="#{contrato.vlValor}"/>
+								<h:outputText value="#{contrato.vlValor}">
+									<f:convertNumber type="currency"/>
+								</h:outputText>
 							</p:column>
 							
 							<p:column headerText="Ações" style="text-align: center; width: 100px">
