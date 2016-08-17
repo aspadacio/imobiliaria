@@ -69,17 +69,4 @@ public class ImovelRepository implements Serializable{
 		return entityManager.createQuery("from TbImovel", TbImovel.class).getResultList();
 	}
 
-	/**
-	 * Método responsável por retornar o objeto {@link TbImovel} a partir do parâmetro
-	 * @param locatarioId ID_LOCATARIO
-	 * */
-	public TbImovel findByLocatarioId(Long locatarioId) {
-		return entityManager
-				.createQuery(
-						"FROM TbImovel WHERE tbLocatario.idLocatario = :idLocatario",
-						TbImovel.class)
-				.setParameter("idLocatario", locatarioId)
-				.getSingleResult();
-	}
-
 }

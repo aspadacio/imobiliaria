@@ -20,4 +20,13 @@ public class ContratoModificadorService implements Serializable{
 		return contratoModificadorRepository.salvar(contratoModificador);
 	}
 
+	/**
+	 * Método responsável por retornar um objeto {@link TbContratoModificador} a partir do(s) parametro(s)
+	 * @param id from {@link TbContrato} ID_CONTRATO
+	 * */
+	@Transacional
+	public TbContratoModificador findByContratoId(Long id){
+		return contratoModificadorRepository.findByContratoId(id);
+	}
+	
 }

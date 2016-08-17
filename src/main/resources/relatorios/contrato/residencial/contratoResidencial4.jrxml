@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contratoResidencial4" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa47cf01-7f4c-46df-9cc3-011ef024a956">
-	<property name="ireport.zoom" value="1.948717100000002"/>
+	<property name="ireport.zoom" value="1.771561000000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="581"/>
+	<property name="ireport.y" value="518"/>
 	<parameter name="contrato_numero" class="java.lang.String"/>
 	<parameter name="locador_cnpj" class="java.lang.String"/>
 	<parameter name="locador_endereco_completo" class="java.lang.String"/>
@@ -77,10 +77,10 @@
 				<textFieldExpression><![CDATA["E assim por estarem justas e convencionadas, as partes assinam o presente instrumento particular de CONTRATO DE LOCAÇÃO RESIDENCIAL, em 02 (duas) vias de igual teor, juntamente com os <b>FIADORES</b> e com as duas testemunhas abaixo, a tudo presentes."]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="38" y="468" width="202" height="1" uuid="a0d63735-d462-4ac8-8f0c-a3d4626e4dc3"/>
+				<reportElement x="0" y="468" width="240" height="1" uuid="a0d63735-d462-4ac8-8f0c-a3d4626e4dc3"/>
 			</line>
 			<line>
-				<reportElement x="318" y="468" width="202" height="1" uuid="0197e6f2-afef-460e-875a-4d212f620820"/>
+				<reportElement x="280" y="468" width="275" height="1" uuid="0197e6f2-afef-460e-875a-4d212f620820"/>
 			</line>
 			<textField>
 				<reportElement x="0" y="469" width="280" height="25" uuid="d42813f4-6c77-4a46-af4f-3b21a029b73f"/>
@@ -99,15 +99,15 @@
 				<textFieldExpression><![CDATA["<b>LOCATÁRIO: </b>" + $P{locatario_nome}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="38" y="554" width="202" height="1" uuid="807df033-46c3-4362-9260-1317dddcf9e1"/>
+				<reportElement x="0" y="554" width="240" height="1" uuid="807df033-46c3-4362-9260-1317dddcf9e1"/>
 			</line>
 			<line>
-				<reportElement x="318" y="555" width="202" height="1" uuid="44886d8d-4668-49e2-9671-24c82125e564"/>
+				<reportElement x="280" y="555" width="275" height="1" uuid="44886d8d-4668-49e2-9671-24c82125e564"/>
 			</line>
 			<textField>
 				<reportElement x="0" y="556" width="280" height="25" uuid="5d6b73f5-9a9e-4721-b466-cc0fac74f005"/>
 				<box bottomPadding="2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+				<textElement verticalAlignment="Middle" markup="html">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA["<b>TESTEMUNHA: </b>"]]></textFieldExpression>
@@ -115,7 +115,7 @@
 			<textField>
 				<reportElement x="280" y="556" width="275" height="25" uuid="a30d4a9c-a9d1-4165-809e-7a49910b8767"/>
 				<box bottomPadding="2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+				<textElement verticalAlignment="Middle" markup="html">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA["<b>TESTEMUNHA: </b>"]]></textFieldExpression>

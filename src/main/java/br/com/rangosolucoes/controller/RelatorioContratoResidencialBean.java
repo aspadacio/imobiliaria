@@ -23,6 +23,7 @@ import lombok.Setter;
 import org.hibernate.Session;
 
 import br.com.rangosolucoes.model.TbContrato;
+import br.com.rangosolucoes.model.TbContratoModificador;
 import br.com.rangosolucoes.model.TbEnderecoPessoa;
 import br.com.rangosolucoes.model.TbImovel;
 import br.com.rangosolucoes.model.TbLocador;
@@ -30,12 +31,10 @@ import br.com.rangosolucoes.model.TbLocatario;
 import br.com.rangosolucoes.model.TbPessoa;
 import br.com.rangosolucoes.model.TbPessoaFisica;
 import br.com.rangosolucoes.model.TbPessoaJuridica;
-import br.com.rangosolucoes.repository.filter.LocadorFilter;
-import br.com.rangosolucoes.repository.filter.LocatarioFilter;
+import br.com.rangosolucoes.service.ContratoModificadorService;
 import br.com.rangosolucoes.service.ImovelService;
 import br.com.rangosolucoes.service.LocadorService;
 import br.com.rangosolucoes.service.LocatarioService;
-import br.com.rangosolucoes.service.MunicipioService;
 import br.com.rangosolucoes.service.PessoaService;
 import br.com.rangosolucoes.util.jsf.FacesUtil;
 import br.com.rangosolucoes.util.report.ContratoResidencialRelatorio;
@@ -58,13 +57,13 @@ public class RelatorioContratoResidencialBean implements Serializable {
 	private LocatarioService locatarioService;
 	
 	@Inject
-	private MunicipioService municipioService;
-	
-	@Inject
 	private ImovelService imovelService;
 	
 	@Inject
 	private PessoaService pessoaService;
+	
+	@Inject
+	private ContratoModificadorService contratoModificadorService;
 	
 	//Atributos que serão usados para retornar dados das tabelas
 	@Getter @Setter @NonNull private String locadorId; //ID_LOCADOR
@@ -73,6 +72,7 @@ public class RelatorioContratoResidencialBean implements Serializable {
 
 	//Objetos usados para transmissão de dados.
 	private Map<String, Object> parametros;
+	private TbContratoModificador contratoModificador;
 	private TbPessoa locador;
 	private TbPessoa locatario;
 	private TbImovel imovel;
@@ -83,6 +83,10 @@ public class RelatorioContratoResidencialBean implements Serializable {
 	 * @param contrato objeto vindo da tela 'PesquisaContratos'
 	 * */
 	public void emitir(TbContrato contrato) {
+		String dataDia;
+		String dataMes;
+		String dataAno;
+		
 		parametros = new HashMap<>();
 		
 		//Preparando IDs
@@ -118,10 +122,8 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		
 		//Endereco -> "quadra 201 lote C1 sala 06 A 09 comércio local Santa Maria Sul Brasília DF"
 		TbEnderecoPessoa locadorEndereco = null;
-		//TbMunicipio locadorMunicipio = null;
 		
 		locadorEndereco = locadorService.findEnderecoById(locador.getIdPessoa());
-		//locadorMunicipio = municipioService.findByEnderecoPessoaId(locadorEndereco.getTbMunicipio().getIdMunicipio());
 		
 		parametros.put("locador_endereco_completo", locadorEndereco.getDsEndereco() + ", " //Rua, Avenida, Quadra, etc. 
 				+ locadorEndereco.getNuEndereco() +  //Número
@@ -143,30 +145,66 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		parametros.put("locatario_endereco_completo", "QUADRA 8 LOTE 19 APARTAMENTO 103 SETOR OESTE GAMA-DF");
 		parametros.put("locatario_estado_civil", locatarioPF.getDsEstadoCivil());
 		parametros.put("locatario_nacionalidade", locatarioPF.getDsNacionalidade());
 		parametros.put("locatario_nome", locatarioPF.getNoPessoaFisica());
 		parametros.put("locatario_profissao", locatarioPF.getDsProfissao());
 		
+		//Endereço -> "QUADRA 8 LOTE 19 APARTAMENTO 103 SETOR OESTE GAMA-DF"
+		TbEnderecoPessoa locatarioEndereco = null;
+		
+		try {
+			locatarioEndereco = locatarioService.findEnderecosById(locatario.getIdPessoa()).get(0);			
+		}catch(Exception e){
+			FacesUtil.addErrorMessage("Não foi possível gerar o relatório. Não há Endereço do Locatário.");
+			e.getStackTrace();
+		}
+		
+		parametros.put("locatario_endereco_completo", locatarioEndereco.getDsEndereco() + ", "
+				+ locatarioEndereco.getNuEndereco()
+				+ (locatarioEndereco.getDsComplemento() != "" ? ", " + locatarioEndereco.getDsComplemento() : "")
+				+ (locatarioEndereco.getTbBairro().getNoBairro() != "" ? ", " + locatarioEndereco.getTbBairro().getNoBairro() : "")
+				+ (locatarioEndereco.getTbMunicipio().getNoMunicipio() != "" ? ", " + locatarioEndereco.getTbMunicipio().getNoMunicipio() : "") );
+		
 		//Contrato
+		try{
+			contratoModificador = contratoModificadorService.findByContratoId(contrato.getIdContrato());			
+		}catch(Exception e){
+			FacesUtil.addErrorMessage("Não foi possível gerar o relatório. Não há Contrato Modificador.");
+			e.getStackTrace();
+		}
+		
+		parametros.put("contrato_valor_aluguel", contratoModificador.getVlValor().toString()); //TB_CONTRATO_MODIFICADOR - VL_VALOR
+		//TODO conversão por extenso: http://respostas.guj.com.br/611-como-escrever-numeros-por-extenso-em-java
+		
 		parametros.put("contrato_numero", contrato.getIdContrato().toString());
+		
+		dataDia = new SimpleDateFormat("dd").format(contrato.getDtInicio());
+		dataMes = new SimpleDateFormat("MMMM").format(contrato.getDtInicio());
+		dataAno = new SimpleDateFormat("yyyy").format(contrato.getDtInicio());
+		
+		parametros.put("contrato_inicio", dataDia + " de " + dataMes + " de " + dataAno); //"01 de fevereiro de 2016"
 		parametros.put("contrato_duracao", String.valueOf(contrato.getNuDuracao()));
-		parametros.put("contrato_inicio", contrato.getDtInicio().toString()); //"01 de fevereiro de 2016"
-		parametros.put("contrato_fim", "01 de fevereiro de 2017");
-		parametros.put("contrato_valor_aluguel", "R$ 2.300,00 (DOIS MIL E TREZENTOS REAIS)");
+		parametros.put("contrato_valor_caucao", "onze cheques no valor de R$ 500.00 (quinhentos reais)"); //TODO caucao
 		
 		//Imovel & Data
-		String dataFormatada = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+		dataDia = new SimpleDateFormat("dd").format(new Date());
+		dataMes = new SimpleDateFormat("MMMM").format(new Date());
+		dataAno = new SimpleDateFormat("yyyy").format(new Date());
 		
-		imovel = imovelService.findByLocatarioId(Long.parseLong(locatarioId));
+		try{
+			imovel = imovelService.porId(contrato.getTbImovel().getIdImovel());			
+		}catch(Exception e){
+			FacesUtil.addErrorMessage("Não foi possível gerar o relatório. Não há Imóvel.");
+			e.getStackTrace();
+		}
 		
-		parametros.put("imovel_endereco_completo", imovel.getDsEndereco() 
-				+ ", " + imovel.getNuEndereco()
-				+ imovel.getDsComplemento() != "" ? ", " + imovel.getDsComplemento() : ""
-				+ imovel.getTbBairro().getNoBairro() != "" ? ", " + imovel.getTbBairro().getNoBairro() : ""
-				+ imovel.getTbMunicipio().getNoMunicipio() != "" ? ", " + imovel.getTbMunicipio().getNoMunicipio() : "" ); //"QUADRA 8 LOTE 19 APARTAMENTO 103 SETOR OESTE GAMA-DF"
-		parametros.put("cidade_data", "Gama, " + dataFormatada); //"Gama, 01 de Fevereiro de 2016"
+		parametros.put("imovel_endereco_completo", imovel.getDsEndereco() + ", " 
+				+ imovel.getNuEndereco()
+				+ (imovel.getDsComplemento() != "" ? ", " + imovel.getDsComplemento() : "")
+				+ (imovel.getTbBairro().getNoBairro() != "" ? ", " + imovel.getTbBairro().getNoBairro() : "")
+				+ (imovel.getTbMunicipio().getNoMunicipio() != "" ? ", " + imovel.getTbMunicipio().getNoMunicipio() : "") ); //"QUADRA 8 LOTE 19 APARTAMENTO 103 SETOR OESTE GAMA-DF"
+		parametros.put("cidade_data", "Gama, " + dataDia + " de " + dataMes + " de " + dataAno); //"Gama, 01 de Fevereiro de 2016"
 		
 		//Apicando os paths dos relatorios
 		List<String> filesPaths = new ArrayList<String>();
