@@ -107,6 +107,7 @@ public class RelatorioContratoResidencialBean implements Serializable {
 		
 		locatario = pessoaService.porId(locatarioAux.getTbPessoa().getIdPessoa());
 		locatarioPF = locatarioService.findPessoaFisicaById(locatario.getTbPessoaFisica().getNuCpf());
+		//END--Buscar informações para serem inseridas no 'parametros'
 		
 		//Preencher HashMap de parametros
 		//Locador
